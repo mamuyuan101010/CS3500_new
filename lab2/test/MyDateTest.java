@@ -8,11 +8,12 @@ public class MyDateTest {
   private MyDate testDate2;
   @Before
   public void setUp() {
-    testDate2 = new MyDate(8, 5, 2024);
+    testDate1 = new MyDate(8,5,2024);
+    testDate2 = new MyDate(1, 1, 2024);
   }
 
   @Test
-  public void testInvalidYear() {
+  public void testInvalidDates() {
     MyDate yearForTest;
     // test for a valid date for non-leap year
     try {
@@ -91,19 +92,46 @@ public class MyDateTest {
     }
   }
 
-
-
   @Test
   public void advance() {
     testDate2.advance(1);
     assertEquals(testDate2.getYear(), 2024);
-    assertEquals(testDate2.getMonth(), 5);
-    assertEquals(testDate2.getDay(), 9);
+    assertEquals(testDate2.getMonth(), 1);
+    assertEquals(testDate2.getDay(), 2);
+    testDate2.advance(365);
+    assertEquals(testDate2.getYear(), 2025);
+    assertEquals(testDate2.getMonth(), 1);
+    assertEquals(testDate2.getDay(), 1);
+    testDate1.advance(365);
+    assertEquals(testDate1.getYear(), 2025);
+    assertEquals(testDate1.getMonth(), 5);
+    assertEquals(testDate1.getDay(), 8);
   }
 
   @Test
   public void testToString() {
-    testDate2.advance(24);
-    assertEquals(testDate2.toString(), "2024-06-05");
+    assertEquals("2024-01-01", testDate2.toString());
+    testDate2.advance(731);
+    assertEquals("2026-01-01", testDate2.toString());
+    testDate2.advance(730);
+    assertEquals("2028-01-01", testDate2.toString());
+    testDate2.advance(365);
+    assertEquals("2028-12-31", testDate2.toString());
+  }
+
+
+  @Test
+  public void getDay() {
+    assertEquals(1, testDate2.getDay());
+  }
+
+  @Test
+  public void getMonth() {
+    assertEquals(1, testDate2.getMonth());
+  }
+
+  @Test
+  public void getYear() {
+    assertEquals(2024, testDate2.getYear());
   }
 }

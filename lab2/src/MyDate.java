@@ -54,68 +54,35 @@ public class MyDate {
 
   // function is 31 Day month check whether the month given has only 31 days
   private boolean is31Month(int month) {
-    return (month == 1 || month == 3 || month == 5 || month == 7 || month == 9 || month == 11);
+    return (month == 1 || month == 3 || month == 5 || month == 7
+            || month == 8 || month == 10 || month == 12);
   }
 
   /**
    * the function advance does advance the date by the given number of days
-   * @param days
+   * @param days is the day increase or reduce
    */
   public void advance(int days) {
-    dayAdv(days);
-  }
-
-  /**
-   * this function auto-correct days
-   * @param days
-   */
-  private void dayAdv(int days) {
-    int currentDay = this.day;
-    this.day += days;
-    // condition for months that have 31 days
-    if (is31Month(this.month)) {
-      if (this.day > 31) {
-        this.day = 1;
-        this.month += 1;
-        monthAdv(this.month);
-        advance(currentDay - 31);
-      }
+    int currentDay = this.day + days;
+    int dayInCurrentMonth = daysInThatMonth(this.month, this.year);
+    if (currentDay > dayInCurrentMonth) {
+      this.day = 0;
+      monthAdv();
+      advance(currentDay - dayInCurrentMonth);
     }
-    // condition for Feb
-    else if (this.month == 2) {
-      // condition for Feb in leap year
-      if (isLeapYear(this.year)) {
-        if (this.day > 29) {
-          this.day -= 29;
-          this.month += 1;
-          monthAdv(this.month);
-          advance(days - 29);
-        }
-      }
-      // condition for Feb in non-leap year
-      else {
-        if (this.day > 28) {
-          this.day -= 28;
-          this.month += 1;
-          monthAdv(this.month);
-          advance(days - 28);
-        }
-      }
+    else if (currentDay < 1) {
+      monthRdc();
+      this.day = daysInThatMonth(this.month, this.year);
+      advance(currentDay + dayInCurrentMonth);
     }
-    // condition that months have 30 days
     else {
-      if (this.day > 30) {
-        this.day -= 30;
-        this.month += 1;
-        monthAdv(this.month);
-        advance(days - 30);
-      }
+      this.day += days;
     }
   }
 
-  // function that make the month correct
-  private void monthAdv(int month) {
-    this.month += month;
+  // function advance month by 1
+  private void monthAdv() {
+    this.month += 1;
     if (this.month > 12) {
       this.month -= 12;
       this.year += 1;
@@ -125,14 +92,59 @@ public class MyDate {
     }
   }
 
+  // function reduce month by 1
+  private void monthRdc() {
+    this.month -= 1;
+    // return the month to 12 and decrease year by one if month is less than 1
+    if (this.month < 1) {
+      this.month = 12;
+      // reduce the year by one only if the year is above 0000
+      if (this.year > 0) {
+        this.year -= 1;
+      }
+    }
+  }
+
+  /**
+   * this function intake month and year and return
+   * how many days should be in that month
+   * @param month is the month int
+   * @param year is the year int
+   * @return the number of days in that month in that year
+   */
+  private int daysInThatMonth(int month, int year) {
+    if (is31Month(month)) {
+      return 31;
+    }
+    else {
+      if (month == 2) {
+        if (isLeapYear(year)) {
+          return 29;
+        }
+        else {
+          return 28;
+        }
+      }
+      else {
+        return 30;
+      }
+    }
+  }
+
   public int getDay() {
-    return this.day;
+    int return_day;
+    return_day = this.day;
+    return return_day;
   }
   public int getMonth() {
-    return this.month;
+    int return_month;
+    return_month = this.month;
+    return return_month;
   }
   public int getYear() {
-    return this.year;
+    int return_year;
+    return_year = this.year;
+    return return_year;
   }
 
   public String toString() {
