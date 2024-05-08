@@ -5,10 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MyDateTest {
   private MyDate testDate1;
+<<<<<<< HEAD
   private MyDate testDate2;
   @Before
   public void setUp() {
     testDate2 = new MyDate(8, 5, 2024);
+=======
+  @Before
+  public void setUp() {
+>>>>>>> origin/main
 
   }
 
@@ -92,6 +97,7 @@ public class MyDateTest {
     }
   }
 
+<<<<<<< HEAD
 
   @Test
   public void advance() {
@@ -105,5 +111,13 @@ public class MyDateTest {
   public void testToString() {
     testDate2.advance(24);
     assertEquals(testDate2.toString(), "2024-06-05");
+=======
+  @org.junit.jupiter.api.Test
+  void advance() {
+  }
+
+  @org.junit.jupiter.api.Test
+  void testToString() {
+>>>>>>> origin/main
   }
 }

@@ -57,6 +57,7 @@ public class MyDate {
     return (month == 1 || month == 3 || month == 5 || month == 7 || month == 9 || month == 11);
   }
 
+<<<<<<< HEAD
   /**
    * the function advance does advance the date by the given number of days
    * @param days
@@ -133,12 +134,20 @@ public class MyDate {
   }
   public int getYear() {
     return this.year;
+=======
+  public void advance(int days) {
+
+>>>>>>> origin/main
   }
 
   public String toString() {
 
+<<<<<<< HEAD
     return String.format("%04d", this.year) +
             "-" + String.format("%02d",this.month) +
             "-" + String.format("%02d",this.day);
+=======
+    return "";
+>>>>>>> origin/main
   }
 }
