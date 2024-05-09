@@ -1,17 +1,21 @@
+/**
+ * this is the class for MyDate object.
+ */
 public class MyDate {
   int day;
   int month;
   int year;
 
   /**
-   * MyDate constructor takes a day, a month, and a year
+   * MyDate constructor takes a day, a month, and a year.
    *
-   * @param day   is the given day
-   * @param month is the given month
-   * @param year  is the given year
+   * @param day   is the given day.
+   * @param month is the given month.
+   * @param year  is the given year.
    * @throws IllegalArgumentException if the given day pass the maximum number of days
-   *                                  in that month given, or if the month is not between 1 and 12, or if year is negative
-   *                                  or over 9999
+   *                                  in that month given, or if the month is not
+   *                                  between 1 and 12, or if year is negative
+   *                                  or over 9999.
    */
   public MyDate(int day, int month, int year) throws IllegalArgumentException {
     // check if months are valid
@@ -61,10 +65,10 @@ public class MyDate {
   }
 
   /**
-   * function isLeapYear check whether the given integer is a leap year
+   * function isLeapYear check whether the given integer is a leap year.
    *
-   * @param year is the given year
-   * @return the boolean value whether the given year is a leap year
+   * @param year is the given year.
+   * @return the boolean value whether the given year is a leap year.
    */
   private boolean isLeapYear(int year) {
     return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
@@ -72,10 +76,10 @@ public class MyDate {
 
 
   /**
-   * function is 31 Day month check whether the month given has only 31 days
+   * function is 31 Day month check whether the month given has only 31 days.
    *
-   * @param month is the given month value
-   * @return the boolean value whether the given month have 31 days
+   * @param month is the given month value.
+   * @return the boolean value whether the given month have 31 days.
    */
   private boolean is31Month(int month) {
     return (month == 1 || month == 3 || month == 5 || month == 7
@@ -86,9 +90,9 @@ public class MyDate {
    * the function advance does advance the date by the given number of days,
    * which cannot over Dec 31, 9999
    * or reduce the date by the given number of days, which will stop at
-   * Jan 1, 0000
+   * Jan 1, 0000.
    *
-   * @param days is the day increase or reduce
+   * @param days is the day increase or reduce.
    */
   public void advance(int days) {
     int currentDay = this.day + days;
@@ -116,7 +120,7 @@ public class MyDate {
 
   /**
    * monthAdv is the function that advancing month by 1
-   * and throw an error over after Dec 9999
+   * and throw an error over after Dec 9999.
    */
   private void monthAdv() {
     this.month += 1;
@@ -130,7 +134,8 @@ public class MyDate {
   }
 
   /**
-   * monthRdc is the function that reducing month by 1 and stop reducing at Jan 0000
+   * monthRdc is the function that reducing month
+   * by 1 and stop reducing at Jan 0000.
    */
   private void monthRdc() {
     this.month -= 1;
@@ -149,11 +154,11 @@ public class MyDate {
 
   /**
    * this function intake month and year and return
-   * how many days should be in that month
+   * how many days should be in that month.
    *
-   * @param month is the month int
-   * @param year  is the year int
-   * @return the number of days in that month in that year
+   * @param month is the month int.
+   * @param year  is the year int.
+   * @return the number of days in that month in that year.
    */
   private int daysInThatMonth(int month, int year) {
     if (is31Month(month)) {
@@ -172,9 +177,9 @@ public class MyDate {
   }
 
   /**
-   * getDay the function that return the date value
+   * getDay the function that return the date value.
    *
-   * @return the day value in MyDate
+   * @return the day value in MyDate.
    */
   public int getDay() {
     int return_day;
@@ -183,9 +188,9 @@ public class MyDate {
   }
 
   /**
-   * getMonth is the function that return the month value
+   * getMonth is the function that return the month value.
    *
-   * @return the month value in MyDate
+   * @return the month value in MyDate.
    */
   public int getMonth() {
     int return_month;
@@ -194,9 +199,9 @@ public class MyDate {
   }
 
   /**
-   * getYear is the function that return the year value
+   * getYear is the function that return the year value.
    *
-   * @return the year value in MyDate
+   * @return the year value in MyDate.
    */
   public int getYear() {
     int return_year;
@@ -206,14 +211,14 @@ public class MyDate {
 
   /**
    * toString is the function that override toString Method by returning
-   * a string value format in YYYY-MM-DD using string.format method
+   * a string value format in YYYY-MM-DD using string.format method.
    *
-   * @return the string value in YYYY-MM-DD format
+   * @return the string value in YYYY-MM-DD format.
    */
   @Override
   public String toString() {
-    return String.format("%04d", this.year) +
-            "-" + String.format("%02d", this.month) +
-            "-" + String.format("%02d", this.day);
+    return String.format("%04d", this.year)
+            + "-" + String.format("%02d", this.month)
+            + "-" + String.format("%02d", this.day);
   }
 }

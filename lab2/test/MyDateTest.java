@@ -1,8 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * this is the class for all testing code.
+ */
 public class MyDateTest {
   // pre-build variables
   private MyDate testDate1;
