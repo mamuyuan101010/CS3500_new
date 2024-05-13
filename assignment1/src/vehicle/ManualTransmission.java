@@ -50,7 +50,7 @@ public interface ManualTransmission {
    * and is not an argument of this method.
    * @return return the resulting transmission object.
    */
-  Object increaseSpeed();
+  ManualTransmission increaseSpeed();
 
   /**
    * Decrease the speed by a fixed amount without changing gears.
@@ -60,7 +60,7 @@ public interface ManualTransmission {
    * and is not an argument of this method.
    * @return return the resulting transmission object.
    */
-  Object decreaseSpeed();
+  ManualTransmission decreaseSpeed();
 
   /**
    * Increase the gear by one without changing speed.
@@ -68,7 +68,7 @@ public interface ManualTransmission {
    * then it should return an object with the same gear as before.
    * @return return the resulting transmission object.
    */
-  Object increaseGear();
+  ManualTransmission increaseGear();
 
   /**
    * Decrease the gear by one without changing speed.
@@ -76,5 +76,5 @@ public interface ManualTransmission {
    * then it should return an object with the same gear as before.
    * @return return the resulting transmission object.
    */
-  Object decreaseGear();
+  ManualTransmission decreaseGear();
 }

@@ -159,7 +159,7 @@ public class RegularManualTransmission implements ManualTransmission {
    * @return the resulting transmission object with the speed increased by 1.
    */
   @Override
-  public Object increaseSpeed() {
+  public ManualTransmission increaseSpeed() {
     if (currentSpeed == h5) {
       this.statusLog = "Cannot increase speed. Reached maximum speed.";
     }
@@ -174,7 +174,7 @@ public class RegularManualTransmission implements ManualTransmission {
 
 
   @Override
-  public Object decreaseSpeed() {
+  public ManualTransmission decreaseSpeed() {
     if (currentSpeed == 0) {
       this.statusLog = "Cannot decrease speed. Reached minimum speed.";
     }
@@ -189,7 +189,7 @@ public class RegularManualTransmission implements ManualTransmission {
 
 
   @Override
-  public Object increaseGear() {
+  public ManualTransmission increaseGear() {
     if (currentSpeed < getGearLowSpd(this.gear + 1)) {
       this.statusLog = "Cannot increase gear, increase speed first.";
     } else {
@@ -205,7 +205,7 @@ public class RegularManualTransmission implements ManualTransmission {
 
 
   @Override
-  public Object decreaseGear() {
+  public ManualTransmission decreaseGear() {
     if (currentSpeed > getGearHighSpd(this.gear - 1)) {
       this.statusLog = "Cannot decrease gear, decrease speed first.";
     } else {
