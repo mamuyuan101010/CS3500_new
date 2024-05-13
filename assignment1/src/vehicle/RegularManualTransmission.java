@@ -47,15 +47,16 @@ public class RegularManualTransmission implements ManualTransmission {
   private RegularManualTransmission(int l1, int h1, int l2, int h2, int l3, int h3, int l4, int h4, int l5, int h5) {
     if (h1 < l1 || h2 < l2 || h3 < l3 || h4 < l4 || h5 < l5) {
       throw new IllegalArgumentException("lx should be less than or equal to hx.");
-    }
-    else if (l1 < 0 || l2 < 0 || l3 < 0 || l4 < 0 || l5 < 0) {
+    } else if (l1 < 0 || l2 < 0 || l3 < 0 || l4 < 0 || l5 < 0) {
       throw new IllegalArgumentException("speed cannot be negative.");
-    }
-    else if (l1 >= l2 || l2 >= l3 || l3 >= l4 || l4 >= l5) {
+    } else if (l1 >= l2 || l2 >= l3 || l3 >= l4 || l4 >= l5) {
       throw new IllegalArgumentException("lower speed for gear 1 should be strictly" +
               " lesser than that of gear 2, and so on.");
-    }
-    else {
+    } else if (h1 < l2 || h2 < l3 || h3 < l4 || h4 < l5) {
+      throw new IllegalArgumentException("ranges cannot be non-overlapping");
+    } else if (!NoMoreThanTwoRangeCover()) {
+      throw new IllegalArgumentException("only adjacent-gear ranges may overlap");
+    } else {
       this.speedIncreaseAmount = 1;
       this.currentSpeed = 0;
       this.gear = 1;
@@ -148,7 +149,6 @@ public class RegularManualTransmission implements ManualTransmission {
   }
 
   /**
-   *
    * @return the resulting transmission object with the speed increased by 1.
    * If the speed cannot be decreased, then it returns an object with the
    * same speed as before.
@@ -185,7 +185,34 @@ public class RegularManualTransmission implements ManualTransmission {
   // it is a helper method to check whether any speed is non-overlapped
   // or overlapped for more than 2 times
   private int numberOfRangeCover(int speed) {
+    int returnNum = 0;
+    if (speed >= l1 && speed <= h1) {
+      returnNum += 1;
+    }
+    if (speed >= l2 && speed <= h2) {
+      returnNum += 1;
+    }
+    if (speed >= l3 && speed <= h3) {
+      returnNum += 1;
+    }
+    if (speed >= l4 && speed <= h4) {
+      returnNum += 1;
+    }
+    if (speed >= l5 && speed <= h5) {
+      returnNum += 1;
+    }
+    return returnNum;
+  }
 
+  // this helper function helps to check if any speed is overlapped by more than 2 gears
+  // meaning non-adjacent gear ranges overlap
+  private boolean NoMoreThanTwoRangeCover() {
+    for (int i = 0; i < h5; i++) {
+      if (numberOfRangeCover(i) >= 2) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
