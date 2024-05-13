@@ -158,27 +158,33 @@ public class RegularManualTransmission implements ManualTransmission {
    */
   @Override
   public Object increaseSpeed() {
+    if (currentSpeed == h5) {
+      this.statusLog = "Cannot increase speed. Reached maximum speed.";
+    }
     if (currentSpeed + speedIncreaseAmount > getGearHighSpd(this.gear)) {
       this.statusLog = "Cannot increase speed, increase gear first.";
-      return this;
     }
     else {
       currentSpeed += speedIncreaseAmount;
-      return this;
+      this.statusLog = "OK: everything is OK.";
     }
+    return this;
   }
 
 
   @Override
   public Object decreaseSpeed() {
+    if (currentSpeed == 0) {
+      this.statusLog = "Cannot decrease speed. Reached minimum speed.";
+    }
     if (currentSpeed - speedIncreaseAmount < getGearLowSpd(this.gear)) {
       this.statusLog = "Cannot decrease speed, decrease gear first.";
-      return this;
     }
     else {
       currentSpeed -= speedIncreaseAmount;
-      return this;
+      this.statusLog = "OK: everything is OK.";
     }
+    return this;
   }
 
 
@@ -188,7 +194,13 @@ public class RegularManualTransmission implements ManualTransmission {
       this.statusLog = "Cannot increase gear, increase speed first.";
     }
     else {
-      this.gear += 1;
+      if (this.gear < 5) {
+        this.gear += 1;
+        this.statusLog = "OK: you may increase the gear.";
+      }
+      else {
+        this.statusLog = "Cannot increase gear. Reached maximum gear.";
+      }
     }
     return this;
   }
@@ -200,7 +212,13 @@ public class RegularManualTransmission implements ManualTransmission {
       this.statusLog = "Cannot decrease gear, decrease speed first.";
     }
     else {
-      this.gear -= 1;
+      if (this.gear > 1) {
+        this.gear -= 1;
+        this.statusLog = "OK: you may decrease the gear.";
+      }
+      else {
+        this.statusLog = "Cannot decrease gear. Reached minimum gear.";
+      }
     }
     return this;
   }
