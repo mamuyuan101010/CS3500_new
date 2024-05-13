@@ -11,9 +11,4 @@ public class Rook extends ChessAbs {
     }
     return ((this.row == row) || (this.col == col));
   }
-
-  @Override
-  public boolean canKill(ChessPiece piece) {
-    return false;
-  }
 }

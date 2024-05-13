@@ -12,9 +12,4 @@ public class Queen extends ChessAbs {
     return ((this.row == row) || (this.col == col)
             || (Math.abs(this.row - row) == Math.abs(this.col - col)));
   }
-
-  @Override
-  public boolean canKill(ChessPiece piece) {
-    return false;
-  }
 }

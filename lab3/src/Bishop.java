@@ -11,9 +11,4 @@ public class Bishop extends ChessAbs {
     }
     return (Math.abs(this.row - row) == Math.abs(this.col - col));
   }
-
-  @Override
-  public boolean canKill(ChessPiece piece) {
-    return false;
-  }
 }
