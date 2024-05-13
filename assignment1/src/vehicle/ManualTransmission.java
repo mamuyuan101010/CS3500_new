@@ -2,7 +2,7 @@ package vehicle;
 
 /**
  * This is the interface of the simulator of manual transmission.
- * that offers the following operations:
+ * that offers the following operations.
  * <ul>
  *   <li>
  *     Increase the speed by a certain fixed amount.
@@ -25,57 +25,56 @@ package vehicle;
 public interface ManualTransmission {
 
   /**
-   * @return Return the status of this transmission
-   * as a String without any additional parameters.
+   * this method return the status of this transmission.
+   * @return Return the status of this transmission.
    */
   String getStatus();
 
   /**
+   * this method Get the current speed of the vehicle.
    * @return the current speed of the vehicle as a whole number.
    */
   int getSpeed();
 
   /**
+   * this method Get the current gear of the vehicle.
    * @return the current gear of the vehicle as a whole number.
    */
   int getGear();
 
   /**
-   * Increase the speed by a fixed amount without changing gears.
-   * @return return the resulting transmission object.
+   * this method Increase the speed by a fixed amount without changing gears.
    * If the speed cannot be increased,
    * then it should return an object with the same speed as before.
    * The speed change amount is up to the implementation
    * and is not an argument of this method.
+   * @return return the resulting transmission object.
    */
   Object increaseSpeed();
 
   /**
    * Decrease the speed by a fixed amount without changing gears.
-   * @return return the resulting transmission object.
-   *
    * If the speed cannot be decreased,
    * then it should return an object with the same speed as before.
    * The speed change amount is up to the implementation
    * and is not an argument of this method.
+   * @return return the resulting transmission object.
    */
   Object decreaseSpeed();
 
   /**
-   *Increase the gear by one without changing speed.
-   * @return return the resulting transmission object.
-   *
+   * Increase the gear by one without changing speed.
    * If the gear cannot be increased,
    * then it should return an object with the same gear as before.
+   * @return return the resulting transmission object.
    */
   Object increaseGear();
 
   /**
-   *Decrease the gear by one without changing speed.
-   * @return return the resulting transmission object.
-   *
+   * Decrease the gear by one without changing speed.
    * If the gear cannot be decreased,
    * then it should return an object with the same gear as before.
+   * @return return the resulting transmission object.
    */
   Object decreaseGear();
 }

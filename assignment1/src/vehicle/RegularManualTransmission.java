@@ -44,21 +44,21 @@ public class RegularManualTransmission implements ManualTransmission {
   private final int l5;
   private final int h5;
 
-  private RegularManualTransmission(int l1, int h1, int l2, int h2, int l3, int h3, int l4, int h4, int l5, int h5) {
+  public RegularManualTransmission(int l1, int h1, int l2, int h2, int l3, int h3, int l4, int h4, int l5, int h5) {
     if (h1 < l1 || h2 < l2 || h3 < l3 || h4 < l4 || h5 < l5) {
       throw new IllegalArgumentException("lx should be less than or equal to hx.");
     } else if (l1 < 0 || l2 < 0 || l3 < 0 || l4 < 0 || l5 < 0) {
       throw new IllegalArgumentException("speed cannot be negative.");
     } else if (l1 >= l2 || l2 >= l3 || l3 >= l4 || l4 >= l5) {
-      throw new IllegalArgumentException("lower speed for gear 1 should be strictly" +
-              " lesser than that of gear 2, and so on.");
+      throw new IllegalArgumentException("lower speed for gear x should be strictly" +
+              " lesser than that of gear x+1.");
     } else if (h1 < l2 || h2 < l3 || h3 < l4 || h4 < l5) {
       throw new IllegalArgumentException("ranges cannot be non-overlapping");
-    } else if (!MoreThanTwoRangeCover()) {
+    } else if (MoreThanTwoRangeCover()) {
       throw new IllegalArgumentException("only adjacent-gear ranges may overlap");
     } else if (l1 != 0) {
       throw new IllegalArgumentException("The lower speed of the first gear should be 0");
-    }else {
+    } else {
       this.speedIncreaseAmount = 1;
       this.currentSpeed = 0;
       this.gear = 1;
@@ -77,9 +77,10 @@ public class RegularManualTransmission implements ManualTransmission {
   }
 
   /**
-   * @return one of the following possibilities
-   * (depending on the state of the transmission
-   * and the last thing that was attempted):
+   * getStatus message return the state of the transmission and
+   * the last thing that was attempted.
+   *
+   * @return one of the following possibilities.
    * <ul>
    *   <li>
    *     "OK: everything is OK.": this is the status if the speed was changed
@@ -152,9 +153,10 @@ public class RegularManualTransmission implements ManualTransmission {
   }
 
   /**
-   * @return the resulting transmission object with the speed increased by 1.
+   * Increase the speed by 1 without changing gears.
    * If the speed cannot be decreased, then it returns an object with the
    * same speed as before.
+   * @return the resulting transmission object with the speed increased by 1.
    */
   @Override
   public Object increaseSpeed() {
@@ -163,8 +165,7 @@ public class RegularManualTransmission implements ManualTransmission {
     }
     if (currentSpeed + speedIncreaseAmount > getGearHighSpd(this.gear)) {
       this.statusLog = "Cannot increase speed, increase gear first.";
-    }
-    else {
+    } else {
       currentSpeed += speedIncreaseAmount;
       this.statusLog = "OK: everything is OK.";
     }
@@ -179,8 +180,7 @@ public class RegularManualTransmission implements ManualTransmission {
     }
     if (currentSpeed - speedIncreaseAmount < getGearLowSpd(this.gear)) {
       this.statusLog = "Cannot decrease speed, decrease gear first.";
-    }
-    else {
+    } else {
       currentSpeed -= speedIncreaseAmount;
       this.statusLog = "OK: everything is OK.";
     }
@@ -190,15 +190,13 @@ public class RegularManualTransmission implements ManualTransmission {
 
   @Override
   public Object increaseGear() {
-    if (currentSpeed < getGearLowSpd(this.gear+1)) {
+    if (currentSpeed < getGearLowSpd(this.gear + 1)) {
       this.statusLog = "Cannot increase gear, increase speed first.";
-    }
-    else {
+    } else {
       if (this.gear < 5) {
         this.gear += 1;
         this.statusLog = "OK: you may increase the gear.";
-      }
-      else {
+      } else {
         this.statusLog = "Cannot increase gear. Reached maximum gear.";
       }
     }
@@ -208,15 +206,13 @@ public class RegularManualTransmission implements ManualTransmission {
 
   @Override
   public Object decreaseGear() {
-    if (currentSpeed > getGearHighSpd(this.gear-1)) {
+    if (currentSpeed > getGearHighSpd(this.gear - 1)) {
       this.statusLog = "Cannot decrease gear, decrease speed first.";
-    }
-    else {
+    } else {
       if (this.gear > 1) {
         this.gear -= 1;
         this.statusLog = "OK: you may decrease the gear.";
-      }
-      else {
+      } else {
         this.statusLog = "Cannot decrease gear. Reached minimum gear.";
       }
     }
@@ -265,17 +261,13 @@ public class RegularManualTransmission implements ManualTransmission {
     }
     if (gear == 1) {
       return this.l1;
-    }
-    else if (gear == 2) {
+    } else if (gear == 2) {
       return this.l2;
-    }
-    else if (gear == 3) {
+    } else if (gear == 3) {
       return this.l3;
-    }
-    else if (gear == 4) {
+    } else if (gear == 4) {
       return this.l4;
-    }
-    else {
+    } else {
       return this.l5;
     }
   }
@@ -287,17 +279,13 @@ public class RegularManualTransmission implements ManualTransmission {
     }
     if (gear == 1) {
       return this.h1;
-    }
-    else if (gear == 2) {
+    } else if (gear == 2) {
       return this.h2;
-    }
-    else if (gear == 3) {
+    } else if (gear == 3) {
       return this.h3;
-    }
-    else if (gear == 4) {
+    } else if (gear == 4) {
       return this.h4;
-    }
-    else {
+    } else {
       return this.h5;
     }
   }
