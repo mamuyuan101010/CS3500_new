@@ -23,6 +23,7 @@ package vehicle;
  * </ul>
  */
 public interface ManualTransmission {
+
   /**
    * @return Return the status of this transmission
    * as a String without any additional parameters.

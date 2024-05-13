@@ -54,9 +54,11 @@ public class RegularManualTransmission implements ManualTransmission {
               " lesser than that of gear 2, and so on.");
     } else if (h1 < l2 || h2 < l3 || h3 < l4 || h4 < l5) {
       throw new IllegalArgumentException("ranges cannot be non-overlapping");
-    } else if (!NoMoreThanTwoRangeCover()) {
+    } else if (!MoreThanTwoRangeCover()) {
       throw new IllegalArgumentException("only adjacent-gear ranges may overlap");
-    } else {
+    } else if (l1 != 0) {
+      throw new IllegalArgumentException("The lower speed of the first gear should be 0");
+    }else {
       this.speedIncreaseAmount = 1;
       this.currentSpeed = 0;
       this.gear = 1;
@@ -70,6 +72,7 @@ public class RegularManualTransmission implements ManualTransmission {
       this.h4 = h4;
       this.l5 = l5;
       this.h5 = h5;
+      this.statusLog = "OK: everything is OK.";
     }
   }
 
@@ -155,29 +158,51 @@ public class RegularManualTransmission implements ManualTransmission {
    */
   @Override
   public Object increaseSpeed() {
-    if (currentSpeed + speedIncreaseAmount >= h5) {
-
+    if (currentSpeed + speedIncreaseAmount > getGearHighSpd(this.gear)) {
+      this.statusLog = "Cannot increase speed, increase gear first.";
+      return this;
     }
-    currentSpeed += speedIncreaseAmount;
-    return this;
+    else {
+      currentSpeed += speedIncreaseAmount;
+      return this;
+    }
   }
 
 
   @Override
   public Object decreaseSpeed() {
-    return null;
+    if (currentSpeed - speedIncreaseAmount < getGearLowSpd(this.gear)) {
+      this.statusLog = "Cannot decrease speed, decrease gear first.";
+      return this;
+    }
+    else {
+      currentSpeed -= speedIncreaseAmount;
+      return this;
+    }
   }
 
 
   @Override
   public Object increaseGear() {
-    return null;
+    if (currentSpeed < getGearLowSpd(this.gear+1)) {
+      this.statusLog = "Cannot increase gear, increase speed first.";
+    }
+    else {
+      this.gear += 1;
+    }
+    return this;
   }
 
 
   @Override
   public Object decreaseGear() {
-    return null;
+    if (currentSpeed > getGearHighSpd(this.gear-1)) {
+      this.statusLog = "Cannot decrease gear, decrease speed first.";
+    }
+    else {
+      this.gear -= 1;
+    }
+    return this;
   }
 
   // the numberOfRangeCover method return the number of
@@ -206,13 +231,62 @@ public class RegularManualTransmission implements ManualTransmission {
 
   // this helper function helps to check if any speed is overlapped by more than 2 gears
   // meaning non-adjacent gear ranges overlap
-  private boolean NoMoreThanTwoRangeCover() {
+  private boolean MoreThanTwoRangeCover() {
     for (int i = 0; i < h5; i++) {
-      if (numberOfRangeCover(i) >= 2) {
-        return false;
+      if (numberOfRangeCover(i) > 2) {
+        return true;
       }
     }
-    return true;
+    return false;
+  }
+
+  // return the lowest speed bound of the given gear
+  private int getGearLowSpd(int gear) {
+    if (gearCheckerFail()) {
+      throw new IllegalArgumentException("gear not in good range");
+    }
+    if (gear == 1) {
+      return this.l1;
+    }
+    else if (gear == 2) {
+      return this.l2;
+    }
+    else if (gear == 3) {
+      return this.l3;
+    }
+    else if (gear == 4) {
+      return this.l4;
+    }
+    else {
+      return this.l5;
+    }
+  }
+
+  // return the highest speed bound of the given gear
+  private int getGearHighSpd(int gear) {
+    if (gearCheckerFail()) {
+      throw new IllegalArgumentException("gear not in good range");
+    }
+    if (gear == 1) {
+      return this.h1;
+    }
+    else if (gear == 2) {
+      return this.h2;
+    }
+    else if (gear == 3) {
+      return this.h3;
+    }
+    else if (gear == 4) {
+      return this.h4;
+    }
+    else {
+      return this.h5;
+    }
+  }
+
+  // this helper method check if gear is in the correct range
+  private boolean gearCheckerFail() {
+    return this.gear < 1 || this.gear > 5;
   }
 
 }
