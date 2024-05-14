@@ -50,7 +50,7 @@ public abstract class ChessAbs implements ChessPiece {
    *
    * @param piece the piece that may or may not be killed by this piece
    * @return the ture or false value of whether
-   * this chess can kill the given chess.
+   *     this chess can kill the given chess.
    */
   public boolean canKill(ChessPiece piece) {
     return (this.getColor() != piece.getColor()) && canMove(

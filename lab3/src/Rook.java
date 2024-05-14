@@ -18,7 +18,8 @@ public class Rook extends ChessAbs {
    *
    * @param row the row to which this chess piece can be moved
    * @param col the col to which this chess piece can be moved
-   * @return
+   * @return the true or false value whether Rook can
+   *     move to the given position.
    */
   @Override
   public boolean canMove(int row, int col) {

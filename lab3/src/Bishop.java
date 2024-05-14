@@ -19,7 +19,8 @@ public class Bishop extends ChessAbs {
    *
    * @param row the row to which this chess piece can be moved.
    * @param col the col to which this chess piece can be moved.
-   * @return
+   * @return the true or false value whether
+   *     bishop can be moved to the given position.
    */
   public boolean canMove(int row, int col) {
     if (!inGoodRange(row, col)) {
