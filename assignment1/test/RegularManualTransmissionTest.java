@@ -7,14 +7,38 @@ import vehicle.RegularManualTransmission;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-
+/**
+ * RegularManualTransmissionTest class is the class for
+ * testing RegularManualTransmission class.
+ */
 public class RegularManualTransmissionTest {
 
-  RegularManualTransmission Maunal1;
+  ManualTransmission Manual1;
+  ManualTransmission Manual2;
+  ManualTransmission Manual3;
+  ManualTransmission Manual4;
+  ManualTransmission Manual5;
+  ManualTransmission Manual6;
+  ManualTransmission Manual7;
+
+  // setup method that pre-build 7
+  // different regularManualTransmission object
   @Before
   public void setUp() throws Exception {
-    Maunal1 = new RegularManualTransmission(0,15,
+    Manual1 = new RegularManualTransmission(0,15,
             10,25,20,35,30,45,40,55);
+    Manual2 = new RegularManualTransmission(0,20,
+            15,30,25,40,35,50,45,60);
+    Manual3 = new RegularManualTransmission(0,30,
+            25,40,35,50,45,60,55,70);
+    Manual4 = new RegularManualTransmission(0,28,28,
+            34,34,55,55,60,60,70);
+    Manual5 = new RegularManualTransmission(0,10,
+            10,20,20,30,30,40,40,50);
+    Manual6 = new RegularManualTransmission(0,40,
+            40,50,50,60,60,70,70,80);
+    Manual7 = new RegularManualTransmission(0,5,5,
+            10,10,15,15,20,20,25);
   }
 
   @Test
@@ -37,9 +61,17 @@ public class RegularManualTransmissionTest {
     }
     // test with valid input, should build a valid RegularManualTransmission object
     try {
-      ManualTransmission validManual2
+      ManualTransmission validManual3
               = new RegularManualTransmission(0,15,10,25,
               20,35,30,55,40,55);
+    } catch (Exception e) {
+      fail("should not fail");
+    }
+    // test with an extreme case where h5 less than h4
+    try {
+      ManualTransmission validManual4
+              = new RegularManualTransmission(0,15,10,25,
+              20,35,30,60,40,55);
     } catch (Exception e) {
       fail("should not fail");
     }
@@ -140,6 +172,19 @@ public class RegularManualTransmissionTest {
 
   @Test
   public void testGetStatus() {
+    assertEquals("OK: everything is OK.", Manual1.getStatus());
+    Manual2.increaseSpeed();
+    assertEquals("OK: everything is OK.", Manual2.getStatus());
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+    Manual2.increaseSpeed();
+
   }
 
   @Test
