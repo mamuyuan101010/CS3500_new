@@ -1,17 +1,23 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+/**
+ * test for Queen class.
+ */
 public class QueenTest {
   private boolean[][] results;
 
+  // setup method
   @Before
   public void setup() {
     results = new boolean[8][8];
 
   }
 
+  // make sure the chess move
   private void verifyMoveResults(ChessPiece piece) {
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
@@ -19,10 +25,12 @@ public class QueenTest {
           continue;
         }
 
-        assertEquals("Piece at :" + piece.getRow() + "," + piece.getColumn() +
+        assertEquals("Piece at :" + piece.getRow() + "," + piece.getColumn()
+                        +
                         ", Unexpected canMove result "
                         + "for "
-                        + "i=" + i + " j=" +
+                        + "i=" + i + " j="
+                        +
                         j + "",
                 results[i][j], piece.canMove(i, j));
 
@@ -30,20 +38,23 @@ public class QueenTest {
     }
   }
 
+  // make sure the chess in good range
   private void verifyKillResults(ChessPiece piece) {
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
 
-        if ((i == piece.getRow()) && (j == piece.getColumn()))
+        if ((i == piece.getRow()) && (j == piece.getColumn())) {
           continue;
+        }
         ChessPiece another = new Queen(i, j,
                 Color.values()[(piece.getColor().ordinal() + 1)
                         % Color.values().length]);
 
 
         assertEquals("Unexpected canKill result for "
-                        + "i=" + i + " j=" +
+                        + "i=" + i + " j="
+                        +
                         j + "",
                 results[i][j], piece.canKill(another));
 
@@ -52,6 +63,7 @@ public class QueenTest {
   }
 
 
+  // make sure row, col, and color match
   @Test(timeout = 500)
   public void testGetters() {
     ChessPiece piece;
@@ -60,8 +72,6 @@ public class QueenTest {
       for (int col = 0; col < 8; col++) {
         for (Color c : Color.values()) {
           piece = new Queen(row, col, c);
-
-
 
 
           assertEquals("Row number does not match what was initialized", row,
@@ -78,6 +88,7 @@ public class QueenTest {
 
   }
 
+  // test if invalid input in constructor will throw an exception
   @Test(timeout = 500)
   public void testInvalidConstructions() {
     ChessPiece piece;
@@ -107,6 +118,7 @@ public class QueenTest {
     }
   }
 
+  // make sure Queen's moving path is in the correct pattern
   @Test(timeout = 500)
   public void testQueenMoves() {
     for (int row = 0; row < 8; row++) {
@@ -120,6 +132,7 @@ public class QueenTest {
     }
   }
 
+  // make sure the Queen can kill other chess
   @Test(timeout = 500)
   public void testQueenKills() {
 
@@ -137,7 +150,6 @@ public class QueenTest {
   }
 
 
-
   private void initializeResults() {
     for (int row = 0; row < 8; row++) {
       for (int col = 0; col < 8; col++) {
@@ -147,7 +159,7 @@ public class QueenTest {
   }
 
 
-
+  // set up the test data
   private void setupResults(int row, int col) {
     //check if canMove works
     for (int i = 0; i < 8; i++) {

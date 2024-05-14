@@ -5,13 +5,13 @@
 public abstract class ChessAbs implements ChessPiece {
   int row;
   public int col;
-
   Color color;
 
   /**
    * constructor of ChessAbs class.
-   * @param row is the row number.
-   * @param col is the column number.
+   *
+   * @param row   is the row number.
+   * @param col   is the column number.
    * @param color is the color info.
    * @throws IllegalArgumentException if the given row or col is negative.
    */
@@ -44,6 +44,14 @@ public abstract class ChessAbs implements ChessPiece {
     return color;
   }
 
+
+  /**
+   * check if this chess can kill the given chess.
+   *
+   * @param piece the piece that may or may not be killed by this piece
+   * @return the ture or false value of whether
+   * this chess can kill the given chess.
+   */
   public boolean canKill(ChessPiece piece) {
     return (this.getColor() != piece.getColor()) && canMove(
             piece.getRow(),

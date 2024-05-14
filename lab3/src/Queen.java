@@ -4,8 +4,9 @@
 public class Queen extends ChessAbs {
   /**
    * constructor of Queen.
-   * @param row is the row number
-   * @param col is the col number
+   *
+   * @param row   is the row number
+   * @param col   is the col number
    * @param color is the color info
    */
   Queen(int row, int col, Color color) {
@@ -14,6 +15,7 @@ public class Queen extends ChessAbs {
 
   /**
    * check whether Queen can be moved to the given position.
+   *
    * @param row the row to which this chess piece can be moved.
    * @param col the col to which this chess piece can be moved.
    * @return the boolean value of whether the Queen can move.

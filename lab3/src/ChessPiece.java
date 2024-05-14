@@ -1,5 +1,7 @@
-
-
+/**
+ * interface chessPiece is the overall type of every chess.
+ * Every type of chess should call chessPiece to build their chess class.
+ */
 public interface ChessPiece {
   /**
    * Can this chess piece be moved from its current location to the location
