@@ -26,10 +26,12 @@ public class KnightTest {
           continue;
         }
 
-        assertEquals("Piece at :" + piece.getRow() + "," + piece.getColumn() +
+        assertEquals("Piece at :" + piece.getRow() + "," + piece.getColumn()
+                        +
                         ", Unexpected canMove result "
                         + "for "
-                        + "i=" + i + " j=" +
+                        + "i=" + i + " j="
+                        +
                         j + "",
                 results[i][j], piece.canMove(i, j));
 
