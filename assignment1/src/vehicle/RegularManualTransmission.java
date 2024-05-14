@@ -44,17 +44,35 @@ public class RegularManualTransmission implements ManualTransmission {
   private final int l5;
   private final int h5;
 
-  public RegularManualTransmission(int l1, int h1, int l2, int h2, int l3, int h3, int l4, int h4, int l5, int h5) {
+  /**
+   * RegularManualTransmission constructor implements
+   * the ManualTransmission interface, and takes the
+   * speed ranges for the 5 gears as two integral numbers each: low and high.
+   *
+   * @param l1 is the lower speed for gear 1.
+   * @param h1 is the higher speed for gear 1.
+   * @param l2 is the lower speed for gear 2.
+   * @param h2 is the higher speed for gear 2.
+   * @param l3 is the lower speed for gear 3.
+   * @param h3 is the higher speed for gear 3.
+   * @param l4 is the lower speed for gear 4.
+   * @param h4 is the higher speed for gear 4.
+   * @param l5 is the lower speed for gear 5.
+   * @param h5 is the higher speed for gear 5.
+   */
+  public RegularManualTransmission(int l1, int h1, int l2, int h2,
+                                   int l3, int h3, int l4, int h4,
+                                   int l5, int h5) {
     if (h1 < l1 || h2 < l2 || h3 < l3 || h4 < l4 || h5 < l5) {
       throw new IllegalArgumentException("lx should be less than or equal to hx.");
     } else if (l1 < 0 || l2 < 0 || l3 < 0 || l4 < 0 || l5 < 0) {
       throw new IllegalArgumentException("speed cannot be negative.");
     } else if (l1 >= l2 || l2 >= l3 || l3 >= l4 || l4 >= l5) {
-      throw new IllegalArgumentException("lower speed for gear x should be strictly" +
-              " lesser than that of gear x+1.");
+      throw new IllegalArgumentException("lower speed for gear x should be strictly"
+              + " lesser than that of gear x+1.");
     } else if (h1 < l2 || h2 < l3 || h3 < l4 || h4 < l5) {
       throw new IllegalArgumentException("ranges cannot be non-overlapping");
-    } else if (MoreThanTwoRangeCover()) {
+    } else if (moreThanTwoRangeCover()) {
       throw new IllegalArgumentException("only adjacent-gear ranges may overlap");
     } else if (l1 != 0) {
       throw new IllegalArgumentException("The lower speed of the first gear should be 0");
@@ -156,6 +174,7 @@ public class RegularManualTransmission implements ManualTransmission {
    * Increase the speed by 1 without changing gears.
    * If the speed cannot be decreased, then it returns an object with the
    * same speed as before.
+   *
    * @return the resulting transmission object with the speed increased by 1.
    */
   @Override
@@ -245,7 +264,7 @@ public class RegularManualTransmission implements ManualTransmission {
 
   // this helper function helps to check if any speed is overlapped by more than 2 gears
   // meaning non-adjacent gear ranges overlap
-  private boolean MoreThanTwoRangeCover() {
+  private boolean moreThanTwoRangeCover() {
     for (int i = 0; i < h5; i++) {
       if (numberOfRangeCover(i) > 2) {
         return true;

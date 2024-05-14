@@ -7,9 +7,11 @@ import static org.junit.Assert.*;
 
 public class RegularManualTransmissionTest {
 
+  RegularManualTransmission Maunal1;
   @Before
   public void setUp() throws Exception {
-
+    Maunal1 = new RegularManualTransmission(0,15,
+            10,25,20,35,30,45,40,55);
   }
 
   @Test
@@ -51,32 +53,5 @@ public class RegularManualTransmissionTest {
       assertEquals("lower speed for gear x should be strictly " +
               "lesser than that of gear x+1.", e.getMessage());
     }
-  }
-  @Test
-  public void getStatus() {
-  }
-
-  @Test
-  public void getSpeed() {
-  }
-
-  @Test
-  public void getGear() {
-  }
-
-  @Test
-  public void increaseSpeed() {
-  }
-
-  @Test
-  public void decreaseSpeed() {
-  }
-
-  @Test
-  public void increaseGear() {
-  }
-
-  @Test
-  public void decreaseGear() {
   }
 }
