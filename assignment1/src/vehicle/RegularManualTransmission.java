@@ -172,36 +172,77 @@ public class RegularManualTransmission implements ManualTransmission {
 
   /**
    * Increase the speed by 1 without changing gears.
-   * If the speed cannot be decreased, then it returns an object with the
+   * If the speed cannot be increased, then it returns an object with the
    * same speed as before.
    *
-   * @return the resulting transmission object with the speed increased by 1.
+   * @return the resulting transmission object with the speed increased by 1
+   * if it can be increased.
    */
   @Override
   public ManualTransmission increaseSpeed() {
+    // condition that current speed reach the maximum speed of gear 5
     if (currentSpeed == h5) {
       this.statusLog = "Cannot increase speed. Reached maximum speed.";
     }
-    if (currentSpeed + speedIncreaseAmount > getGearHighSpd(this.gear)) {
+    // condition that current speed reach the maximum in current gear
+    else if (currentSpeed + speedIncreaseAmount > getGearHighSpd(this.gear)) {
       this.statusLog = "Cannot increase speed, increase gear first.";
-    } else {
+    }
+    // condition that current speed increase successfully
+    else {
       currentSpeed += speedIncreaseAmount;
-      this.statusLog = "OK: everything is OK.";
+      // condition if already in gear 5
+      if (this.getGear() == 5) {
+        this.statusLog = "OK: everything is OK.";
+      }
+      // condition if gear is in 1, 2, 3, or 4
+      else {
+        // condition that speed reach the min speed of the next gear
+        if (this.getSpeed() >= getGearLowSpd(this.getGear() + 1)) {
+          this.statusLog = "OK: you may increase the gear.";
+        }
+        // condition that speed not reach the min speed of the next gear
+        else {
+          this.statusLog = "OK: everything is OK.";
+        }
+      }
     }
     return this;
   }
 
-
+  /**
+   * Decrease the speed by 1 without changing gears.
+   * If the speed cannot be decreased, then it returns an object with the
+   * same speed as before.
+   *
+   * @return the resulting transmission object with the speed decreased by 1
+   * if it can be decreased.
+   */
   @Override
   public ManualTransmission decreaseSpeed() {
+    // condition that current speed reach 0
     if (currentSpeed == 0) {
       this.statusLog = "Cannot decrease speed. Reached minimum speed.";
     }
-    if (currentSpeed - speedIncreaseAmount < getGearLowSpd(this.gear)) {
+    // condition that current speed reach the lower speed of the current gear
+    else if (currentSpeed - speedIncreaseAmount < getGearLowSpd(this.gear)) {
       this.statusLog = "Cannot decrease speed, decrease gear first.";
-    } else {
+    }
+    // condition that current speed decrease successfully
+    else {
       currentSpeed -= speedIncreaseAmount;
-      this.statusLog = "OK: everything is OK.";
+      // condition that current gear is in gear 1
+      if (this.getGear() == 1) {
+        this.statusLog = "OK: everything is OK.";
+      }
+      // condition that in gear 2, 3, 4, or 5
+      else {
+        if (this.getSpeed() <= getGearHighSpd(this.getGear() - 1)) {
+          this.statusLog = "OK: you may decrease the gear.";
+        } else {
+          this.statusLog = "OK: everything is OK.";
+        }
+      }
     }
     return this;
   }
@@ -209,14 +250,20 @@ public class RegularManualTransmission implements ManualTransmission {
 
   @Override
   public ManualTransmission increaseGear() {
-    if (currentSpeed < getGearLowSpd(this.gear + 1)) {
-      this.statusLog = "Cannot increase gear, increase speed first.";
-    } else {
-      if (this.gear < 5) {
+    // condition that gear is at 5
+    if (this.gear == 5) {
+      this.statusLog = "Cannot increase gear. Reached maximum gear.";
+    }
+    // condition that gear is in 1, 2, 3, or 4
+    else {
+      // condition that current speed not reach the min speed of the next gear
+      if (currentSpeed < getGearLowSpd(this.gear + 1)) {
+        this.statusLog = "Cannot increase gear, increase speed first.";
+      }
+      // condition that gear increase successfully
+      else {
         this.gear += 1;
-        this.statusLog = "OK: you may increase the gear.";
-      } else {
-        this.statusLog = "Cannot increase gear. Reached maximum gear.";
+        this.statusLog = "OK: everything is OK.";
       }
     }
     return this;
@@ -225,14 +272,20 @@ public class RegularManualTransmission implements ManualTransmission {
 
   @Override
   public ManualTransmission decreaseGear() {
-    if (currentSpeed > getGearHighSpd(this.gear - 1)) {
-      this.statusLog = "Cannot decrease gear, decrease speed first.";
-    } else {
-      if (this.gear > 1) {
+    // condition that gear is at 1
+    if (this.gear == 1) {
+      this.statusLog = "Cannot decrease gear. Reached minimum gear.";
+    }
+    // condition that gear is in 2, 3, 4, or 5
+    else {
+      // condition that current speed not decelerate the max speed of the previous gear
+      if (currentSpeed > getGearHighSpd(this.gear - 1)) {
+        this.statusLog = "Cannot decrease gear, decrease speed first.";
+      }
+      // condition that gear decrease successfully
+      else {
         this.gear -= 1;
-        this.statusLog = "OK: you may decrease the gear.";
-      } else {
-        this.statusLog = "Cannot decrease gear. Reached minimum gear.";
+        this.statusLog = "OK: everything is OK.";
       }
     }
     return this;
@@ -286,8 +339,10 @@ public class RegularManualTransmission implements ManualTransmission {
       return this.l3;
     } else if (gear == 4) {
       return this.l4;
-    } else {
+    } else if (gear == 5) {
       return this.l5;
+    } else {
+      throw new IllegalArgumentException("unable to reach");
     }
   }
 
@@ -304,8 +359,10 @@ public class RegularManualTransmission implements ManualTransmission {
       return this.h3;
     } else if (gear == 4) {
       return this.h4;
-    } else {
+    } else if (gear == 5) {
       return this.h5;
+    } else {
+      throw new IllegalArgumentException("unable to reach");
     }
   }
 
@@ -313,5 +370,4 @@ public class RegularManualTransmission implements ManualTransmission {
   private boolean gearCheckerFail() {
     return this.gear < 1 || this.gear > 5;
   }
-
 }
