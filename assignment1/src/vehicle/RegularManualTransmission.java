@@ -76,6 +76,10 @@ public class RegularManualTransmission implements ManualTransmission {
       throw new IllegalArgumentException("only adjacent-gear ranges may overlap");
     } else if (l1 != 0) {
       throw new IllegalArgumentException("The lower speed of the first gear should be 0");
+    } else if (h4 > h5) {
+      throw new IllegalArgumentException("the h5 is the speed limit of the vehicle"
+              +
+              " and it cannot go faster than this");
     } else {
       this.speedIncreaseAmount = 1;
       this.currentSpeed = 0;
@@ -176,7 +180,7 @@ public class RegularManualTransmission implements ManualTransmission {
    * same speed as before.
    *
    * @return the resulting transmission object with the speed increased by 1
-   * if it can be increased.
+   *     if it can be increased.
    */
   @Override
   public ManualTransmission increaseSpeed() {
@@ -216,7 +220,7 @@ public class RegularManualTransmission implements ManualTransmission {
    * same speed as before.
    *
    * @return the resulting transmission object with the speed decreased by 1
-   * if it can be decreased.
+   *     if it can be decreased.
    */
   @Override
   public ManualTransmission decreaseSpeed() {
@@ -369,5 +373,62 @@ public class RegularManualTransmission implements ManualTransmission {
   // this helper method check if gear is in the correct range
   private boolean gearCheckerFail() {
     return this.gear < 1 || this.gear > 5;
+  }
+
+  /**
+   * equals method compare two ManualTransmission object.
+   * @param o is the object to compare with
+   * @return whether the two ManualTransmission object are the same.
+   */
+  @Override
+  public boolean equals(Object o) {
+    // Fast path for pointer equality:
+    if (this == o) {
+      //backward compatibility with default equals
+      return true;
+    }
+
+    // If o isn't the right class then it can't be equal:
+    if (!(o instanceof RegularManualTransmission)) {
+      return false;
+    }
+    // compare if each field is the same
+    RegularManualTransmission compareObject = (RegularManualTransmission) o;
+    return (this.getGear() == compareObject.getGear())
+            && (this.getSpeed() == compareObject.getSpeed())
+            && (this.getStatus().equals(compareObject.getStatus()))
+            && lowHighSpeedOfGearSame(compareObject);
+  }
+
+  // helper method to compare if the given RegularManualTransmission
+  // object's lx and hx are
+  // the same as the current object's lx and hx
+  boolean lowHighSpeedOfGearSame(RegularManualTransmission compare) {
+    return (this.h1 == compare.h1) && (this.h2 == compare.h2)
+            && (this.h3 == compare.h3) && (this.h4 == compare.h4)
+            && (this.h5 == compare.h5) && (this.l1 == compare.l1)
+            && (this.l2 == compare.l2) && (this.l3 == compare.l3)
+            && (this.l4 == compare.l4) && (this.l5 == compare.l5);
+  }
+
+  /**
+   * hashCode method generate the hashcode of the object.
+   * @return the hashcode of the ManualTransmission object.
+   */
+  @Override
+  public int hashCode() {
+    return Long.hashCode(this.getGear())
+            + Long.hashCode(this.getSpeed())
+            + this.getStatus().hashCode()
+            + Long.hashCode(this.l1)
+            + Long.hashCode(this.l2)
+            + Long.hashCode(this.l3)
+            + Long.hashCode(this.l4)
+            + Long.hashCode(this.l5)
+            + Long.hashCode(this.h1)
+            + Long.hashCode(this.h2)
+            + Long.hashCode(this.h3)
+            + Long.hashCode(this.h4)
+            + Long.hashCode(this.h5);
   }
 }
