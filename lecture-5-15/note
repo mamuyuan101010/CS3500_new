@@ -1,0 +1,4 @@
+if we don't want view modify model, we create a new read-only interface
+and we make the model interface extends the read-only interface
+maybe on the exam
+
