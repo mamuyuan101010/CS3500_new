@@ -564,6 +564,11 @@ public class RegularManualTransmissionTest {
     manual4.increaseSpeed();
     manual4.increaseSpeed();
     assertEquals(5, manual4.getSpeed());
+    // now test increaseSpeed method return the correct updated
+    // ManualTransmission object.
+    ManualTransmission testReturn = manual4.increaseSpeed();
+    assertEquals(6, testReturn.getSpeed());
+    assertEquals(1, testReturn.getGear());
   }
 
   // test decreaseSpeed method that decrease speed
@@ -589,6 +594,14 @@ public class RegularManualTransmissionTest {
     assertEquals(1, manual5.getSpeed());
     manual5.decreaseSpeed();
     assertEquals(0, manual5.getSpeed());
+    // now test decreaseSpeed method return the correct
+    // updated ManualTransmission object.
+    ManualTransmission testReturn2 = manual5.increaseSpeed();
+    assertEquals(1, testReturn2.getSpeed());
+    assertEquals(1, testReturn2.getGear());
+    ManualTransmission testReturn3 = manual5.decreaseSpeed();
+    assertEquals(0, testReturn2.getSpeed());
+    assertEquals(1, testReturn2.getGear());
   }
 
   // test increaseGear method that increase the gear by one if
@@ -612,6 +625,16 @@ public class RegularManualTransmissionTest {
     manual6.increaseGear();
     assertEquals(2, manual6.getGear());
     assertEquals(40, manual6.getSpeed());
+    // now increase speed to 49
+    manual6.increaseSpeed().increaseSpeed().increaseSpeed()
+            .increaseSpeed().increaseSpeed().increaseSpeed()
+            .increaseSpeed().increaseSpeed().increaseSpeed()
+            .increaseSpeed();
+    // now test whether increaseGear method return the correct updated
+    // ManualTransmission object
+    ManualTransmission testReturn4 = manual6.increaseGear();
+    assertEquals(50, testReturn4.getSpeed());
+    assertEquals(3, testReturn4.getGear());
   }
 
   // test decreaseGear method that decrease the gear by one if
@@ -651,6 +674,14 @@ public class RegularManualTransmissionTest {
     assertEquals(1, manual7.getGear());
     assertEquals("OK: everything is OK.",
             manual7.getStatus());
+    // now increase gear back to 2 without changing speed
+    manual7.increaseGear();
+    assertEquals(2, manual7.getGear());
+    assertEquals(5, manual7.getSpeed());
+    // now check if the decreaseGear method return the correct updated object
+    ManualTransmission testReturn5 = manual7.decreaseGear();
+    assertEquals(5, testReturn5.getSpeed());
+    assertEquals(1, testReturn5.getGear());
   }
 
   // test equals method I overwrite, should return true
