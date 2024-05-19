@@ -556,6 +556,7 @@ public class RegularManualTransmissionTest {
   // by 1 if its speed is less than the current gear's highest speed
   @Test
   public void testIncreaseSpeed() {
+    // test if the increase speed does increase the speed field
     assertEquals(0, manual4.getSpeed());
     manual4.increaseSpeed();
     assertEquals(1, manual4.getSpeed());
