@@ -67,42 +67,90 @@ package calculator;
 public class SimpleCalculator implements Calculator {
   // currentResult stores the result in string and prepare
   // for getResult method to return
-  private String currentResult = "";
-  // resultInInteger stores the result in integer and prepare
+  private String currentResult;
+  // resultInInteger only store the calculated result in integer and prepare
   // for giving currentResult variable value
-  private int resultInInteger = 0;
-  private int operand1 = -1;
-  private int operand2 = -1;
+  private int resultInInteger;
+  private int operand1;
+  private int operand2;
   // status integer can only be 4 integers,
   // 0, meaning we are now in operand1,
   // 1, meaning we are now in operator,
   // 2, meaning we are in operand2,
   // and 3, meaning we are in result.
-  private int status = 0;
+  private int status;
   // operator integer can only be 4 integers,
   // 0, meaning no operator assigned.
   // 1, meaning operator + will be used.
   // 2, meaning operator - will be used.
   // and finally 3, meaning operator * will be used.
-  private int operator = 0;
+  private int operator;
+
+  /**
+   * constructor of SimpleCalculator
+   * <ul>
+   *   <li>
+   *     current result should be an empty String
+   *     as getResult should return empty string if
+   *     nothing is given
+   *   </li>
+   *   <li>
+   *     resultInInteger is zero because no operand 1 and 2 is given
+   *   </li>
+   *   <li>
+   *     operand1 is -1, this is for enabling the handle methods know
+   *     whether this operand is given a value yet, so that handle methods
+   *     can determine whether an operator "-". "+", "*" is legal here or not
+   *     for example, if first input is +, this is illegal, and if operator knows that
+   *     operand1 is -1, so it can throw an exception
+   *     if first input is a 0-9 number, and second input is +, this should be legal,
+   *     so operand1 here is not -1 as it has been assigned value from the previous input,
+   *     so handle method knows that + is legal here, and move to next stage:
+   *     operator detection
+   *   </li>
+   *   <li>
+   *     operand2 is -1 for the same reason of operand1 to determine whether the operand2
+   *     has been assigned a value or not yet
+   *   </li>
+   *   <li>
+   *     status is 0 in default, meaning that it's in the first stage of handling
+   *     the first operand
+   *   </li>
+   *   <li>
+   *     operator is 0, meaning no operator is assigned yet
+   *   </li>
+   * </ul>
+   */
+  public SimpleCalculator() {
+    this.currentResult = "";
+    this.resultInInteger = 0;
+    this.operand1 = -1;
+    this.operand2 = -1;
+    this.status = 0;
+    this.operator = 0;
+  }
 
   @Override
   public Calculator input(char c) {
-    switch (this.status) {
-      case 0:
-        handleOperand1(c);
-        break;
-      case 1:
-        handleOperator(c);
-        break;
-      case 2:
-        handleOperand2(c);
-        break;
-      case 3:
-        handleResult(c);
-        break;
-      default:
-        throw new IllegalStateException("status should not be other than 0,1,2,3");
+    if (c == 'C') {
+      backIntoDefault();
+    } else {
+      switch (this.status) {
+        case 0:
+          handleOperand1(c);
+          break;
+        case 1:
+          handleOperator(c);
+          break;
+        case 2:
+          handleOperand2(c);
+          break;
+        case 3:
+          handleResult(c);
+          break;
+        default:
+          throw new IllegalStateException("status should not be other than 0,1,2,3");
+      }
     }
     return this;
   }
@@ -114,44 +162,28 @@ public class SimpleCalculator implements Calculator {
 
   // this method handle the first operand
   private void handleOperand1(char c) {
-    // case that operand1 is -1, meaning it's the first pos of the first operand
-    if (this.operand1 == -1) {
-      // case that the input c is a number
-      if (isNumber(c)) {
-        this.operand1 = Character.getNumericValue(c);
-      }
-      // case that the input c is not a number
-      else {
-        throw new IllegalArgumentException("cannot handle character other than number " +
-                "in the first position of the first operand");
-      }
-    }
-    // case that operand is not -1, meaning it's not the first pos of the first operand
-    else {
-      // case that c is still a 0 to 9 number
-      if (isNumber(c)) {
-        digitAdv(this.operand1, Character.getNumericValue(c));
-      }
-      // case that c is not a number, we need to handle this c to handleOperator method
-      else {
-        this.status = 1;
-        input(c);
-      }
-    }
+    operand1 = handleOperand(c, this.operand1, true);
   }
 
+  // this method handle the second operand
+  private void handleOperand2(char c) {
+    operand2 = handleOperand(c, this.operand2, false);
+  }
 
   // this method handle the operator
   private void handleOperator(char c) {
     switch (c) {
       case '+':
         this.operator = 1;
+        this.currentResult += "+";
         break;
       case '-':
         this.operator = 2;
+        this.currentResult += "-";
         break;
       case '*':
         this.operator = 3;
+        this.currentResult += "*";
         break;
       default:
         throw new IllegalArgumentException("should not type any character other " +
@@ -160,19 +192,9 @@ public class SimpleCalculator implements Calculator {
     this.status = 2;
   }
 
-  private void handleOperand2(char c) {
-    // case that c is a number
-    if (isNumber(c)) {
-      digitAdv(this.operand2, Character.getNumericValue(c));
-    }
-    // case that c is not a number, now should either enter the getting result status
-    else {
-      this.status = 3;
-      // call input again to make input method handle command c
-      input(c);
-    }
-  }
 
+
+  // take the old digit and new digit, make the old digit advance for 1 digit
   private int digitAdv(int oldDigit, int newDigit) {
     return (oldDigit * 10) + newDigit;
   }
@@ -182,7 +204,7 @@ public class SimpleCalculator implements Calculator {
   private void handleResult(char c) {
     // first calculate the result and store result in the resultInInteger variable
     // condition that c is =, +, -, or *
-    if (c == '=' || c == '+' || c == '-' || c == '*') {
+    if (c == '=' || isOperator(c)) {
       switch (this.operator) {
         // case that no operator is assigned properly
         case 0:
@@ -204,38 +226,36 @@ public class SimpleCalculator implements Calculator {
           throw new IllegalStateException("illegal operator status is assigned, " +
                   "given " + String.valueOf(this.operator) + " is not a valid status");
       }
-      // next decide to make result store into currentResult String variable
-      // or continue calculating.
-      // condition that c is =
-      if (c == '=') {
-        // give the current result to the currentResult String, ready to
-        // let getResult method print the result string
-        this.currentResult = String.valueOf(this.resultInInteger);
-        /**
-         * precess later
-          */
-      }
-      // condition that c is +, -, or *
-      else if (c == '+' || c == '-' || c == '*') {
+      // now assign the calculated value in String
+      // to the currentResult variable.
+      this.currentResult = String.valueOf(this.resultInInteger);
+      // continue calculating.
+      // condition that c is +, - or *
+      if (isOperator(c)) {
         // now in order to continue calculation,
         // we need to return to status 1, operator status
         this.status = 1;
         // make the previous result be the first operand
         this.operand1 = this.resultInInteger;
+        // make the operand2 become -1, which is default value waiting for input
+        this.operand2 = -1;
         // now recall input again to enter operator stage
         input(c);
       }
       // this is a condition that is not expected to reach,
       // should throw an illegal state exception if happen
-      else {
-        throw new IllegalStateException("c other than =, +, -, * should " +
-                "not reach into this condition");
-      }
+      /*
+      we do not need to handle c is = case, as result will auto computed, and
+      as long as status variable is unchanged, it will not change the currentResult
+      data, what it will happen is it will recalculate the resultInInteger value and
+      reassign the
+      same value again.
+       */
     }
     // condition that c is not =, +, -, *.
     else {
       throw new IllegalArgumentException("should not input any character " +
-              "other than +, -, *, or =");
+              "other than +, -, *, or =, you put: " + c);
     }
   }
 
@@ -267,6 +287,77 @@ public class SimpleCalculator implements Calculator {
   // this method check whether the given character c is an operator
   private boolean isOperator(char c) {
     return (c == '+' || c == '-' || c == '*');
+  }
+
+  // this method will make all number back into its default value,
+  // just like no inputs are given
+  private void backIntoDefault() {
+    this.currentResult = "";
+    this.resultInInteger = 0;
+    this.operand1 = -1;
+    this.operand2 = -1;
+    this.status = 0;
+    this.operator = 0;
+  }
+
+  /**
+   * helper method for test, should delete after testing
+   */
+  public int getOperand1() {
+    return this.operand1;
+  }
+
+  public int getOperand2() {
+    return this.operand2;
+  }
+  /*
+  remember to delete above before hand
+   */
+
+  private int handleOperand(Character c, int operand, boolean isFirstOperand) {
+    // case that operand1 is -1, meaning it's the first pos of the first operand
+    if (operand == -1) {
+      // case that the input c is a number
+      if (isNumber(c)) {
+        operand = Character.getNumericValue(c);
+        this.currentResult += c;
+      }
+      // condition that input c is a -, meaning the user wants to input a negative
+      // value, which should not be allowed here.
+      else if (c == '-') {
+        throw new IllegalArgumentException("cannot handle negative numbers");
+      }
+      // case that the input c is neither a number nor a negative operator
+      else {
+        int numO;
+        if (isFirstOperand) {
+          numO = 1;
+        } else {
+          numO = 2;
+        }
+        throw new IllegalArgumentException("cannot handle character " + c
+                + " other than number "
+                + "in the first position of the operand " + numO);
+      }
+    }
+    // case that operand is not -1, meaning it's not the first pos of the first operand
+    else {
+      // case that c is still a 0 to 9 number
+      if (isNumber(c)) {
+        operand = digitAdv(operand, Character.getNumericValue(c));
+        this.currentResult += c;
+      }
+      // case that c is not a number, we need to handle this c to handleOperator method
+      else {
+        if (isFirstOperand) {
+          this.status = 1;
+        } else {
+          this.status = 3;
+        }
+        input(c);
+      }
+    }
+    return operand;
   }
 
 }

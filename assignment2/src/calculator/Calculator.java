@@ -30,4 +30,10 @@ public interface Calculator {
    * @return the current "result" of the calculator as a String.
    */
   String getResult();
+
+  /*
+  method for test only, delete after test
+   */
+  int getOperand1();
+  int getOperand2();
 }
