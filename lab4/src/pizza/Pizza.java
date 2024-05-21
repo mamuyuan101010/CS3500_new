@@ -1,10 +1,12 @@
 package pizza;
 
 
+import betterpizza.ObservablePizza;
+
 /**
  * This class represents the operations offered by a single pizza.
  */
-public interface Pizza {
+public interface Pizza extends ObservablePizza {
 
   /**
    * Set the type of crust for this pizza.
@@ -33,21 +35,4 @@ public interface Pizza {
    * @param name the name of the topping to be removed
    */
   void removeTopping(ToppingName name);
-  
-  /**
-   * Get the cost of this pizza
-   *
-   * @return the cost of this pizza in MM.CC format
-   */
-  double cost();
-
-  /**
-   * Determines if the specified topping is on this pizza and if so, return its portion
-   *
-   * @param name the name of the topping
-   * @return the portion of this topping on this pizza, or null if the given topping is not
-   * on this pizza
-   */
-  ToppingPortion hasTopping(ToppingName name);
-
 }
