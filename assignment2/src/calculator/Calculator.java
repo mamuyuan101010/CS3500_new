@@ -36,4 +36,5 @@ public interface Calculator {
    */
   int getOperand1();
   int getOperand2();
+  String getLog();
 }

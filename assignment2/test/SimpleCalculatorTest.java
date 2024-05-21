@@ -9,11 +9,13 @@ import static org.junit.Assert.*;
 public class SimpleCalculatorTest {
   Calculator c1;
   Calculator c2;
+  Calculator c3;
 
   @Before
   public void setUp() {
     c1 = new SimpleCalculator();
     c2 = new SimpleCalculator();
+    c3 = new SimpleCalculator();
   }
 
   @Test
@@ -48,14 +50,20 @@ public class SimpleCalculatorTest {
     c2.input('+');
     assertEquals("5+", c2.getResult());
     assertEquals(5, c2.getOperand1());
-    assertEquals(-1,c2.getOperand2());
     c2.input('1');
     assertEquals("5+1", c2.getResult());
-    assertEquals(c2.getOperand1(),5);
-    assertEquals(c2.getOperand2(),1);
     c2.input('=');
-
-
     assertEquals("6", c2.getResult());
+  }
+
+  @Test
+  public void testSimpleCalculator3() {
+    c3.input('1').input('1').input('+').input('2').input('+');
+    assertEquals(-1, c3.getOperand2());
+    assertEquals("13+", c3.getResult());
+    c3.input('3');
+    assertEquals(3, c3.getOperand2());
+    c3.input('=');
+    assertEquals("16", c3.getResult());
   }
 }

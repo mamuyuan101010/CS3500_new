@@ -86,6 +86,8 @@ public class SimpleCalculator implements Calculator {
   // and finally 3, meaning operator * will be used.
   private int operator;
 
+  public String testingLog;
+
   /**
    * constructor of SimpleCalculator
    * <ul>
@@ -128,6 +130,7 @@ public class SimpleCalculator implements Calculator {
     this.operand2 = -1;
     this.status = 0;
     this.operator = 0;
+    this.testingLog = "";
   }
 
   @Override
@@ -162,12 +165,71 @@ public class SimpleCalculator implements Calculator {
 
   // this method handle the first operand
   private void handleOperand1(char c) {
-    operand1 = handleOperand(c, this.operand1, true);
+    handleOperand(c, this.operand1, true);
   }
 
   // this method handle the second operand
   private void handleOperand2(char c) {
-    operand2 = handleOperand(c, this.operand2, false);
+    handleOperand(c, this.operand2, false);
+  }
+
+  private void assignOperand(Character c, int operand, boolean isFirstOperand) {
+    this.currentResult += c;
+    if (isFirstOperand) {
+      assignValueForO1ForOperand1(operand);
+    } else {
+      assignValueForO2ForOperand2(operand);
+    }
+  }
+
+  // handle operand method takes three arguments, a character c which
+  // given from input, the operand which is either operand1 or operand2,
+  // finally the isFirstOperand which is the determinant of operand1,
+  // if the given operand is operand1, then isFirstOperand is true,
+  // else it's false.
+  private void handleOperand(Character c, int operand, boolean isFirstOperand) {
+    // case that operand1 is -1, meaning it's the first pos of the first operand
+    if (operand == -1) {
+      // case that the input c is a number
+      if (isNumber(c)) {
+        operand = Character.getNumericValue(c);
+        assignOperand(c,operand,isFirstOperand);
+      }
+      // condition that input c is a -, meaning the user wants to input a negative
+      // value, which should not be allowed here.
+      else if (c == '-') {
+        throw new IllegalArgumentException("cannot handle negative numbers");
+      }
+      // case that the input c is neither a number nor a negative operator
+      else {
+        int numO;
+        if (isFirstOperand) {
+          numO = 1;
+        } else {
+          numO = 2;
+        }
+        throw new IllegalArgumentException("cannot handle character " + c
+                + " other than number "
+                + "in the first position of the operand " + numO);
+      }
+    }
+    // case that operand is not -1, meaning it's not the first pos of the first operand
+    else {
+      // case that c is still a 0 to 9 number
+      if (isNumber(c)) {
+        operand = digitAdv(operand, Character.getNumericValue(c));
+        assignOperand(c,operand,isFirstOperand);
+      }
+      // case that c is not a number, we need to handle this c to handleOperator method
+      else {
+        if (isFirstOperand) {
+          this.status = 1;
+        } else {
+          this.status = 3;
+        }
+        input(c);
+      }
+    }
   }
 
   // this method handle the operator
@@ -191,7 +253,6 @@ public class SimpleCalculator implements Calculator {
     }
     this.status = 2;
   }
-
 
 
   // take the old digit and new digit, make the old digit advance for 1 digit
@@ -236,9 +297,9 @@ public class SimpleCalculator implements Calculator {
         // we need to return to status 1, operator status
         this.status = 1;
         // make the previous result be the first operand
-        this.operand1 = this.resultInInteger;
+        assignValueForO1ForAssignPrevRes(this.resultInInteger);
         // make the operand2 become -1, which is default value waiting for input
-        this.operand2 = -1;
+        assignValueForO2ForAssignminus1(-1);
         // now recall input again to enter operator stage
         input(c);
       }
@@ -314,50 +375,28 @@ public class SimpleCalculator implements Calculator {
   remember to delete above before hand
    */
 
-  private int handleOperand(Character c, int operand, boolean isFirstOperand) {
-    // case that operand1 is -1, meaning it's the first pos of the first operand
-    if (operand == -1) {
-      // case that the input c is a number
-      if (isNumber(c)) {
-        operand = Character.getNumericValue(c);
-        this.currentResult += c;
-      }
-      // condition that input c is a -, meaning the user wants to input a negative
-      // value, which should not be allowed here.
-      else if (c == '-') {
-        throw new IllegalArgumentException("cannot handle negative numbers");
-      }
-      // case that the input c is neither a number nor a negative operator
-      else {
-        int numO;
-        if (isFirstOperand) {
-          numO = 1;
-        } else {
-          numO = 2;
-        }
-        throw new IllegalArgumentException("cannot handle character " + c
-                + " other than number "
-                + "in the first position of the operand " + numO);
-      }
-    }
-    // case that operand is not -1, meaning it's not the first pos of the first operand
-    else {
-      // case that c is still a 0 to 9 number
-      if (isNumber(c)) {
-        operand = digitAdv(operand, Character.getNumericValue(c));
-        this.currentResult += c;
-      }
-      // case that c is not a number, we need to handle this c to handleOperator method
-      else {
-        if (isFirstOperand) {
-          this.status = 1;
-        } else {
-          this.status = 3;
-        }
-        input(c);
-      }
-    }
-    return operand;
+
+  private void assignValueForO1ForAssignPrevRes(int value) {
+    this.operand1 = value;
+    this.testingLog += ("\n value: " + value + " assignTo1: " + this.operand1 + " for giving prev result value");
   }
 
+  private void assignValueForO1ForOperand1(int value) {
+    this.operand1 = value;
+    this.testingLog += ("\n value: " + value + " assignTo1: " + this.operand1 + " for giving operand1 value");
+  }
+
+  private void assignValueForO2ForAssignminus1(int value) {
+    this.operand2 = value;
+    this.testingLog += ("\n value: " + value + " assignTo2: " + this.operand2 + " for giving a -1 value");
+  }
+
+  private void assignValueForO2ForOperand2(int value) {
+    this.operand2 = value;
+    this.testingLog += ("\n value: " + value + " assignTo2: " + this.operand2 + " for giving operand2 value");
+  }
+
+  public String getLog() {
+    return this.testingLog;
+  }
 }
