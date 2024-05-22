@@ -88,6 +88,9 @@ public class SimpleCalculator implements Calculator {
 
   public String testingLog;
 
+  // calculatorReturn is the method to return the new updated calculator
+  Calculator calculatorReturn;
+
   /**
    * constructor of SimpleCalculator
    * <ul>
@@ -173,12 +176,15 @@ public class SimpleCalculator implements Calculator {
     handleOperand(c, this.operand2, false);
   }
 
+  // this method will take a character c, an integer operand, and a boolean isFirstOperand
+  // and will auto assign value for operand1 or 2 and update the currentResult variable
+  // at the same time for preparing getResult method.
   private void assignOperand(Character c, int operand, boolean isFirstOperand) {
     this.currentResult += c;
     if (isFirstOperand) {
-      assignValueForO1ForOperand1(operand);
+      this.operand1 = operand;
     } else {
-      assignValueForO2ForOperand2(operand);
+      this.operand2 = operand;
     }
   }
 
@@ -193,7 +199,7 @@ public class SimpleCalculator implements Calculator {
       // case that the input c is a number
       if (isNumber(c)) {
         operand = Character.getNumericValue(c);
-        assignOperand(c,operand,isFirstOperand);
+        assignOperand(c, operand, isFirstOperand);
       }
       // condition that input c is a -, meaning the user wants to input a negative
       // value, which should not be allowed here.
@@ -217,8 +223,14 @@ public class SimpleCalculator implements Calculator {
     else {
       // case that c is still a 0 to 9 number
       if (isNumber(c)) {
-        operand = digitAdv(operand, Character.getNumericValue(c));
-        assignOperand(c,operand,isFirstOperand);
+        long advValue = digitAdv(operand, Character.getNumericValue(c));
+        if (advValue <= Integer.MAX_VALUE) {
+          operand = (int)advValue;
+        }
+        else {
+          throw new IllegalArgumentException("cannot work with whole numbers longer than 32 bits");
+        }
+        assignOperand(c, operand, isFirstOperand);
       }
       // case that c is not a number, we need to handle this c to handleOperator method
       else {
@@ -256,7 +268,7 @@ public class SimpleCalculator implements Calculator {
 
 
   // take the old digit and new digit, make the old digit advance for 1 digit
-  private int digitAdv(int oldDigit, int newDigit) {
+  private long digitAdv(long oldDigit, int newDigit) {
     return (oldDigit * 10) + newDigit;
   }
 
@@ -265,7 +277,7 @@ public class SimpleCalculator implements Calculator {
   private void handleResult(char c) {
     // first calculate the result and store result in the resultInInteger variable
     // condition that c is =, +, -, or *
-    if (c == '=' || isOperator(c)) {
+    if (c == '=' || isOperator(c) || isNumber(c)) {
       switch (this.operator) {
         // case that no operator is assigned properly
         case 0:
@@ -297,10 +309,15 @@ public class SimpleCalculator implements Calculator {
         // we need to return to status 1, operator status
         this.status = 1;
         // make the previous result be the first operand
-        assignValueForO1ForAssignPrevRes(this.resultInInteger);
+        this.operand1 = this.resultInInteger;
         // make the operand2 become -1, which is default value waiting for input
-        assignValueForO2ForAssignminus1(-1);
+        this.operand2 = -1;
         // now recall input again to enter operator stage
+        input(c);
+      }
+      // condition that c is a number
+      else if (isNumber(c)) {
+        input('C');
         input(c);
       }
       // this is a condition that is not expected to reach,
@@ -313,16 +330,19 @@ public class SimpleCalculator implements Calculator {
       same value again.
        */
     }
-    // condition that c is not =, +, -, *.
+    // condition that c is not =, +, -, *, or digit.
     else {
       throw new IllegalArgumentException("should not input any character " +
-              "other than +, -, *, or =, you put: " + c);
+              "other than +, -, *, =, or digits, you put: " + c);
     }
   }
 
   // plus method takes two integers a and b, and
   // return the sum of two integer inputs
   private int plus(int a, int b) {
+    if (((long)a + b) > Integer.MAX_VALUE) {
+      return 0;
+    }
     return (a + b);
   }
 
@@ -330,6 +350,9 @@ public class SimpleCalculator implements Calculator {
   // return the difference between the
   // two integer inputs
   private int minus(int a, int b) {
+    if ( ((long)a - b ) < (long)Integer.MIN_VALUE) {
+      return 0;
+    }
     return (a - b);
   }
 
@@ -337,6 +360,10 @@ public class SimpleCalculator implements Calculator {
   // return the product of the
   // two integer inputs
   private int multiply(int a, int b) {
+    if (((long)a * b) > Integer.MAX_VALUE
+            || ((long)a * b) < Integer.MIN_VALUE) {
+      return 0;
+    }
     return (a * b);
   }
 
@@ -359,44 +386,5 @@ public class SimpleCalculator implements Calculator {
     this.operand2 = -1;
     this.status = 0;
     this.operator = 0;
-  }
-
-  /**
-   * helper method for test, should delete after testing
-   */
-  public int getOperand1() {
-    return this.operand1;
-  }
-
-  public int getOperand2() {
-    return this.operand2;
-  }
-  /*
-  remember to delete above before hand
-   */
-
-
-  private void assignValueForO1ForAssignPrevRes(int value) {
-    this.operand1 = value;
-    this.testingLog += ("\n value: " + value + " assignTo1: " + this.operand1 + " for giving prev result value");
-  }
-
-  private void assignValueForO1ForOperand1(int value) {
-    this.operand1 = value;
-    this.testingLog += ("\n value: " + value + " assignTo1: " + this.operand1 + " for giving operand1 value");
-  }
-
-  private void assignValueForO2ForAssignminus1(int value) {
-    this.operand2 = value;
-    this.testingLog += ("\n value: " + value + " assignTo2: " + this.operand2 + " for giving a -1 value");
-  }
-
-  private void assignValueForO2ForOperand2(int value) {
-    this.operand2 = value;
-    this.testingLog += ("\n value: " + value + " assignTo2: " + this.operand2 + " for giving operand2 value");
-  }
-
-  public String getLog() {
-    return this.testingLog;
   }
 }

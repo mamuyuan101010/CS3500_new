@@ -8,31 +8,84 @@ import pizza.Size;
 import pizza.ToppingName;
 import pizza.ToppingPortion;
 
-public class CheesePizza implements ObservablePizza{
-  protected Crust crust;
-  protected Size size;
-  protected Map<ToppingName, ToppingPortion> toppings;
-  @Override
-  public double cost() {
-    return 0;
+public class CheesePizza extends AlaCartePizza {
+  /**
+   * Create a pizza given its crust type, size and toppings.
+   *
+   * @param size is the Size Enum, representing the size of pizza
+   * @param crust is a Crust Enum, representing the crust type
+   */
+  protected CheesePizza(Size size, Crust crust) {
+    Map<ToppingName, ToppingPortion> toppings = new HashMap<ToppingName, ToppingPortion>();
+    toppings.put(ToppingName.Cheese, ToppingPortion.Full);
+    toppings.put(ToppingName.Sauce, ToppingPortion.Full);
+    super(size, crust, toppings);
   }
-
-  @Override
-  public ToppingPortion hasTopping(ToppingName name) {
-    return null;
-  }
-
-  protected CheesePizza(Size s, Crust c) {
-    // case that the given argument is null
-    if (size == null || crust == null || toppings == null) {
-      throw new IllegalArgumentException("arguments cannot be null");
+  public static class CheesePizzaBuilder extends AlaCartePizzaBuilder {
+    @Override
+    public ObservablePizza build() {
+      return new CheesePizza(this.s1, this.c1);
     }
-    else {
-      this.size = s;
-      this.crust = c;
-      this.toppings = new HashMap<ToppingName, ToppingPortion>();
-      this.toppings.put(ToppingName.Cheese, ToppingPortion.Full);
-      this.toppings.put(ToppingName.Sauce, ToppingPortion.Full);
+
+    /**
+     * no cheese method will remove the cheese.
+     * @return itself with no cheese updated
+     */
+    public CheesePizzaBuilder noCheese() {
+      if (this.toppings1 == null) {
+        this.toppings1 = new HashMap<ToppingName, ToppingPortion>();
+      }
+      this.toppings1.remove(ToppingName.Cheese);
+      return returnBuilder();
+    }
+
+    /**
+     * left half cheese will only keep the cheese in left half.
+     * @return itself with only left half cheese
+     */
+    public CheesePizzaBuilder leftHalfCheese() {
+      if (this.toppings1 == null) {
+        this.toppings1 = new HashMap<ToppingName, ToppingPortion>();
+      }
+      this.toppings1.put(ToppingName.Cheese, ToppingPortion.LeftHalf);
+      return returnBuilder();
+    }
+
+    /**
+     * right half cheese will only keep the cheese in right half
+     * @return itself with only right half cheese
+     */
+    public CheesePizzaBuilder rightHalfCheese() {
+      if (this.toppings1 == null) {
+        this.toppings1 = new HashMap<ToppingName, ToppingPortion>();
+      }
+      this.toppings1.put(ToppingName.Cheese, ToppingPortion.RightHalf);
+      return returnBuilder();
+    }
+
+    @Override
+    public CheesePizzaBuilder crust(Crust c) {
+      this.c1 = c;
+      return returnBuilder();
+    }
+
+    @Override
+    public CheesePizzaBuilder size(Size s) {
+      this.s1 = s;
+      return returnBuilder();
+    }
+
+    @Override
+    public CheesePizzaBuilder addTopping(ToppingName tn, ToppingPortion tp) {
+      if (this.toppings1 == null) {
+        this.toppings1 = new HashMap<ToppingName, ToppingPortion>();
+      }
+      this.toppings1.put(tn, tp);
+      return returnBuilder();
+    }
+    @Override
+    protected CheesePizzaBuilder returnBuilder() {
+      return this;
     }
   }
 }

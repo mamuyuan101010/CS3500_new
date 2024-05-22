@@ -8,6 +8,7 @@ import pizza.Crust;
 import pizza.Size;
 import pizza.ToppingName;
 import pizza.ToppingPortion;
+import pizza.VeggiePizza;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +19,7 @@ public class PizzaTest {
   private Pizza alacarte;
   private Pizza cheese;
   private Pizza halfCheese;
-
+  private Pizza veggie;
 
   @Before
   public void setup() {
@@ -34,6 +35,7 @@ public class PizzaTest {
     halfCheese = new CheesePizza(Size.Large,Crust.Thin);
     //put cheese only on left half
     halfCheese.addTopping(ToppingName.Cheese,ToppingPortion.LeftHalf);
+    veggie = new VeggiePizza(Size.Large,Crust.Thin);
   }
 
   @Test
@@ -41,6 +43,7 @@ public class PizzaTest {
     assertEquals(8.25,alacarte.cost(),0.01);
     assertEquals(9,cheese.cost(),0.01);
     assertEquals(8.5,halfCheese.cost(),0.01);
+    assertEquals(11.5, veggie.cost(),0.01);
 
   }
 

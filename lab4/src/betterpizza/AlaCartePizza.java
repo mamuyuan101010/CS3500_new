@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pizza.Crust;
-import pizza.Pizza;
 import pizza.Size;
 import pizza.ToppingName;
 import pizza.ToppingPortion;
@@ -35,37 +34,46 @@ public class AlaCartePizza implements ObservablePizza {
   public static class AlaCartePizzaBuilder extends PizzaBuilder {
 
     @Override
-    public PizzaBuilder crust(Crust c) {
+    public AlaCartePizzaBuilder crust(Crust c) {
       this.c1 = c;
-      return this;
+      return returnBuilder();
     }
 
     @Override
-    public PizzaBuilder size(Size s) {
+    public AlaCartePizzaBuilder size(Size s) {
       this.s1 = s;
-      return this;
+      return returnBuilder();
     }
 
     @Override
-    public PizzaBuilder addTopping(ToppingName tn, ToppingPortion tp) {
+    public AlaCartePizzaBuilder addTopping(ToppingName tn, ToppingPortion tp) {
       if (this.toppings1 == null) {
         this.toppings1 = new HashMap<ToppingName, ToppingPortion>();
       }
       this.toppings1.put(tn, tp);
-      return this;
+      return returnBuilder();
     }
 
     @Override
     public ObservablePizza build() {
-      ObservablePizza returnPizza = new AlaCartePizza(this.s1, this.c1, this.toppings1);
-      return returnPizza;
+      return new AlaCartePizza(this.s1, this.c1, this.toppings1);
+    }
+
+    protected AlaCartePizzaBuilder returnBuilder() {
+      return this;
     }
   }
 
   protected AlaCartePizza(Size size, Crust crust, Map<ToppingName, ToppingPortion> toppings) {
     // case that the given argument is null
-    if (size == null || crust == null || toppings == null) {
-      throw new IllegalArgumentException("arguments cannot be null");
+    if (size == null) {
+      throw new IllegalArgumentException("size cannot be null");
+    }
+    else if (crust == null) {
+      throw new IllegalArgumentException("crust cannot be null");
+    }
+    else if (toppings == null) {
+      throw new IllegalArgumentException("toppings cannot be null");
     }
     // case that the given argument is non-null
     else {
