@@ -1,12 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.InputMismatchException;
-
 import calculator.Calculator;
 import calculator.SimpleCalculator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 
 public class SimpleCalculatorTest {
   Calculator c1;

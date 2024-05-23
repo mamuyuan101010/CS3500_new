@@ -154,7 +154,7 @@ public class RegularManualTransmissionTest {
               new RegularManualTransmission(0, 10, 10, 20,
                       11, 30, 30, 40, 40, 50);
     } catch (Exception e) {
-      assertEquals("only adjacent-gear ranges may overlap", e.getMessage());
+      fail("should not fail");
     }
     // test for non-adjacent-gear ranges overlap
     try {
