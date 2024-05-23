@@ -23,30 +23,29 @@ public class PizzaTest {
 
   @Before
   public void setup() {
-    alacarte = new AlaCartePizza(Size.Medium,Crust.Classic);
+    alacarte = new AlaCartePizza(Size.Medium, Crust.Classic);
     alacarte.addTopping(ToppingName.Cheese, ToppingPortion.Full);
-    alacarte.addTopping(ToppingName.Sauce,ToppingPortion.Full);
-    alacarte.addTopping(ToppingName.GreenPepper,ToppingPortion.Full);
-    alacarte.addTopping(ToppingName.Onion,ToppingPortion.Full);
-    alacarte.addTopping(ToppingName.Jalapeno,ToppingPortion.LeftHalf);
+    alacarte.addTopping(ToppingName.Sauce, ToppingPortion.Full);
+    alacarte.addTopping(ToppingName.GreenPepper, ToppingPortion.Full);
+    alacarte.addTopping(ToppingName.Onion, ToppingPortion.Full);
+    alacarte.addTopping(ToppingName.Jalapeno, ToppingPortion.LeftHalf);
 
-    cheese = new CheesePizza(Size.Large,Crust.Thin);
+    cheese = new CheesePizza(Size.Large, Crust.Thin);
 
-    halfCheese = new CheesePizza(Size.Large,Crust.Thin);
+    halfCheese = new CheesePizza(Size.Large, Crust.Thin);
     //put cheese only on left half
-    halfCheese.addTopping(ToppingName.Cheese,ToppingPortion.LeftHalf);
-    veggie = new VeggiePizza(Size.Large,Crust.Thin);
+    halfCheese.addTopping(ToppingName.Cheese, ToppingPortion.LeftHalf);
+    veggie = new VeggiePizza(Size.Large, Crust.Thin);
   }
 
   @Test
   public void testCost() {
-    assertEquals(8.25,alacarte.cost(),0.01);
-    assertEquals(9,cheese.cost(),0.01);
-    assertEquals(8.5,halfCheese.cost(),0.01);
-    assertEquals(11.5, veggie.cost(),0.01);
+    assertEquals(8.25, alacarte.cost(), 0.01);
+    assertEquals(9, cheese.cost(), 0.01);
+    assertEquals(8.5, halfCheese.cost(), 0.01);
+    assertEquals(11.5, veggie.cost(), 0.01);
 
   }
-
 
 
 }
