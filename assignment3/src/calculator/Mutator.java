@@ -25,31 +25,23 @@ package calculator;
  * </ul>
  */
 public class Mutator {
-  private int operand1;
-  private int operand2;
-  private int operator;
-  private int status;
-  private int result;
   private String stringResult;
+  private int[] calculation;
 
   /**
-   * Mutator constructor that takes operand1, operand2, operator, status, result, and stringResult
-   * values.
-   * @param operand1 is the first operand
-   * @param operand2 is the second operand
-   * @param operator is the int representation form of operator, from 0 to 3
-   * @param status is the int representation form of status, from 0 to 3
-   * @param result is the most recently calculated result int
-   * @param stringResult is the result message in String type
+   * Mutator constructor that takes an array value of result, operand1,
+   * operand2, status, operator and a stringResult value.
+   * @param calculation is the array of int that include all info for calculation
+   * @param stringResult is the result in string
+   * @throws IllegalArgumentException throw exception when input an invalid number
    */
-  public Mutator(int operand1, int operand2, int operator,
-                 int status, int result, String stringResult) throws IllegalArgumentException {
+  public Mutator(String stringResult, int[] calculation) throws IllegalArgumentException {
     // condition that status is not in 0 - 3 range
-    if (status > 3 || status < 0) {
+    if (calculation[3] > 3 || calculation[3] < 0) {
       throw new IllegalArgumentException("illegal status number input");
     }
     // condition that operator is not in 0 to 3 range
-    else if (operator > 3 || operator < 0) {
+    else if (calculation[4] > 3 || calculation[4] < 0) {
       throw new IllegalArgumentException("illegal operator number input");
     }
     // condition that string contains characters other than digits or operator
@@ -59,15 +51,11 @@ public class Mutator {
     // condition that operand2 is negative, since operand2 cannot be negative at all
     // -1 will be the only exception as it is the default value to waiting for
     // assigning other values
-    else if (operand2 < -1) {
+    else if (calculation[2] < -1) {
       throw new IllegalArgumentException("negative operand2 input");
     }
-    this.operand1 = operand1;
-    this.operand2 = operand2;
-    this.operator = operator;
-    this.status = status;
-    this.result = result;
     this.stringResult = stringResult;
+    this.calculation = calculation.clone();
   }
 
   /**
@@ -98,7 +86,7 @@ public class Mutator {
     if (c == 'C') {
       backIntoDefault();
     } else {
-      switch (this.status) {
+      switch (this.calculation[3]) {
         case 0:
           handleOperand1(c);
           break;
@@ -124,18 +112,17 @@ public class Mutator {
    * @return a Calculator object based on the mutator's current field values
    */
   public Calculator buildCalculator() {
-    return new SimpleCalculator(this.stringResult, this.result, this.operand1, this.operand2,
-            this.status, this.operator);
+    return new SimpleCalculator(this.stringResult, this.calculation);
   }
 
   // this method handle the first operand
   private void handleOperand1(char c) {
-    handleOperand(c, this.operand1, true);
+    handleOperand(c, this.calculation[1], true);
   }
 
   // this method handle the second operand
   private void handleOperand2(char c) {
-    handleOperand(c, this.operand2, false);
+    handleOperand(c, this.calculation[2], false);
   }
 
   // this method will take a character c, an integer operand, and a boolean isFirstOperand
@@ -144,9 +131,9 @@ public class Mutator {
   private void assignOperand(Character c, int operand, boolean isFirstOperand) {
     this.stringResult += c;
     if (isFirstOperand) {
-      this.operand1 = operand;
+      this.calculation[1] = operand;
     } else {
-      this.operand2 = operand;
+      this.calculation[2] = operand;
     }
   }
 
@@ -197,9 +184,9 @@ public class Mutator {
       // case that c is not a number, we need to handle this c to handleOperator method
       else {
         if (isFirstOperand) {
-          this.status = 1;
+          this.calculation[3] = 1;
         } else {
-          this.status = 3;
+          this.calculation[3] = 3;
         }
         input(c);
       }
@@ -210,15 +197,15 @@ public class Mutator {
   private void handleOperator(char c) {
     switch (c) {
       case '+':
-        this.operator = 1;
+        this.calculation[4] = 1;
         this.stringResult += "+";
         break;
       case '-':
-        this.operator = 2;
+        this.calculation[4] = 2;
         this.stringResult += "-";
         break;
       case '*':
-        this.operator = 3;
+        this.calculation[4] = 3;
         this.stringResult += "*";
         break;
       default:
@@ -226,7 +213,7 @@ public class Mutator {
                 +
                 "than number or operator here");
     }
-    this.status = 2;
+    this.calculation[3] = 2;
   }
 
 
@@ -241,41 +228,41 @@ public class Mutator {
     // first calculate the result and store result in the resultInInteger variable
     // condition that c is =, +, -, or *
     if (c == '=' || isOperator(c) || isNumber(c)) {
-      switch (this.operator) {
+      switch (this.calculation[4]) {
         // case that no operator is assigned properly
         case 0:
           throw new IllegalStateException("operator is not assigned");
           // case that previous operator is plus
         case 1:
-          this.result = plus(this.operand1, this.operand2);
+          this.calculation[0] = plus(this.calculation[1], this.calculation[2]);
           break;
         // case that previous operator is minus
         case 2:
-          this.result = minus(this.operand1, this.operand2);
+          this.calculation[0] = minus(this.calculation[1], this.calculation[2]);
           break;
         // case that previous operator is multiply
         case 3:
-          this.result = multiply(this.operand1, this.operand2);
+          this.calculation[0] = multiply(this.calculation[1], this.calculation[2]);
           break;
         // if any value other than 0, 1, 2, 3, should throw an illegal status exception
         default:
           throw new IllegalStateException("illegal operator status is assigned, "
                   +
-                  "given " + String.valueOf(this.operator) + " is not a valid status");
+                  "given " + String.valueOf(this.calculation[4]) + " is not a valid status");
       }
       // now assign the calculated value in String
       // to the currentResult variable.
-      this.stringResult = String.valueOf(this.result);
+      this.stringResult = String.valueOf(this.calculation[0]);
       // continue calculating.
       // condition that c is +, - or *
       if (isOperator(c)) {
         // now in order to continue calculation,
         // we need to return to status 1, operator status
-        this.status = 1;
+        this.calculation[3] = 1;
         // make the previous result be the first operand
-        this.operand1 = this.result;
+        this.calculation[1] = this.calculation[0];
         // make the operand2 become -1, which is default value waiting for input
-        this.operand2 = -1;
+        this.calculation[2] = -1;
         // now recall input again to enter operator stage
         input(c);
       }
@@ -346,11 +333,7 @@ public class Mutator {
   // just like no inputs are given
   private void backIntoDefault() {
     this.stringResult = "";
-    this.result = 0;
-    this.operand1 = -1;
-    this.operand2 = -1;
-    this.status = 0;
-    this.operator = 0;
+    this.calculation = new int[]{0, -1, -1, 0, 0};
   }
 
 

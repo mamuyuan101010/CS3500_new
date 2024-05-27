@@ -61,8 +61,8 @@ public class SimpleCalculatorTest {
   public void testValidSimpleCalculatorConstructor() {
     // this declaration simulate a calculator the time just after = sign is input,
     // and first operand is 5, second operand is 5, plus is used, and result is 10
-    Calculator validCal1 = new SimpleCalculator("10", 10,
-            5, 5, 3, 1);
+    Calculator validCal1 = new SimpleCalculator("10", new int[] {10,
+            5, 5, 3, 1});
     // if + is input, it will auto make 10 be first operand and expect a second operand
     step1 = validCal1.input('+');
     assertEquals("10+", step1.getResult());
@@ -76,22 +76,22 @@ public class SimpleCalculatorTest {
 
     // this declaration simulate a calculator the time when second operand is expected to input,
     // and first operand is 5, second operand is 5, plus is used, and result is 10
-    Calculator validCal2 = new SimpleCalculator("10", 10,
-            5, 5, 2, 1);
+    Calculator validCal2 = new SimpleCalculator("10", new int[]{10,
+            5, 5, 2, 1});
     step3 = validCal2.input('4');
     assertEquals("104", step3.getResult());
 
     // build a constructor that has empty string
-    Calculator validCal3 = new SimpleCalculator("", 10,
-            5, 5, 3, 1);
+    Calculator validCal3 = new SimpleCalculator("", new int[]{10,
+            5, 5, 3, 1});
 
     // build a constructor that has operator and number string
-    Calculator validCal4 = new SimpleCalculator("4+", 10,
-            5, 5, 3, 1);
-    Calculator validCal5 = new SimpleCalculator("7*", 10,
-            5, 5, 3, 1);
-    Calculator validCal6 = new SimpleCalculator("8-2", 10,
-            5, 5, 3, 1);
+    Calculator validCal4 = new SimpleCalculator("4+", new int[]{10,
+            5, 5, 3, 1});
+    Calculator validCal5 = new SimpleCalculator("7*", new int[]{10,
+            5, 5, 3, 1});
+    Calculator validCal6 = new SimpleCalculator("8-2", new int[]{10,
+            5, 5, 3, 1});
   }
 
   // test for invalid input in SimpleVariable constructor
@@ -100,7 +100,7 @@ public class SimpleCalculatorTest {
     // input some string that contain alphabetic characters
     try {
       Calculator invalidCal1 = new SimpleCalculator("illegalresultInt",
-              0, 2, 2, 2, 2);
+              new int[]{0, 2, 2, 2, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -110,7 +110,7 @@ public class SimpleCalculatorTest {
     // empty space should also be disallowed
     try {
       Calculator invalidCal1 = new SimpleCalculator(" ",
-              0, 2, 2, 2, 2);
+              new int[]{0, 2, 2, 2, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -120,7 +120,7 @@ public class SimpleCalculatorTest {
     // = sign is disallowed
     try {
       Calculator invalidCal1 = new SimpleCalculator("8+8=",
-              0, 2, 2, 2, 2);
+              new int[]{0, 2, 2, 2, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -130,7 +130,7 @@ public class SimpleCalculatorTest {
     // divide sign is not allowed
     try {
       Calculator invalidCal1 = new SimpleCalculator("8/8",
-              0, 2, 2, 2, 2);
+              new int[]{0, 2, 2, 2, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -140,7 +140,7 @@ public class SimpleCalculatorTest {
     // now try invalid operand2 values
     try {
       Calculator invalidCal1 = new SimpleCalculator("6+3",
-              0, 2, -2, 2, 2);
+              new int[]{0, 2, -2, 2, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -150,7 +150,7 @@ public class SimpleCalculatorTest {
     // now testing status not in good range
     try {
       Calculator invalidCal1 = new SimpleCalculator("6+3",
-              0, 2, 2, 7, 2);
+              new int[]{ 0, 2, 2, 7, 2});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
@@ -160,7 +160,7 @@ public class SimpleCalculatorTest {
     // now testing operator not in good range
     try {
       Calculator invalidCal1 = new SimpleCalculator("6+3",
-              0, 2, 2, 3, 9);
+              new int[]{ 0, 2, 2, 3, 9});
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();

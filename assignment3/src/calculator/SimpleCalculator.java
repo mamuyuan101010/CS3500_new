@@ -66,7 +66,7 @@ package calculator;
  * <p>
  *   for each variable in this field representing:
  *   </p>
- *<ul>
+ * <ul>
  *   <li>
  *     currentResult represent the result in string and prepare for getResult method to return.
  *   </li>
@@ -98,31 +98,32 @@ package calculator;
  *     in purpose of keeping the variable inapproachable by outside classes,
  *     and make the fields immutable.
  *   </li>
- *</ul>
+ * </ul>
  */
 public class SimpleCalculator implements Calculator {
   // currentResult stores the result in string and prepare
   // for getResult method to return
   private final String currentResult;
-  // resultInInteger only store the calculated result in integer and prepare
-  // for giving currentResult variable value
-  private final int resultInInteger;
-  // operand1 represents the first operand of the calculation
-  private final int operand1;
-  // operand2 represents the second operand of the calculation
-  private final int operand2;
-  // status integer can only be 4 integers,
-  // 0, meaning we are now in operand1,
-  // 1, meaning we are now in operator,
-  // 2, meaning we are in operand2,
-  // and 3, meaning we are in result.
-  private final int status;
-  // operator integer can only be 4 integers,
-  // 0, meaning no operator assigned.
-  // 1, meaning operator + will be used.
-  // 2, meaning operator - will be used.
-  // and finally 3, meaning operator * will be used.
-  private final int operator;
+  // calculation array stores the result in integer,
+  // operand1, operand2, status, and operator values
+  /**
+   * resultInInteger only store the calculated result in integer and prepare
+   * for giving currentResult variable value
+   * operand1 represents the first operand of the calculation
+   * operand2 represents the second operand of the calculation
+   * status integer can only be 4 integers,
+   * 0, meaning we are now in operand1,
+   * 1, meaning we are now in operator,
+   * 2, meaning we are in operand2,
+   * and 3, meaning we are in result.
+   * operator integer can only be 4 integers,
+   * 0, meaning no operator assigned.
+   * 1, meaning operator + will be used.
+   * 2, meaning operator - will be used.
+   * and finally 3, meaning operator * will be used.
+   */
+  //
+  private final int[] calculation;
 
   /**
    * constructor of SimpleCalculator that takes nothing, and will generate default value to
@@ -162,57 +163,44 @@ public class SimpleCalculator implements Calculator {
    */
   public SimpleCalculator() {
     this.currentResult = "";
-    this.resultInInteger = 0;
-    this.operand1 = -1;
-    this.operand2 = -1;
-    this.status = 0;
-    this.operator = 0;
+    this.calculation = new int[]{0, -1, -1, 0, 0};
   }
 
   /**
    * SimpleCalculator Constructor that takes all value and assign those values to
    * its private fields.
+   *
    * @param currentResult is the result in string
-   * @param resultInInteger is the result in integer
-   * @param operand1 is the first operand
-   * @param operand2 is the second operand
-   * @param status is the current status, representing which step the calculator is now on
-   * @param operator is the operator indicator, indicate which operator we are using
+   * @param calculation   is the array of int that store all info
    * @throws IllegalArgumentException when invalid input is enter the parameters.
    */
-  public SimpleCalculator(String currentResult, int resultInInteger, int operand1,
-                          int operand2, int status, int operator)
+  public SimpleCalculator(String currentResult, int[] calculation)
           throws IllegalArgumentException {
     // condition that status is not in 0 - 3 range
-    if (status > 3 || status < 0) {
+    if (calculation[3] > 3 || calculation[3] < 0) {
       throw new IllegalArgumentException("illegal status number input");
     }
     // condition that operator is not in 0 to 3 range
-    else if (operator > 3 || operator < 0) {
+    else if (calculation[4] > 3 || calculation[4] < 0) {
       throw new IllegalArgumentException("illegal operator number input");
     }
     // condition that string contains characters other than digits or operator
-    else if (! StringChecker.onlyContainDigitOrOpr(currentResult)) {
+    else if (!StringChecker.onlyContainDigitOrOpr(currentResult)) {
       throw new IllegalArgumentException("illegal currentResult string input");
     }
     // condition that operand2 is negative, since operand2 cannot be negative at all
     // -1 will be the only exception as it is the default value to waiting for
     // assigning other values
-    else if (operand2 < -1) {
+    else if (calculation[2] < -1) {
       throw new IllegalArgumentException("negative operand2 input");
     }
     this.currentResult = currentResult;
-    this.resultInInteger = resultInInteger;
-    this.operand1 = operand1;
-    this.operand2 = operand2;
-    this.status = status;
-    this.operator = operator;
+    this.calculation = calculation.clone();
   }
 
   @Override
   public Calculator input(char c) {
-    Mutator m = new Mutator(this.operand1, this.operand2, this.operator, this.status,
-            this.resultInInteger, this.currentResult);
+    Mutator m = new Mutator(this.currentResult, this.calculation);
     m.input(c);
     return m.buildCalculator();
   }
@@ -222,4 +210,11 @@ public class SimpleCalculator implements Calculator {
     return this.currentResult;
   }
 
+  public String getArray() {
+    return "" + this.calculation[0]
+            + "/" + this.calculation[1]
+            + "/" + this.calculation[2]
+            + "/" + this.calculation[3]
+            + "/" + this.calculation[4];
+  }
 }

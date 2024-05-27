@@ -30,4 +30,5 @@ public interface Calculator {
    * @return the current "result" of the calculator as a String.
    */
   String getResult();
+  String getArray();
 }
