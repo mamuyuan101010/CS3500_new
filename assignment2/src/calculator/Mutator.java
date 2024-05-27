@@ -1,23 +1,99 @@
 package calculator;
 
-public class Mutator{
-int operand1;
-int operand2;
-int operator;
-int status;
-int result;
-String stringResult;
+/**
+ * Mutator class is the helper class for taking the value in each fields in SimpleCalculator class
+ * , taking inputs of character c for mutating its own fields, and re-declaring
+ * the value in each field in SimpleCalculator class.
+ * <ul>
+ *   <li>
+ *     Mutator class takes 6 parameters of operand1/2, operator, status, result, and stringResult
+ *     values and assign those in its own fields.
+ *   </li>
+ *   <li>
+ *     the constructor is public because SimpleCalculator class need to call Mutator class
+ *   </li>
+ *   <li>
+ *     Mutator's fields are the same as SimpleCalculator's fields,and each variable in that field
+ *     has the same rules as the one in SimpleCalculator's variables.
+ *   </li>
+ *   <li>
+ *     eg: operand1/2 cannot over 32 bits, operator and status can only be 0-3(see SimpleCalculator
+ *     's class comments for more detail on what 0, 1, 2, 3 means), result is the most
+ *     recent calculated result, and cannot over 32 bits as well, stringResult is the result that
+ *     can be print out in String type.
+ *   </li>
+ * </ul>
+ */
+public class Mutator {
+  private int operand1;
+  private int operand2;
+  private int operator;
+  private int status;
+  private int result;
+  private String stringResult;
 
-public Mutator(int operand1, int operand2, int operator,
-               int status, int result, String stringResult) {
-  this.operand1 = operand1;
-  this.operand2 = operand2;
-  this.operator = operator;
-  this.status = status;
-  this.result = result;
-  this.stringResult = stringResult;
-}
+  /**
+   * Mutator constructor that takes operand1, operand2, operator, status, result, and stringResult
+   * values.
+   * @param operand1 is the first operand
+   * @param operand2 is the second operand
+   * @param operator is the int representation form of operator, from 0 to 3
+   * @param status is the int representation form of status, from 0 to 3
+   * @param result is the most recently calculated result int
+   * @param stringResult is the result message in String type
+   */
+  public Mutator(int operand1, int operand2, int operator,
+                 int status, int result, String stringResult) throws IllegalArgumentException {
+    // condition that status is not in 0 - 3 range
+    if (status > 3 || status < 0) {
+      throw new IllegalArgumentException("illegal status number input");
+    }
+    // condition that operator is not in 0 to 3 range
+    else if (operator > 3 || operator < 0) {
+      throw new IllegalArgumentException("illegal operator number input");
+    }
+    // condition that string contains characters other than digits or operator
+    else if (! StringChecker.onlyContainDigitOrOpr(stringResult)) {
+      throw new IllegalArgumentException("illegal currentResult string input");
+    }
+    // condition that operand2 is negative, since operand2 cannot be negative at all
+    // -1 will be the only exception as it is the default value to waiting for
+    // assigning other values
+    else if (operand2 < -1) {
+      throw new IllegalArgumentException("negative operand2 input");
+    }
+    this.operand1 = operand1;
+    this.operand2 = operand2;
+    this.operator = operator;
+    this.status = status;
+    this.result = result;
+    this.stringResult = stringResult;
+  }
 
+  /**
+   * <ul>
+   *   <li>
+   *     if c is neither a 0-9 digit nor a operator or equal sign, it will auto return an error
+   *   </li>
+   *   <li>
+   *     any error instance declared in SimpleCalculator Class's java comment will also throw an
+   *     exception here. eg: operand1/2 over 32 bits, input equals sign before inputting
+   *     the second operand, or before inputting any operator
+   *   </li>
+   *   <li>
+   *     inputting C will cause all values in fields back to their default values, details
+   *     of each field's default value is in SimpleCalculator class's java comment
+   *   </li>
+   *   <li>
+   *     the inputting sequence of c is the same as input method of SimpleCalculator class,
+   *     the only difference is input method here is a void method, means it does not return
+   *     any value, but change its own field instead
+   *   </li>
+   * </ul>
+   * input method is a void method that takes a character c and mutate the current fields
+   * based on the input.
+   * @param c is a character intake to proceed the program
+   */
   public void input(char c) {
     if (c == 'C') {
       backIntoDefault();
@@ -39,6 +115,17 @@ public Mutator(int operand1, int operand2, int operator,
           throw new IllegalStateException("status should not be other than 0,1,2,3");
       }
     }
+  }
+
+  /**
+   * buildCalculator method return a Calculator object based on
+   * the mutator's current field values.
+   *
+   * @return a Calculator object based on the mutator's current field values
+   */
+  public Calculator buildCalculator() {
+    return new SimpleCalculator(this.stringResult, this.result, this.operand1, this.operand2,
+            this.status, this.operator);
   }
 
   // this method handle the first operand
@@ -89,7 +176,8 @@ public Mutator(int operand1, int operand2, int operator,
         } else {
           numO = 2;
         }
-        throw new IllegalArgumentException("cannot handle character " + c
+        throw new IllegalArgumentException("cannot handle character "
+                + c
                 + " other than number "
                 + "in the first position of the operand " + numO);
       }
@@ -100,9 +188,8 @@ public Mutator(int operand1, int operand2, int operator,
       if (isNumber(c)) {
         long advValue = digitAdv(operand, Character.getNumericValue(c));
         if (advValue <= Integer.MAX_VALUE) {
-          operand = (int)advValue;
-        }
-        else {
+          operand = (int) advValue;
+        } else {
           throw new IllegalArgumentException("cannot work with whole numbers longer than 32 bits");
         }
         assignOperand(c, operand, isFirstOperand);
@@ -135,7 +222,8 @@ public Mutator(int operand1, int operand2, int operator,
         this.stringResult += "*";
         break;
       default:
-        throw new IllegalArgumentException("should not type any character other " +
+        throw new IllegalArgumentException("should not type any character other "
+                +
                 "than number or operator here");
     }
     this.status = 2;
@@ -171,7 +259,8 @@ public Mutator(int operand1, int operand2, int operator,
           break;
         // if any value other than 0, 1, 2, 3, should throw an illegal status exception
         default:
-          throw new IllegalStateException("illegal operator status is assigned, " +
+          throw new IllegalStateException("illegal operator status is assigned, "
+                  +
                   "given " + String.valueOf(this.operator) + " is not a valid status");
       }
       // now assign the calculated value in String
@@ -207,7 +296,8 @@ public Mutator(int operand1, int operand2, int operator,
     }
     // condition that c is not =, +, -, *, or digit.
     else {
-      throw new IllegalArgumentException("should not input any character " +
+      throw new IllegalArgumentException("should not input any character "
+              +
               "other than +, -, *, =, or digits, you put: " + c);
     }
   }
@@ -215,7 +305,7 @@ public Mutator(int operand1, int operand2, int operator,
   // plus method takes two integers a and b, and
   // return the sum of two integer inputs
   private int plus(int a, int b) {
-    if (((long)a + b) > Integer.MAX_VALUE) {
+    if (((long) a + b) > Integer.MAX_VALUE) {
       return 0;
     }
     return (a + b);
@@ -225,7 +315,7 @@ public Mutator(int operand1, int operand2, int operator,
   // return the difference between the
   // two integer inputs
   private int minus(int a, int b) {
-    if ( ((long)a - b ) < (long)Integer.MIN_VALUE) {
+    if (((long) a - b) < (long) Integer.MIN_VALUE) {
       return 0;
     }
     return (a - b);
@@ -235,8 +325,8 @@ public Mutator(int operand1, int operand2, int operator,
   // return the product of the
   // two integer inputs
   private int multiply(int a, int b) {
-    if (((long)a * b) > Integer.MAX_VALUE
-            || ((long)a * b) < Integer.MIN_VALUE) {
+    if (((long) a * b) > Integer.MAX_VALUE
+            || ((long) a * b) < Integer.MIN_VALUE) {
       return 0;
     }
     return (a * b);
@@ -263,13 +353,5 @@ public Mutator(int operand1, int operand2, int operator,
     this.operator = 0;
   }
 
-  /**
-   * buildCalculator method return a Calculator object based on
-   * the mutator's current field values.
-   * @return a Calculator object based on the mutator's current field values
-   */
-  public Calculator buildCalculator() {
-    return new SimpleCalculator(this.stringResult, this.result, this.operand1, this.operand2,
-            this.status, this.operator);
-  }
+
 }

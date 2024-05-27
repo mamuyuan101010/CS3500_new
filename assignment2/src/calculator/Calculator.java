@@ -26,7 +26,7 @@ public interface Calculator {
 
   /**
    * does not take any arguments and return the current
-   * "result" of the calculator
+   * "result" of the calculator.
    * @return the current "result" of the calculator as a String.
    */
   String getResult();

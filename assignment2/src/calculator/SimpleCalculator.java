@@ -1,10 +1,10 @@
 package calculator;
 
 /**
- * The SimpleCalculator implements Calculator interface
+ * The SimpleCalculator implements Calculator interface.
  * it takes straightforward inputs and work as a calculator
- * that handle with whole numbers shorter than 32 bits
- * it has the following characteristics:
+ * that handle with whole numbers shorter than 32 bits.
+ * it has the following characteristics.
  * <ul>
  *   <li>
  *     A correct basic sequence of inputs is the first operand, followed by the operator, followed
@@ -63,6 +63,42 @@ package calculator;
  *     specification, and not up to the choice of the implementor!
  *   </li>
  * </ul>
+ * <p>
+ *   for each variable in this field representing:
+ *   </p>
+ *<ul>
+ *   <li>
+ *     currentResult represent the result in string and prepare for getResult method to return.
+ *   </li>
+ *   <li>
+ *     resultInInteger only store the calculated result in integer.
+ *   </li>
+ *   <li>
+ *     operand1 represents the first operand of the calculation.
+ *   </li>
+ *   <li>
+ *     operand2 represents the second operand of the calculation.
+ *   </li>
+ *   <li>
+ *     status integer can only be 4 integers:
+ *     0, meaning we are now in operand1;
+ *     1, meaning we are now in operator;
+ *     2, meaning we are in operand2;
+ *     3, meaning we are in result;
+ *   </li>
+ *   <li>
+ *     operator integer can only be 4 integers,
+ *     0, meaning no operator assigned.
+ *     1, meaning operator + will be used.
+ *     2, meaning operator - will be used.
+ *     and finally 3, meaning operator * will be used.
+ *   </li>
+ *   <li>
+ *     all variables in the fields are declared as final private,
+ *     in purpose of keeping the variable inapproachable by outside classes,
+ *     and make the fields immutable.
+ *   </li>
+ *</ul>
  */
 public class SimpleCalculator implements Calculator {
   // currentResult stores the result in string and prepare
@@ -71,7 +107,9 @@ public class SimpleCalculator implements Calculator {
   // resultInInteger only store the calculated result in integer and prepare
   // for giving currentResult variable value
   private final int resultInInteger;
+  // operand1 represents the first operand of the calculation
   private final int operand1;
+  // operand2 represents the second operand of the calculation
   private final int operand2;
   // status integer can only be 4 integers,
   // 0, meaning we are now in operand1,
@@ -86,12 +124,9 @@ public class SimpleCalculator implements Calculator {
   // and finally 3, meaning operator * will be used.
   private final int operator;
 
-  // calculatorReturn is the method to return the new updated calculator
-  Calculator calculatorReturn;
-
   /**
    * constructor of SimpleCalculator that takes nothing, and will generate default value to
-   * all the fields
+   * all the fields.
    * <ul>
    *   <li>
    *     current result should be an empty String
@@ -136,16 +171,36 @@ public class SimpleCalculator implements Calculator {
 
   /**
    * SimpleCalculator Constructor that takes all value and assign those values to
-   * its private fields
+   * its private fields.
    * @param currentResult is the result in string
    * @param resultInInteger is the result in integer
    * @param operand1 is the first operand
    * @param operand2 is the second operand
    * @param status is the current status, representing which step the calculator is now on
    * @param operator is the operator indicator, indicate which operator we are using
+   * @throws IllegalArgumentException when invalid input is enter the parameters.
    */
   public SimpleCalculator(String currentResult, int resultInInteger, int operand1,
-                          int operand2, int status, int operator) {
+                          int operand2, int status, int operator)
+          throws IllegalArgumentException {
+    // condition that status is not in 0 - 3 range
+    if (status > 3 || status < 0) {
+      throw new IllegalArgumentException("illegal status number input");
+    }
+    // condition that operator is not in 0 to 3 range
+    else if (operator > 3 || operator < 0) {
+      throw new IllegalArgumentException("illegal operator number input");
+    }
+    // condition that string contains characters other than digits or operator
+    else if (! StringChecker.onlyContainDigitOrOpr(currentResult)) {
+      throw new IllegalArgumentException("illegal currentResult string input");
+    }
+    // condition that operand2 is negative, since operand2 cannot be negative at all
+    // -1 will be the only exception as it is the default value to waiting for
+    // assigning other values
+    else if (operand2 < -1) {
+      throw new IllegalArgumentException("negative operand2 input");
+    }
     this.currentResult = currentResult;
     this.resultInInteger = resultInInteger;
     this.operand1 = operand1;
@@ -166,7 +221,5 @@ public class SimpleCalculator implements Calculator {
   public String getResult() {
     return this.currentResult;
   }
-
-  // make an exactly same SimpleClassCalculator
 
 }
