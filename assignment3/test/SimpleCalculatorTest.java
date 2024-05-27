@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 import calculator.Calculator;
 import calculator.SimpleCalculator;
-
 import static org.junit.Assert.assertEquals;
 
 
@@ -19,6 +18,17 @@ public class SimpleCalculatorTest {
   Calculator c9;
   Calculator c10;
 
+  Calculator step1;
+  Calculator step2;
+  Calculator step3;
+  Calculator step4;
+  Calculator step5;
+  Calculator step6;
+  Calculator step7;
+  Calculator step8;
+
+  String errorMsg;
+
   @Before
   public void setUp() {
     c1 = new SimpleCalculator();
@@ -32,6 +42,7 @@ public class SimpleCalculatorTest {
     c8 = new SimpleCalculator();
     c9 = new SimpleCalculator();
     c10 = new SimpleCalculator();
+
   }
 
   @Test
@@ -64,12 +75,13 @@ public class SimpleCalculatorTest {
     }
   }
 
+  // test the case that we put a 0 in the first digit
   @Test
   public void zeroInFront() {
-    c3.input('0').input('2').input('+');
-    assertEquals("02+", c3.getResult());
-    c3.input('0').input('2').input('+');
-    assertEquals("4+", c3.getResult());
+    assertEquals("02+", c3.input('0').input('2').input('+').getResult());
+    assertEquals("4+", c3.input('0').input('2')
+            .input('+').input('0')
+            .input('2').input('+').getResult());
   }
 
   @Test
@@ -99,16 +111,10 @@ public class SimpleCalculatorTest {
 
   @Test
   public void testSimpleCalculator3() {
-    c3.input('3');
-    c3.input('2');
-    c3.input('+');
-    c3.input('2');
-    c3.input('4');
-    c3.input('-');
-    c3.input('1');
-    c3.input('0');
-    c3.input('=');
-    assertEquals(c3.getResult(),"46");
+    assertEquals("46", c3.input('3').input('2')
+            .input('+').input('2').input('4')
+            .input('-').input('1').input('0')
+            .input('=').getResult());
 
   }
 
@@ -144,15 +150,11 @@ public class SimpleCalculatorTest {
 
   @Test
   public void testSimpleCalculator7() {
-    c7.input('3')
+    assertEquals("56", c7.input('3')
             .input('2')
             .input('+')
             .input('2')
-            .input('4')
-            .input('=')
-            .input('=')
-            .input('=');
-    assertEquals("56", c7.getResult());
+            .input('4').input('=').getResult());
 
   }
 
@@ -195,75 +197,113 @@ public class SimpleCalculatorTest {
 
   @Test
   public void testNumberAfterEquals() {
-    c10.input('1').input('+').input('8').input('1').input('=');
-    c10.input('9');
-    assertEquals("9", c10.getResult());
-    c10.input('+');
-    assertEquals("9+", c10.getResult());
+    assertEquals("9", c10.input('1').input('+').input('8').input('1')
+            .input('=').input('9').getResult());
+
+    assertEquals("9+", c10.input('1').input('+').input('8').input('1')
+            .input('=').input('9').input('+').getResult());
+    // check c10 is not mutated after called by input
+    assertEquals("", c10.getResult());
   }
 
   @Test
   public void testMinusOverflow() {
-    c10.input('0').input('-').input('2').input('-')
+    assertEquals("0", c10.input('0').input('-').input('2').input('-')
             .input('2').input('1').input('4')
             .input('7').input('4').input('8').input('3')
-            .input('6').input('4').input('7').input('=');
-    assertEquals("0", c10.getResult());
+            .input('6').input('4').input('7').input('=')
+            .getResult());
   }
 
+  // in the following test I make test to what getResult output in every step we
+  // input values
   @Test
   public void testAddAndMinus() {
-    c10.input('1').input('1').input('1').input('+').input('1')
-            .input('1').input('1').input('=').input('+').input('1')
-            .input('+').input('1').input('=');
-    c10.input('=');
-    assertEquals("224", c10.getResult());
-    c10.input('=');
-    assertEquals("224", c10.getResult());
-    c10.input('-').input('4').input('3').input('1');
-    assertEquals("224-431", c10.getResult());
-    c10.input('+');
-    assertEquals("-207+", c10.getResult());
-    c10.input('9');
-    assertEquals("-207+9", c10.getResult());
-    c10.input('+');
-    assertEquals("-198+", c10.getResult());
-    c10.input('9').input('9').input('9');
-    assertEquals("-198+999", c10.getResult());
-    c10.input('=');
-    assertEquals("801", c10.getResult());
+    step1 = c10.input('1').input('1')
+            .input('1').input('+').input('1')
+            .input('1').input('1').input('=')
+            .input('+').input('1')
+            .input('+').input('1').input('=')
+            .input('=');
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    step2 = step1.input('=');
+    assertEquals("224", step2.getResult());
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    step3 = step2.input('-')
+            .input('4')
+            .input('3').input('1');
+    assertEquals("224-431", step3.getResult());
+    assertEquals("224", step2.getResult());
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    step4 = step3.input('+');
+    assertEquals("-207+", step4.getResult());
+    assertEquals("224-431", step3.getResult());
+    assertEquals("224", step2.getResult());
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    step5 = step4.input('9');
+    assertEquals("-207+9", step5.getResult());
+    assertEquals("-207+", step4.getResult());
+    assertEquals("224-431", step3.getResult());
+    assertEquals("224", step2.getResult());
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    step6 = step5.input('+');
+    assertEquals("-198+", step6.getResult());
+    assertEquals("-207+9", step5.getResult());
+    assertEquals("-207+", step4.getResult());
+    assertEquals("224-431", step3.getResult());
+    assertEquals("224", step2.getResult());
+    assertEquals("224", step1.getResult());
+    assertEquals("", c10.getResult());
   }
 
   @Test
   public void multiplication() {
-    c10.input('8').input('8').input('8').input('+')
+    Calculator step1 = c10.input('8').input('8').input('8').input('+')
             .input('2').input('2').input('2').input('*')
             .input('5').input('2').input('0');
-            assertEquals("1110*520", c10.getResult());
-            c10.input('+');
-    assertEquals("577200+", c10.getResult());
+    assertEquals("1110*520", step1.getResult());
+    assertEquals("", c10.getResult());
+
+    Calculator step2 = step1.input('+');
+    assertEquals("577200+", step2.getResult());
   }
 
   @Test
   public void testOverFlow() {
-    c4.input('5').input('+').input('2').input('1').input('4')
+    step1 = c4.input('5').input('+').input('2').input('1').input('4')
             .input('7').input('4').input('8').input('3')
             .input('6').input('4').input('7').input('-')
             .input('1').input('0').input('=');
-    assertEquals("-10", c4.getResult());
-    c4 = new SimpleCalculator();
+
+    assertEquals("-10", step1.getResult());
+
+    step1 = c5.input('2').input('1').input('4')
+            .input('7').input('4').input('8').input('3')
+            .input('6').input('4');
+    assertEquals("214748364", step1.getResult());
     try {
-      c4.input('2').input('1').input('4')
-              .input('7').input('4').input('8').input('3')
-              .input('6').input('4').input('8');
-    } catch (Exception e) {
-      assertEquals("cannot work with whole numbers longer than 32 bits", e.getMessage());
+      step2 = step1.input('8');
+    } catch (IllegalArgumentException e) {
+      errorMsg = e.getMessage();
     }
+    assertEquals("cannot work with whole numbers longer than 32 bits", errorMsg);
   }
 
+  // test that the result is over 32 bits
   @Test
   public void testVeryBigNumberAddition() {
-    assertEquals(c4.input('4').input('2').input('9').input('4').input('9').input('6')
+    // this step only add to a very large number, but not over 32 bits.
+    step1 = c10.input('4').input('2').input('9').input('4').input('9').input('6')
             .input('7').input('2').input('9').input('+')
             .input('4').input('2').input('9').input('4').input('9').input('6')
             .input('7').input('2').input('9').input('+')
@@ -272,7 +312,15 @@ public class SimpleCalculatorTest {
             .input('4').input('2').input('9').input('4').input('9').input('6')
             .input('7').input('2').input('9').input('+')
             .input('4').input('2').input('9').input('4').input('9').input('6')
-            .input('7').input('2').input('9').input('=').getResult(), "2147483645");
+            .input('7').input('2').input('9')
+            .input('+');
+    assertEquals("2147483645+", step1.getResult());
+    // this step will cause the result over 32 bits, and over 32 bits.
+    step2 = step1
+            .input('4').input('2').input('9').input('4').input('9').input('6')
+            .input('7').input('2').input('9').input('=');
+
+    assertEquals("0", step2.getResult());
 
   }
 }
