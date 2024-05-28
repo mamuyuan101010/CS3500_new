@@ -30,5 +30,8 @@ public interface Calculator {
    * @return the current "result" of the calculator as a String.
    */
   String getResult();
+
+  // remember to delete before submit!!!
+  // remember to delete before submit!!!
   String getArray();
 }

@@ -1,4 +1,6 @@
-package calculator;
+package Mutator;
+
+import calculator.Calculator;
 
 /**
  * IMutator is the interface that represent all kinds of Mutators
