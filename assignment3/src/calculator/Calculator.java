@@ -22,7 +22,7 @@ public interface Calculator {
    * @param c is a single character
    * @return a calculator.Calculator object as a result of processing the input
    */
-  Calculator input(char c);
+  Calculator input(char c) throws Exception;
 
   /**
    * does not take any arguments and return the current

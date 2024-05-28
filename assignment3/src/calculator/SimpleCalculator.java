@@ -199,8 +199,8 @@ public class SimpleCalculator implements Calculator {
   }
 
   @Override
-  public Calculator input(char c) {
-    Mutator m = new Mutator(this.currentResult, this.calculation);
+  public Calculator input(char c) throws Exception {
+    IMutator m = new SimpleMutator(this.currentResult, this.calculation);
     m.input(c);
     return m.buildCalculator();
   }

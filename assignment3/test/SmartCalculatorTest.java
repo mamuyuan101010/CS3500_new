@@ -37,7 +37,7 @@ public class SmartCalculatorTest {
   }
 
   @Test
-  public void testMultipleEquals() {
+  public void testMultipleEquals() throws Exception {
     step1 = c1.input('3');
     assertEquals("3", step1.getResult());
     step2 = step1.input('2');

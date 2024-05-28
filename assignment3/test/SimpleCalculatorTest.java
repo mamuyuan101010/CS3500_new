@@ -58,7 +58,7 @@ public class SimpleCalculatorTest {
   // this test representing the SimpleCalculator Constructor
   // with valid argument inputs
   @Test
-  public void testValidSimpleCalculatorConstructor() {
+  public void testValidSimpleCalculatorConstructor() throws Exception {
     // this declaration simulate a calculator the time just after = sign is input,
     // and first operand is 5, second operand is 5, plus is used, and result is 10
     Calculator validCal1 = new SimpleCalculator("10", new int[] {10,
@@ -176,13 +176,15 @@ public class SimpleCalculatorTest {
 
   // test for invalid input
   @Test
-  public void invalidThirdInput() {
+  public void invalidThirdInput() throws Exception {
     // test for input a duplicate operator
     try {
       c3.input('2').input('+').input('+');
       fail("should fail");
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
     assertEquals("cannot handle character + other "
             +
@@ -224,7 +226,7 @@ public class SimpleCalculatorTest {
 
   // test the case that we put a 0 in the first digit
   @Test
-  public void zeroInFront() {
+  public void zeroInFront() throws Exception {
     assertEquals("02+", c3.input('0').input('2').input('+').getResult());
     assertEquals("4+", c3.input('0').input('2')
             .input('+').input('0')
@@ -233,14 +235,14 @@ public class SimpleCalculatorTest {
 
   // test 32 + 23 = 54
   @Test
-  public void testSimpleCalculator1() {
+  public void testSimpleCalculator1() throws Exception {
     assertEquals("56", c1.input('3').input('2').input('+')
             .input('2').input('4').input('=').getResult());
   }
 
   // inputting operator after equal sign
   @Test
-  public void testSimpleCalculator2() {
+  public void testSimpleCalculator2() throws Exception {
     // test 32 + 24 - 10 = , answer should be 46
     // test every step in sequence
     assertEquals("", c2a.getResult());
@@ -279,7 +281,7 @@ public class SimpleCalculatorTest {
   }
 
   @Test
-  public void testSimpleCalculator3() {
+  public void testSimpleCalculator3() throws Exception {
     assertEquals("46", c3.input('3').input('2')
             .input('+').input('2').input('4')
             .input('-').input('1').input('0')
@@ -289,7 +291,7 @@ public class SimpleCalculatorTest {
 
   // test for input a C to return Calculator back to default
   @Test
-  public void testInputC() {
+  public void testInputC() throws Exception {
     step1 = c5.input('3')
             .input('2')
             .input('+')
@@ -330,7 +332,7 @@ public class SimpleCalculatorTest {
 
   // test the result of input 3 2 + 2 4 =
   @Test
-  public void testSimpleCalculator7() {
+  public void testSimpleCalculator7() throws Exception {
     step1 = c7.input('3');
     assertEquals("3", step1.getResult());
     step2 = step1.input('2');
@@ -348,7 +350,7 @@ public class SimpleCalculatorTest {
 
   // check putting multiple = will  get the same answer
   @Test
-  public void testMultipleEqu() {
+  public void testMultipleEqu() throws Exception {
     step1 = c6.input('3').input('2').input('+').input('2').input('4')
             .input('=').input('=').input('=');
     assertEquals("56", step1.getResult());
@@ -356,7 +358,7 @@ public class SimpleCalculatorTest {
 
   // test for invalid negative input values in the operands
   @Test
-  public void testNegativeInput() {
+  public void testNegativeInput() throws Exception {
     // negative in first operand
     try {
       c8.input('-')
@@ -390,7 +392,7 @@ public class SimpleCalculatorTest {
   // test for all operands are positive, but result is negative, and should be
   // valid
   @Test
-  public void testValidNegativeResult() {
+  public void testValidNegativeResult() throws Exception {
     step1 = c8.input('1')
             .input('-')
             .input('8')
@@ -417,7 +419,7 @@ public class SimpleCalculatorTest {
 
   // test to put a number after = sign, then put an operator
   @Test
-  public void testOperatorAfterEquals() {
+  public void testOperatorAfterEquals() throws Exception {
     // test whether 1 + 8 1 = 9 will only return 9
     assertEquals("9", c10.input('1').input('+').input('8').input('1')
             .input('=').input('9').getResult());
@@ -432,7 +434,7 @@ public class SimpleCalculatorTest {
   // test whether an overflow will happen if the result value is lower than
   // the lowest value of 32-bit integer. should return a 0
   @Test
-  public void testMinusOverflow() {
+  public void testMinusOverflow() throws Exception {
     step1 = c10.input('0');
     assertEquals("0", step1.getResult());
     step2 = step1.input('-');
@@ -464,7 +466,7 @@ public class SimpleCalculatorTest {
   // in this test, input sequence is 5 + 4 * 3, so first add 5 and 4 which is 9,
   // then 9 * 3 becomes 27;
   @Test
-  public void testInSequence() {
+  public void testInSequence() throws Exception {
     step1 = c10.input('5');
     assertEquals("5", step1.getResult());
 
@@ -487,7 +489,7 @@ public class SimpleCalculatorTest {
   // in the following test I make test to what getResult output in every important
   // step we input values
   @Test
-  public void testAddAndMinus() {
+  public void testAddAndMinus() throws Exception {
     step1 = c10.input('1').input('1')
             .input('1').input('+').input('1')
             .input('1').input('1').input('=')
@@ -537,7 +539,7 @@ public class SimpleCalculatorTest {
 
   // test whether * work in the correct way
   @Test
-  public void multiplication() {
+  public void multiplication() throws Exception {
     Calculator step1 = c10.input('8').input('8').input('8').input('+')
             .input('2').input('2').input('2').input('*')
             .input('5').input('2').input('0');
@@ -550,7 +552,7 @@ public class SimpleCalculatorTest {
 
   // test for overflow error when the result is over the max number of 32-bits integer
   @Test
-  public void testOverFlow() {
+  public void testOverFlow() throws Exception {
     // test the case where result is overflow, causing result to be zero
     // a + b - 1 0 = should result in -10 if a+b will overflow
     step1 = c4.input('5').input('+').input('2').input('1').input('4')
@@ -580,7 +582,7 @@ public class SimpleCalculatorTest {
 
   // test that the result is over 32 bits
   @Test
-  public void testVeryBigNumberAddition() {
+  public void testVeryBigNumberAddition() throws Exception {
     // this step only add to a very large number, but not over 32 bits.
     step1 = c10.input('4').input('2').input('9').input('4').input('9').input('6')
             .input('7').input('2').input('9').input('+')
@@ -605,7 +607,7 @@ public class SimpleCalculatorTest {
 
   // test for operand2 remain the same as operand2 is overFlow
   @Test
-  public void testOperand2OverFlow() {
+  public void testOperand2OverFlow() throws Exception {
     // test that the operand 2 is overflow, causing an illegal argument error
     step1 = c6.input('4').input('+');
     assertEquals("4+", step1.getResult());
@@ -628,7 +630,7 @@ public class SimpleCalculatorTest {
   // test for immutable property of input method,
   // the input method should not change the calling object
   @Test
-  public void testImmutable() {
+  public void testImmutable() throws Exception {
     step1 = c10.input('1');
     // sept1 is the calling object here, so expect only step2's value change
     // and step1's value remain the same
