@@ -7,6 +7,7 @@ public class SmartCalculator extends CalculatorAbs {
   public SmartCalculator() {
     super("", new int[]{0, -1, -1, 0, 0});
   }
+
   public SmartCalculator(String result, int[] calculation) {
     super(result, calculation.clone());
   }
@@ -14,6 +15,7 @@ public class SmartCalculator extends CalculatorAbs {
   /**
    * Input method for smartCalculator that return a SmartCalculator.
    * after input a character c
+   *
    * @param c is a single character
    * @return a updated SmartCalculator
    * @throws Exception if any exception occur when calling constructor
@@ -30,9 +32,14 @@ public class SmartCalculator extends CalculatorAbs {
     return this.currentResult;
   }
 
+  // remember to delete before submitting
   @Override
   public String getArray() {
-    return "";
+    return "" + this.calculation[0]
+            + "/" + this.calculation[1]
+            + "/" + this.calculation[2]
+            + "/" + this.calculation[3]
+            + "/" + this.calculation[4];
   }
 
 }

@@ -5,7 +5,7 @@ import calculator.SmartCalculator;
 
 /**
  * SmartMutator class is the mutator for calculating with SmartCalculator
- * that extends the Mutator abstract class
+ * that extends the Mutator abstract class.
  */
 public class SmartMutator extends Mutator{
   /**
@@ -19,19 +19,26 @@ public class SmartMutator extends Mutator{
     super(stringResult, calculation);
   }
 
+  /**
+   * buildCalculator method returns a SmartCalculator with the info from current fields.
+   * @return the updated SmartCalculator object.
+   */
   @Override
   public Calculator buildCalculator() {
-    return new SmartCalculator(this.stringResult, this.calculation);
-  }
-
-  @Override
-  protected void handleOperator(char c) {
-
+    return new SmartCalculator(this.stringResult, this.calculation.clone());
   }
 
   @Override
   protected void handleOperand(Character c, int operand, boolean isFirstOperand) {
-
+    // handle the case that the given character is an operator
+    if (isOperator(c)) {
+      // if it's first operand, then - is not allowed, and + will be ignored
+      if (isFirstOperand) {
+        if (c == '-') {
+          throw new CalculatorException();
+        }
+      }
+    }
   }
 
   @Override

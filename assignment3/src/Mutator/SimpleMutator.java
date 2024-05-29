@@ -48,7 +48,7 @@ public class SimpleMutator extends Mutator {
    */
   @Override
   public Calculator buildCalculator() {
-    return new SimpleCalculator(this.stringResult, this.calculation);
+    return new SimpleCalculator(this.stringResult, this.calculation.clone());
   }
 
   // handle operand method takes three arguments, a character c which
@@ -174,29 +174,5 @@ public class SimpleMutator extends Mutator {
               +
               "other than +, -, *, =, or digits, you put: " + c);
     }
-  }
-
-  // this method handle the operator
-  @Override
-  protected void handleOperator(char c) {
-    switch (c) {
-      case '+':
-        this.calculation[4] = 1;
-        this.stringResult += "+";
-        break;
-      case '-':
-        this.calculation[4] = 2;
-        this.stringResult += "-";
-        break;
-      case '*':
-        this.calculation[4] = 3;
-        this.stringResult += "*";
-        break;
-      default:
-        throw new IllegalArgumentException("should not type any character other "
-                +
-                "than number or operator here");
-    }
-    this.calculation[3] = 2;
   }
 }

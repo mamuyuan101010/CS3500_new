@@ -82,9 +82,6 @@ public abstract class Mutator implements IMutator {
     }
   }
 
-  // handleOperator method that is decided based on which type of mutator it belongs to
-  protected abstract void handleOperator(char c);
-
   // handleOperand method that is decided based on which type of mutator it belongs to
   protected abstract void handleOperand(Character c, int operand, boolean isFirstOperand);
 
@@ -165,5 +162,28 @@ public abstract class Mutator implements IMutator {
   // this method handle the second operand
   protected void handleOperand2(char c) {
     handleOperand(c, this.calculation[2], false);
+  }
+
+  // this method handle the operator
+  protected void handleOperator(char c) {
+    switch (c) {
+      case '+':
+        this.calculation[4] = 1;
+        this.stringResult += "+";
+        break;
+      case '-':
+        this.calculation[4] = 2;
+        this.stringResult += "-";
+        break;
+      case '*':
+        this.calculation[4] = 3;
+        this.stringResult += "*";
+        break;
+      default:
+        throw new IllegalArgumentException("should not type any character other "
+                +
+                "than number or operator here");
+    }
+    this.calculation[3] = 2;
   }
 }

@@ -36,8 +36,10 @@ public class SmartCalculatorTest {
     c1 = new SmartCalculator();
   }
 
+  // test for inputting multiple = signs
   @Test
   public void testMultipleEquals() throws Exception {
+    assertEquals("", c1.getResult());
     step1 = c1.input('3');
     assertEquals("3", step1.getResult());
     step2 = step1.input('2');
@@ -55,4 +57,58 @@ public class SmartCalculatorTest {
     step8 = step3.input('=');
     assertEquals("104", step8.getResult());
   }
+
+  @Test
+  public void testSkipOperand2() throws Exception {
+    assertEquals("", c1.getResult());
+    step1 = c1.input('3');
+    assertEquals("3", step1.getResult());
+    step2 = step1.input('2');
+    assertEquals("32", step2.getResult());
+    step3 = step2.input('+');
+    assertEquals("32+", step3.getResult());
+    step4 = step3.input('=');
+    assertEquals("64", step4.getResult());
+    step5 = step3.input('=');
+    assertEquals("96", step5.getResult());
+  }
+
+  @Test
+  public void testFirstOpertorIgnore() throws Exception {
+    step1 = c1.input('3');
+    assertEquals("3", step1.getResult());
+    step2 = step1.input('2');
+    assertEquals("32", step2.getResult());
+    step3 = step2.input('+');
+    assertEquals("32+", step3.getResult());
+    step4 = step3.input('-');
+    assertEquals("32-", step4.getResult());
+    step5 = step3.input('2');
+    assertEquals("32-2", step5.getResult());
+    step6 = step3.input('4');
+    assertEquals("32-24", step6.getResult());
+    step7 = step3.input('=');
+    assertEquals("8", step7.getResult());
+  }
+
+  // Begin with operator
+  @Test
+  public void testBeginWithOperator() throws Exception{
+    assertEquals("", c1.getResult());
+    step1 = c1.input('+');
+    assertEquals("+", step1.getResult());
+    step2 = step1.input('3');
+    assertEquals("3", step2.getResult());
+    step3 = step2.input('2');
+    assertEquals("32", step3.getResult());
+    step4 = step3.input('-');
+    assertEquals("32-", step4.getResult());
+    step5 = step4.input('2');
+    assertEquals("32-2", step5.getResult());
+    step6 = step5.input('4');
+    assertEquals("32-24", step6.getResult());
+    step7 = step6.input('=');
+    assertEquals("8", step7.getResult());
+  }
+
 }
