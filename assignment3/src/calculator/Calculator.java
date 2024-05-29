@@ -15,6 +15,7 @@ package calculator;
  *  </ul>
  */
 public interface Calculator {
+
   /**
    * takes a single character and
    * return a calculator.Calculator object as
@@ -22,7 +23,7 @@ public interface Calculator {
    * @param c is a single character
    * @return a calculator.Calculator object as a result of processing the input
    */
-  Calculator input(char c) throws Exception;
+  Calculator input(char c);
 
   /**
    * does not take any arguments and return the current

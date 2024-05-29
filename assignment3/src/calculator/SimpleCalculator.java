@@ -1,7 +1,8 @@
 package calculator;
-
+import Exception.NegativeOperandException;
 import Mutator.IMutator;
 import Mutator.SimpleMutator;
+import Mutator.StringChecker;
 
 /**
  * The SimpleCalculator implements Calculator interface.
@@ -105,6 +106,17 @@ import Mutator.SimpleMutator;
  */
 public class SimpleCalculator extends CalculatorAbs {
 
+  /**
+   * SimpleCalculator Constructor that takes all value and assign those values to
+   * its private fields.
+   *
+   * @param currentResult is the result in string
+   * @param calculation   is the array of int that store all info
+   * @throws IllegalArgumentException when invalid input is enter the parameters.
+   */
+   public SimpleCalculator(String currentResult, int[] calculation) {
+     super(currentResult, calculation.clone());
+  }
 
   /**
    * constructor of SimpleCalculator that takes nothing, and will generate default value to
@@ -146,29 +158,13 @@ public class SimpleCalculator extends CalculatorAbs {
     super("", new int[]{0, -1, -1, 0, 0});
   }
 
-  /**
-   * SimpleCalculator Constructor that takes all value and assign those values to
-   * its private fields.
-   *
-   * @param currentResult is the result in string
-   * @param calculation   is the array of int that store all info
-   * @throws IllegalArgumentException when invalid input is enter the parameters.
-   */
-  public SimpleCalculator(String currentResult, int[] calculation)
-          throws IllegalArgumentException {
-    super(currentResult, calculation.clone());
-  }
+
 
   @Override
-  public Calculator input(char c) throws Exception {
+  public Calculator input(char c) {
     IMutator m = new SimpleMutator(this.currentResult, this.calculation);
     m.input(c);
     return m.buildCalculator();
-  }
-
-  @Override
-  public String getResult() {
-    return this.currentResult;
   }
 
   public String getArray() {

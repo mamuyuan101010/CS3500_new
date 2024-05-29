@@ -2,7 +2,9 @@ package Mutator;
 
 import calculator.Calculator;
 import calculator.SimpleCalculator;
-
+import Exception.InvalidCharacterException;
+import Exception.OverFlowException;
+import Exception.NegativeOperandException;
 /**
  * Mutator class is the helper class for taking the value in each fields in SimpleCalculator class
  * , taking inputs of character c for mutating its own fields, and re-declaring
@@ -36,7 +38,7 @@ public class SimpleMutator extends Mutator {
    * @param stringResult is the result in string
    * @throws IllegalArgumentException throw exception when input an invalid number
    */
-  public SimpleMutator(String stringResult, int[] calculation) throws Exception {
+  public SimpleMutator(String stringResult, int[] calculation) {
     super(stringResult, calculation.clone());
   }
 
@@ -56,8 +58,7 @@ public class SimpleMutator extends Mutator {
   // finally the isFirstOperand which is the determinant of operand1,
   // if the given operand is operand1, then isFirstOperand is true,
   // else it's false.
-  @Override
-  protected void handleOperand(Character c, int operand, boolean isFirstOperand) {
+  private void handleOperand(Character c, int operand, boolean isFirstOperand) {
     // case that operand1 is -1, meaning it's the first pos of the first operand
     if (operand == -1) {
       // case that the input c is a number
@@ -68,20 +69,11 @@ public class SimpleMutator extends Mutator {
       // condition that input c is a -, meaning the user wants to input a negative
       // value, which should not be allowed here.
       else if (c == '-') {
-        throw new IllegalArgumentException("cannot handle negative numbers");
+        throw new NegativeOperandException();
       }
       // case that the input c is neither a number nor a negative operator
       else {
-        int numO;
-        if (isFirstOperand) {
-          numO = 1;
-        } else {
-          numO = 2;
-        }
-        throw new IllegalArgumentException("cannot handle character "
-                + c
-                + " other than number "
-                + "in the first position of the operand " + numO);
+        throw new InvalidCharacterException(c);
       }
     }
     // case that operand is not -1, meaning it's not the first pos of the first operand
@@ -89,11 +81,7 @@ public class SimpleMutator extends Mutator {
       // case that c is still a 0 to 9 number
       if (isNumber(c)) {
         long advValue = digitAdv(operand, Character.getNumericValue(c));
-        if (advValue <= Integer.MAX_VALUE) {
-          operand = (int) advValue;
-        } else {
-          throw new IllegalArgumentException("cannot work with whole numbers longer than 32 bits");
-        }
+        operand = (int) advValue;
         assignOperand(c, operand, isFirstOperand);
       }
       // case that c is not a number, we need to handle this c to handleOperator method
@@ -106,6 +94,16 @@ public class SimpleMutator extends Mutator {
         input(c);
       }
     }
+  }
+
+  // this method handle the first operand
+  protected void handleOperand1(char c) {
+    handleOperand(c, this.calculation[1], true);
+  }
+
+  // this method handle the second operand
+  protected void handleOperand2(char c) {
+    handleOperand(c, this.calculation[2], false);
   }
 
   // this method handle result stage by calculate out the result
@@ -170,9 +168,7 @@ public class SimpleMutator extends Mutator {
     }
     // condition that c is not =, +, -, *, or digit.
     else {
-      throw new IllegalArgumentException("should not input any character "
-              +
-              "other than +, -, *, =, or digits, you put: " + c);
+      throw new InvalidCharacterException(c);
     }
   }
 }

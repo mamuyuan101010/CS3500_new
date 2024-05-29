@@ -1,5 +1,7 @@
 package Mutator;
-
+import Exception.NegativeOperandException;
+import Exception.InvalidCharacterException;
+import Exception.OverFlowException;
 /**
  * Mutator class is an abstract class that implements interface IMutator
  * and other kinds of specific Mutator classes need to extend this Mutator
@@ -8,9 +10,28 @@ public abstract class Mutator implements IMutator {
   // two fields that represent the string that will return later,
   // and the calculation array that store all values calculators need.
   protected String stringResult;
+  /**
+   * resultInInteger only store the calculated result in integer and prepare
+   * for giving currentResult variable value
+   * operand1 represents the first operand of the calculation
+   * operand2 represents the second operand of the calculation
+   * status integer can only be 4 integers,
+   * 0, meaning we are now in operand1,
+   * 1, meaning we are now in operator,
+   * 2, meaning we are in operand2,
+   * and 3, meaning we are in result.
+   * operator integer can only be 4 integers,
+   * 0, meaning no operator assigned.
+   * 1, meaning operator + will be used.
+   * 2, meaning operator - will be used.
+   * and finally 3, meaning operator * will be used.
+   */
+  // calculation store currentResult(0 position), operand1(1 position),
+  // operand2(2 position), status(3 position), operator(4 position) in order
+  // in an integer array
   protected int[] calculation;
 
-  public Mutator(String stringResult, int[] calculation) throws Exception {
+  public Mutator(String stringResult, int[] calculation) {
     // condition that status is not in 0 - 3 range
     if (calculation[3] > 3 || calculation[3] < 0) {
       throw new IllegalArgumentException("illegal status number input");
@@ -27,7 +48,7 @@ public abstract class Mutator implements IMutator {
     // -1 will be the only exception as it is the default value to waiting for
     // assigning other values
     else if (calculation[2] < -1) {
-      throw new IllegalArgumentException("negative operand2 input");
+      throw new NegativeOperandException();
     }
     this.stringResult = stringResult;
     this.calculation = calculation.clone();
@@ -63,27 +84,31 @@ public abstract class Mutator implements IMutator {
     if (c == 'C') {
       backIntoDefault();
     } else {
-      switch (this.calculation[3]) {
-        case 0:
-          handleOperand1(c);
-          break;
-        case 1:
-          handleOperator(c);
-          break;
-        case 2:
-          handleOperand2(c);
-          break;
-        case 3:
-          handleResult(c);
-          break;
-        default:
-          throw new IllegalStateException("status should not be other than 0,1,2,3");
+      if (isNumber(c) || isOperator(c) || c == '=') {
+        switch (this.calculation[3]) {
+          case 0:
+            handleOperand1(c);
+            break;
+          case 1:
+            handleOperator(c);
+            break;
+          case 2:
+            handleOperand2(c);
+            break;
+          case 3:
+            handleResult(c);
+            break;
+          default:
+            throw new IllegalStateException("status should not be other than 0,1,2,3");
+        }
+      }
+      // in case if c is neither number nor operator
+      else {
+        throw new InvalidCharacterException(c);
       }
     }
   }
 
-  // handleOperand method that is decided based on which type of mutator it belongs to
-  protected abstract void handleOperand(Character c, int operand, boolean isFirstOperand);
 
   // handleResult method that is decided based on which type of mutator it belongs to
   // a smart calculator will be able to accept multiple = sign by calculating with
@@ -139,7 +164,12 @@ public abstract class Mutator implements IMutator {
 
   // take the old digit and new digit, make the old digit advance for 1 digit
   protected long digitAdv(long oldDigit, int newDigit) {
-    return (oldDigit * 10) + newDigit;
+    long returnNum = 0;
+    returnNum = (oldDigit * 10) + newDigit;
+    if (returnNum > Integer.MAX_VALUE){
+      throw new OverFlowException();
+    }
+    return returnNum;
   }
 
   // this method will take a character c, an integer operand, and a boolean isFirstOperand
@@ -155,14 +185,10 @@ public abstract class Mutator implements IMutator {
   }
 
   // this method handle the first operand
-  protected void handleOperand1(char c) {
-    handleOperand(c, this.calculation[1], true);
-  }
+  protected abstract void handleOperand1(char c);
 
   // this method handle the second operand
-  protected void handleOperand2(char c) {
-    handleOperand(c, this.calculation[2], false);
-  }
+  protected abstract void handleOperand2(char c);
 
   // this method handle the operator
   protected void handleOperator(char c) {
@@ -180,9 +206,7 @@ public abstract class Mutator implements IMutator {
         this.stringResult += "*";
         break;
       default:
-        throw new IllegalArgumentException("should not type any character other "
-                +
-                "than number or operator here");
+        throw new InvalidCharacterException(c);
     }
     this.calculation[3] = 2;
   }

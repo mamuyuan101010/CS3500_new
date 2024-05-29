@@ -1,8 +1,8 @@
 package calculator;
 
 import Mutator.StringChecker;
-
-public abstract class CalculatorAbs implements Calculator {
+import Exception.NegativeOperandException;
+public abstract class CalculatorAbs implements Calculator{
   // currentResult stores the result in string and prepare
   // for getResult method to return
   protected final String currentResult;
@@ -24,15 +24,11 @@ public abstract class CalculatorAbs implements Calculator {
    * 2, meaning operator - will be used.
    * and finally 3, meaning operator * will be used.
    */
-  //
+  // calculation store currentResult(0 position), operand1(1 position),
+  // operand2(2 position), status(3 position), operator(4 position) in order
+  // in an integer array
   protected final int[] calculation;
-
-  /**
-   * constructor of CalculatorAbs
-   * @param currentResult is the result in string
-   * @param calculation is the list that store all infos for calculation
-   */
-  protected CalculatorAbs(String currentResult, int[] calculation) {
+  protected CalculatorAbs(String stringResult, int[] calculation) {
     // condition that status is not in 0 - 3 range
     if (calculation[3] > 3 || calculation[3] < 0) {
       throw new IllegalArgumentException("illegal status number input");
@@ -42,16 +38,21 @@ public abstract class CalculatorAbs implements Calculator {
       throw new IllegalArgumentException("illegal operator number input");
     }
     // condition that string contains characters other than digits or operator
-    else if (!StringChecker.onlyContainDigitOrOpr(currentResult)) {
+    else if (!StringChecker.onlyContainDigitOrOpr(stringResult)) {
       throw new IllegalArgumentException("illegal currentResult string input");
     }
     // condition that operand2 is negative, since operand2 cannot be negative at all
     // -1 will be the only exception as it is the default value to waiting for
     // assigning other values
     else if (calculation[2] < -1) {
-      throw new IllegalArgumentException("negative operand2 input");
+      throw new NegativeOperandException();
     }
-    this.currentResult = currentResult;
+    this.currentResult = stringResult;
     this.calculation = calculation.clone();
+  }
+
+  @Override
+  public String getResult() {
+    return this.currentResult;
   }
 }

@@ -145,7 +145,7 @@ public class SimpleCalculatorTest {
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
     }
-    assertEquals("negative operand2 input", errorMsg);
+    assertEquals("cannot handle negative operand", errorMsg);
 
     // now testing status not in good range
     try {
@@ -186,9 +186,7 @@ public class SimpleCalculatorTest {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    assertEquals("cannot handle character + other "
-            +
-            "than number in the first position of the operand 2", errorMsg);
+    assertEquals("cannot handle invalid character:+", errorMsg);
     // test for input an unauthorized character
     try {
       c3.input('C');
@@ -197,9 +195,7 @@ public class SimpleCalculatorTest {
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
     }
-    assertEquals("cannot handle character L other "
-            +
-            "than number in the first position of the operand 2", errorMsg);
+    assertEquals("cannot handle invalid character:L", errorMsg);
 
     // test the case to put equal sign before call the operator
     try {
@@ -210,17 +206,13 @@ public class SimpleCalculatorTest {
     } catch (IllegalArgumentException e) {
       errorMsg = e.getMessage();
     }
-    assertEquals("should not type any character"
-            +
-            " other than number or operator here", errorMsg);
+    assertEquals("cannot handle invalid character:=", errorMsg);
 
     // test for input /
     try {
       c4.input('/');
     } catch (IllegalArgumentException e) {
-      assertEquals("cannot handle character / other "
-              +
-              "than number in the first position of the operand 1", e.getMessage());
+      assertEquals("cannot handle invalid character:/", e.getMessage());
     }
   }
 
@@ -313,9 +305,7 @@ public class SimpleCalculatorTest {
       c6.input('3').input('2').input('+').input('=');
       fail("should fail");
     } catch (Exception e) {
-      assertEquals("cannot handle character = other than"
-              +
-              " number in the first position of the operand 2", e.getMessage());
+      assertEquals("cannot handle invalid character:=", e.getMessage());
     }
 
     // test to put + in the first
@@ -324,9 +314,7 @@ public class SimpleCalculatorTest {
       c6.input('+').input('1').input('2').input('+').input('3');
       fail("should fail");
     } catch (Exception e) {
-      assertEquals("cannot handle character + "
-              +
-              "other than number in the first position of the operand 1", e.getMessage());
+      assertEquals("cannot handle invalid character:+", e.getMessage());
     }
   }
 
@@ -370,7 +358,7 @@ public class SimpleCalculatorTest {
       fail("should fail");
     } catch (Exception e) {
       errorMsg = e.getMessage();
-      assertEquals("cannot handle negative numbers", errorMsg);
+      assertEquals("cannot handle negative operand", errorMsg);
     }
 
     // negative in the second operand
@@ -385,7 +373,7 @@ public class SimpleCalculatorTest {
       fail("should fail");
     } catch (Exception e) {
       errorMsg = e.getMessage();
-      assertEquals("cannot handle negative numbers", errorMsg);
+      assertEquals("cannot handle negative operand", errorMsg);
     }
   }
 
@@ -410,9 +398,7 @@ public class SimpleCalculatorTest {
       fail("should fail");
     } catch (Exception e) {
       errorMsg = e.getMessage();
-      assertEquals("should not type any character "
-              +
-              "other than number or operator here", errorMsg);
+      assertEquals("cannot handle invalid character:g", errorMsg);
     }
 
   }
@@ -576,7 +562,7 @@ public class SimpleCalculatorTest {
       errorMsg = e.getMessage();
     }
     // check the error message
-    assertEquals("cannot work with whole numbers longer than 32 bits", errorMsg);
+    assertEquals("your input integer is over 32 bits", errorMsg);
 
   }
 
@@ -624,7 +610,7 @@ public class SimpleCalculatorTest {
       assertEquals("4+214748364", step2.getResult());
     }
     // check the error message
-    assertEquals("cannot work with whole numbers longer than 32 bits", errorMsg);
+    assertEquals("your input integer is over 32 bits", errorMsg);
   }
 
   // test for immutable property of input method,
