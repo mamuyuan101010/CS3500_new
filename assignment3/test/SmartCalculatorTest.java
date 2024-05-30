@@ -238,6 +238,17 @@ public class SmartCalculatorTest {
     assertEquals("4*", step6.getResult());
   }
 
+  // test to put = sign in the front
+  @Test
+  public void equalSignInFront() {
+    try {
+      step1 = smartCalculator.input('=');
+      fail("should fail");
+    } catch (IllegalArgumentException e) {
+      assertEquals("cannot handle invalid character:=", e.getMessage());
+    }
+  }
+
   // test 32 + 24 = 56
   @Test
   public void testSmartCalculator1() {

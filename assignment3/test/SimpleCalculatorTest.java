@@ -373,12 +373,23 @@ public class SimpleCalculatorTest {
 
   // test to put + sign in the front
   @Test
-  public void equalSignInFront() {
+  public void plusSignInFront() {
     try {
       simpleCalculator.input('+');
       fail("should fail");
     } catch (Exception e) {
       assertEquals("cannot handle invalid character:+", e.getMessage());
+    }
+  }
+
+  // test to put = sign in the front
+  @Test
+  public void equalSignInFront() {
+    try {
+      step1 = simpleCalculator.input('=');
+      fail("should fail");
+    } catch (IllegalArgumentException e) {
+      assertEquals("cannot handle invalid character:=", e.getMessage());
     }
   }
 
