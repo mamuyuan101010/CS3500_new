@@ -154,19 +154,18 @@ public class SimpleCalculator extends CalculatorAbs {
     super("", new int[]{0, -1, -1, 0, 0});
   }
 
-
+  /**
+   * input method for SimpleCalculator objects.
+   * Inputting = after +, inputting + after +, inputting + at the beginning is forbidden in
+   * SimpleCalculator.
+   * Inputting = multiple times will result in the same result.
+   * @param c is a single character
+   * @return a new updated SimpleCalculator after input the character c
+   */
   @Override
   public Calculator input(char c) {
     IMutator m = new SimpleMutator(this.currentResult, this.calculation);
     m.input(c);
     return m.buildCalculator();
-  }
-
-  public String getArray() {
-    return "" + this.calculation[0]
-            + "/" + this.calculation[1]
-            + "/" + this.calculation[2]
-            + "/" + this.calculation[3]
-            + "/" + this.calculation[4];
   }
 }

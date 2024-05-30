@@ -62,4 +62,12 @@ public abstract class CalculatorAbs implements Calculator {
   public String getResult() {
     return this.currentResult;
   }
+
+  /**
+   * input method here is an abstract class that requires its subclass to
+   * extend this method.
+   * @param c is a single character
+   * @return a updated Calculator after character c is input
+   */
+  public abstract Calculator input(char c);
 }

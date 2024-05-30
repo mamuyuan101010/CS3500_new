@@ -33,6 +33,14 @@ abstract class Mutator implements IMutator {
   // in an integer array
   protected int[] calculation;
 
+  /**
+   * Mutator constructor of abstract Mutator class that takes a string as stringResult
+   * and an int array as calculation infos containing operand, operator, status, and currentResult
+   * integers.
+   * @param stringResult is the result in string
+   * @param calculation is the integer array that containing operand, operator,
+   *                   status, and currentResult infos
+   */
   Mutator(String stringResult, int[] calculation) {
     // condition that status is not in 0 - 3 range
     if (calculation[3] > 3 || calculation[3] < 0) {
@@ -119,34 +127,34 @@ abstract class Mutator implements IMutator {
   // the second operand multiple times.
   abstract void handleResult(char c);
 
-  // plus method takes two integers a and b, and
+  // plus method takes two integers operand1 and operand2, and
   // return the sum of two integer inputs
-  int plus(int a, int b) {
-    if (((long) a + b) > Integer.MAX_VALUE) {
+  int plus(int operand1, int operand2) {
+    if (((long) operand1 + operand2) > Integer.MAX_VALUE) {
       return 0;
     }
-    return (a + b);
+    return (operand1 + operand2);
   }
 
-  // minus method takes two integers a and b, and
+  // minus method takes two integers operand1 and operand2, and
   // return the difference between the
   // two integer inputs
-  int minus(int a, int b) {
-    if (((long) a - b) < (long) Integer.MIN_VALUE) {
+  int minus(int operand1, int operand2) {
+    if (((long) operand1 - operand2) < (long) Integer.MIN_VALUE) {
       return 0;
     }
-    return (a - b);
+    return (operand1 - operand2);
   }
 
-  // multiply method takes two integers a and b, and
+  // multiply method takes two integers operand1 and operand2, and
   // return the product of the
   // two integer inputs
-  int multiply(int a, int b) {
-    if (((long) a * b) > Integer.MAX_VALUE
-            || ((long) a * b) < Integer.MIN_VALUE) {
+  int multiply(int operand1, int operand2) {
+    if (((long) operand1 * operand2) > Integer.MAX_VALUE
+            || ((long) operand1 * operand2) < Integer.MIN_VALUE) {
       return 0;
     }
-    return (a * b);
+    return (operand1 * operand2);
   }
 
   // this method check whether the given character c is an integer from 0 to 9
