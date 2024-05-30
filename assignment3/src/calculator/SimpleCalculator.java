@@ -1,8 +1,4 @@
 package calculator;
-import Exception.NegativeOperandException;
-import Mutator.IMutator;
-import Mutator.SimpleMutator;
-import Mutator.StringChecker;
 
 /**
  * The SimpleCalculator implements Calculator interface.
@@ -114,8 +110,8 @@ public class SimpleCalculator extends CalculatorAbs {
    * @param calculation   is the array of int that store all info
    * @throws IllegalArgumentException when invalid input is enter the parameters.
    */
-   public SimpleCalculator(String currentResult, int[] calculation) {
-     super(currentResult, calculation.clone());
+  public SimpleCalculator(String currentResult, int[] calculation) {
+    super(currentResult, calculation.clone());
   }
 
   /**
@@ -157,7 +153,6 @@ public class SimpleCalculator extends CalculatorAbs {
   public SimpleCalculator() {
     super("", new int[]{0, -1, -1, 0, 0});
   }
-
 
 
   @Override

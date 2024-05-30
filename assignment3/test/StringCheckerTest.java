@@ -1,5 +1,7 @@
 import org.junit.Test;
-import Mutator.StringChecker;
+
+import calculator.StringChecker;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -8,6 +10,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class StringCheckerTest {
 
+  // this test check whether the given String contains only digits or operator
   @Test
   public void onlyContainDigitOrOpr() {
     assertTrue(StringChecker.onlyContainDigitOrOpr("+-*1234"));

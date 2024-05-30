@@ -1,8 +1,12 @@
 package calculator;
 
-import Mutator.StringChecker;
-import Exception.NegativeOperandException;
-public abstract class CalculatorAbs implements Calculator{
+import exception.NegativeOperandException;
+
+/**
+ * CalculatorAbs is the abstract class implements Calculator interface
+ * that can represent both SimpleCalculator and SmartCalculator.
+ */
+public abstract class CalculatorAbs implements Calculator {
   // currentResult stores the result in string and prepare
   // for getResult method to return
   protected final String currentResult;
@@ -28,6 +32,9 @@ public abstract class CalculatorAbs implements Calculator{
   // operand2(2 position), status(3 position), operator(4 position) in order
   // in an integer array
   protected final int[] calculation;
+
+  // CalculatorAbs constructor that takes a stringResult and an int array as calculation infos
+  // that represent operand1/2, status, operator, resultInInt
   protected CalculatorAbs(String stringResult, int[] calculation) {
     // condition that status is not in 0 - 3 range
     if (calculation[3] > 3 || calculation[3] < 0) {

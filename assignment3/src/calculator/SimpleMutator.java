@@ -1,10 +1,8 @@
-package Mutator;
+package calculator;
 
-import calculator.Calculator;
-import calculator.SimpleCalculator;
-import Exception.InvalidCharacterException;
-import Exception.OverFlowException;
-import Exception.NegativeOperandException;
+import exception.InvalidCharacterException;
+import exception.NegativeOperandException;
+
 /**
  * Mutator class is the helper class for taking the value in each fields in SimpleCalculator class
  * , taking inputs of character c for mutating its own fields, and re-declaring
@@ -29,16 +27,17 @@ import Exception.NegativeOperandException;
  *   </li>
  * </ul>
  */
-public class SimpleMutator extends Mutator {
+class SimpleMutator extends Mutator {
 
   /**
    * Mutator constructor that takes an array value of result, operand1,
    * operand2, status, operator and a stringResult value.
-   * @param calculation is the array of int that include all info for calculation
+   *
+   * @param calculation  is the array of int that include all info for calculation
    * @param stringResult is the result in string
    * @throws IllegalArgumentException throw exception when input an invalid number
    */
-  public SimpleMutator(String stringResult, int[] calculation) {
+  SimpleMutator(String stringResult, int[] calculation) {
     super(stringResult, calculation.clone());
   }
 
@@ -97,19 +96,19 @@ public class SimpleMutator extends Mutator {
   }
 
   // this method handle the first operand
-  protected void handleOperand1(char c) {
+  void handleOperand1(char c) {
     handleOperand(c, this.calculation[1], true);
   }
 
   // this method handle the second operand
-  protected void handleOperand2(char c) {
+  void handleOperand2(char c) {
     handleOperand(c, this.calculation[2], false);
   }
 
   // this method handle result stage by calculate out the result
   // based on the previous given operand1, operand2, and operator
   @Override
-  protected void handleResult(char c) {
+  void handleResult(char c) {
     // first calculate the result and store result in the resultInInteger variable
     // condition that c is =, +, -, or *
     if (c == '=' || isOperator(c) || isNumber(c)) {

@@ -1,4 +1,4 @@
-package Mutator;
+package calculator;
 
 /**
  * StringChecker is a function abstract class that only serves to test whether the given string

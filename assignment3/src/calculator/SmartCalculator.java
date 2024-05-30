@@ -1,10 +1,29 @@
 package calculator;
 
-import Mutator.IMutator;
-import Mutator.SmartMutator;
-import Mutator.StringChecker;
-import Exception.NegativeOperandException;
-
+/**
+ * SmartCalculator class is a class extends CalculatorAbs that has more advance feature than
+ * SimpleCalculator.
+ * it is able to handle the following situations different from SimpleCalculator:
+ * <ul>
+ *   <li>
+ *     Input "=" multiple times: 3 2 + 2 4 = produces 56 as before. However 3 2 + 2 4 = = and
+ *     3 2 + 2 4 = = = are also valid input sequences, and produce 80 and 104 respectively.
+ *   </li>
+ *   <li>
+ *     Skipping the second operand: the input 3 2 + = produces 64. The input 3 2 + = = produces
+ *     96, and so on. The state at the end of each "=" is the result of the computation thus far.
+ *   </li>
+ *   <li>
+ *     Two consecutive operators: 3 2 + - 2 4 = ignores the first operator,
+ *     and produces 8 as the result.
+ *   </li>
+ *   <li>
+ *     Begin with operator: + 3 2 - 2 4 = ignores the "+" and produces 8 as the result.
+ *     Note that this only applies to the '+' operator as it has a mathematical meaning
+ *     when it comes before an operand. All other operators before operands are invalid.
+ *   </li>
+ * </ul>
+ */
 public class SmartCalculator extends CalculatorAbs {
 
   /**
