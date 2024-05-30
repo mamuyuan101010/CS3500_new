@@ -29,24 +29,30 @@ class SmartMutator extends Mutator {
     return new SmartCalculator(this.stringResult, this.calculation.clone());
   }
 
+  // resultBasedOnOperator method take in an integer representing operator and
+  // run the following calculation process based on the given operator integer
+  void resultBasedOnOperator(int operator) {
+    switch (operator) {
+      case 1:
+        calculation[0] = plus(calculation[1], calculation[2]);
+        break;
+      case 2:
+        calculation[0] = minus(calculation[1], calculation[2]);
+        break;
+      case 3:
+        calculation[0] = multiply(calculation[1], calculation[2]);
+        break;
+      default:
+        throw new IllegalStateException("Unexpected status value: "
+                + calculation[4]);
+    }
+  }
+
   @Override
   void handleResult(char c) {
     // in case a = sign is input
     if (c == '=') {
-      switch (calculation[4]) {
-        case 1:
-          calculation[0] = plus(calculation[1], calculation[2]);
-          break;
-        case 2:
-          calculation[0] = minus(calculation[1], calculation[2]);
-          break;
-        case 3:
-          calculation[0] = multiply(calculation[1], calculation[2]);
-          break;
-        default:
-          throw new IllegalStateException("Unexpected status value: "
-                  + calculation[4]);
-      }
+      resultBasedOnOperator(calculation[4]);
       // first assign the number to the resultString
       this.stringResult = "" + calculation[0];
       // then assign the result into first operand
@@ -74,6 +80,7 @@ class SmartMutator extends Mutator {
   @Override
   void handleOperand1(char c) {
     // case that operand1 has not been assigned a value yet
+    // meaning operand1's value is -1
     if (calculation[1] == -1) {
       // in case if c is a number
       if (isNumber(c)) {
@@ -93,7 +100,9 @@ class SmartMutator extends Mutator {
       // case that c is =
       else if (c == '=') {
         throw new InvalidCharacterException(c);
-      } else if (isOperator(c)) {
+      }
+      // case that c is an operator: +, -, or *
+      else if (isOperator(c)) {
         // case that c is an operator
         calculation[3] = 1; // make status be now in operator
         input(c);
@@ -102,6 +111,24 @@ class SmartMutator extends Mutator {
                 + "illegal state error occur");
       }
     }
+  }
+
+  // this method reassign the operator by input the character c
+  void reassignOperator(char c) {
+    switch (c) {
+      case '+':
+        calculation[4] = 1;
+        break;
+      case '-':
+        calculation[4] = 2;
+        break;
+      case '*':
+        calculation[4] = 3;
+        break;
+      default:
+        throw new IllegalStateException("Unexpected operator: " + c);
+    }
+    stringResult = stringResult.substring(0, stringResult.length() - 1) + c;
   }
 
   // for handling operand2
@@ -117,22 +144,7 @@ class SmartMutator extends Mutator {
       }
       // case that c is operator
       else if (isOperator(c)) {
-        switch (c) {
-          case '+':
-            calculation[4] = 1;
-            stringResult = stringResult.substring(0, stringResult.length() - 1) + '+';
-            break;
-          case '-':
-            calculation[4] = 2;
-            stringResult = stringResult.substring(0, stringResult.length() - 1) + '-';
-            break;
-          case '*':
-            calculation[4] = 3;
-            stringResult = stringResult.substring(0, stringResult.length() - 1) + '*';
-            break;
-          default:
-            throw new IllegalStateException("Unexpected operator: " + c);
-        }
+        reassignOperator(c);
       }
       // case that c is number
       else if (isNumber(c)) {
