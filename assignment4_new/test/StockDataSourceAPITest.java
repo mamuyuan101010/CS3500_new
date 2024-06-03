@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +32,38 @@ public class StockDataSourceAPITest {
   }
 
   @Test
-  public void fetchData() throws IOException {
+  public void fetchData() {
     try {
       Stock aapl = new Stock("AAPL", apiSource);
     } catch (Exception e) {
       fail(e.getMessage());
     }
+  }
 
+  // try input a string that does not represent a stock
+  @Test
+  public void fetchDataNoSuchStock() {
+    try {
+      Stock aapl = new Stock("NoSuchStock", apiSource);
+    } catch (Exception e) {
+      assertEquals("Text '    \"Error Message\": \"Invalid API call. Please retry or"
+              +
+              " visit th...' could not be parsed at index 0", e.getMessage());
+    }
   }
 
   //test no price data found
+  @Test
+  public void fetchDataNoPrice() {
+    try {
+      Stock aapl = new Stock("AAPL", apiSource);
+      try {
+        aapl.calculateXDayMovingAvg(LocalDate.parse("2023-06-04"), 4);
+      } catch (Exception e) {
+        assertEquals("data not available for specified dates", e.getMessage());
+      }
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
 }

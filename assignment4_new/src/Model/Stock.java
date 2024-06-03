@@ -95,6 +95,14 @@ public class Stock implements Investment {
     throw new IllegalArgumentException("dateNoteFound");
   }
 
+  double getClosingPriceFromDate(LocalDate date) {
+    return data.get(getIndexFromDate(date)).closePrice;
+  }
+
+  int getVolumeFromDate(LocalDate date) {
+    return data.get(getIndexFromDate(date)).volume;
+  }
+
 //  @Override
 //  public double calculateXDayMovingAvg(LocalDate startDate, int days) {
 //    if (days <= 0) {
