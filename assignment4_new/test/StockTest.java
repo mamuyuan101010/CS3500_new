@@ -23,19 +23,20 @@ public class StockTest {
   APIStockDataSource apiSource = new APIStockDataSource();
   File gainOrLoss5Days;
   File timestamps;
+  File movingAvg5Days;
 
   @Before
   public void setUp() {
     googleStock = new Stock("GOOG", apiSource);
     gainOrLoss5Days = new File("res/5-DayGainOrLoss");
     timestamps = new File("res/Timestamps");
+    movingAvg5Days = new File("res/5-DayMovingAverage");
   }
 
   @Test
   //match the expected answer from spreadsheet data against the program's method
   //data stored in Timestamps and 5-DayGainOrLoss files in res folder
   public void fetchGainOrLoss() {
-
     //tests only the valid outcomes (when data was available)
     try {
       //set up three different scanners for the appropriate text files needed
@@ -109,10 +110,34 @@ public class StockTest {
   }
 
   @Test
+  //match the expected answer from spreadsheet data against the program's method
+  //data stored in Timestamps and 5-DayMovingAverage files in res folder
   public void calculateXDayMovingAvg() {
+    //tests only the valid outcomes (when data was available)
+    try {
+      //set up three different scanners for the appropriate text files needed
+      Scanner results = new Scanner(movingAvg5Days);
+      Scanner mostRecentTime = new Scanner(timestamps);
+      Scanner XDaysAgoTime = new Scanner(timestamps);
+
+      //for a 5-day moving average, offset the XDaysAgoTime by 5 timestamps
+      for (int i = 0; i < 5; i++) {
+        XDaysAgoTime.nextLine();
+      }
+
+      while (results.hasNextLine() && XDaysAgoTime.hasNextLine()) {
+        LocalDate recent = LocalDate.parse(mostRecentTime.nextLine());
+
+        double actualMovingAvg = googleStock.calculateXDayMovingAvg(recent, 5);
+        assertEquals(Double.parseDouble(results.nextLine()), actualMovingAvg, 0.01);
+      }
+    } catch (FileNotFoundException e) {
+      fail("Specified files not found");
+    }
   }
 
   @Test
   public void findCrossovers() {
+
   }
 }

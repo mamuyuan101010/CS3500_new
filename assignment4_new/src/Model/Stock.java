@@ -83,13 +83,95 @@ public class Stock implements Investment {
     return (endingPrice - startingPrice);
   }
 
-  @Override
-  public double calculateXDayMovingAvg(LocalDate startDate, int days) {
-    return 0;
+  // return the index of StockData that has the same date of the given one
+  // if the StockData does not contain the StockData with the given date,
+  // an illegal exception will be thrown.
+  private int getIndexFromDate(LocalDate date) {
+    for (int i = 0; i < data.size(); i++) {
+      if (data.get(i).date.equals(date)) {
+        return i;
+      }
+    }
+    throw new IllegalArgumentException("dateNoteFound");
   }
 
+//  @Override
+//  public double calculateXDayMovingAvg(LocalDate startDate, int days) {
+//    if (days <= 0) {
+//      throw new IllegalArgumentException("days must be greater than 0");
+//    }
+//    // abstract the subList from the data, start from the x days before the given startDate
+//    // and end at the given startDate.
+//    List<StockData> returnDataList = data.subList(getIndexFromDate(startDate) - days,
+//            getIndexFromDate(startDate) + 1);
+//    double totalClosingPrice = 0;
+//    for (StockData stockData : returnDataList) {
+//      // calculate total price
+//      totalClosingPrice += stockData.closePrice;
+//    }
+//    return totalClosingPrice / returnDataList.size(); // get the average closing price
+//  }
+
+  @Override
+  public double calculateXDayMovingAvg(LocalDate startDate, int days) {
+    if (days <= 0) {
+      throw new IllegalArgumentException("days must be greater than 0");
+    }
+
+    int recentIdx = -1;
+    int startIdx = -1;
+
+    for (StockData point : this.data) {
+      if (point.date.equals(startDate)) {
+        recentIdx = data.indexOf(point);
+        startIdx = startIdx - days;
+      }
+    }
+    if (recentIdx == -1 || startIdx < 0) {
+      throw new IllegalArgumentException("data not available for specified dates");
+    }
+    List<StockData> acquiredData = data.subList(startIdx, recentIdx + 1);
+    double total = 0.0;
+    for (StockData point : acquiredData) {
+      total += point.closePrice;
+    }
+    return total / acquiredData.size();
+  }
+
+  /**
+   * findCrossOver method is a method that takes a range of dates, and
+   * check each date in teh range of dates whether their close price is greater
+   * than their x day moving average.
+   * @param startDate the start date of the specified range of days
+   * @param endDate the end date of the specified range of days
+   * @param days the positive number of days for the crossovers to be determined from
+   * @return the List of dates that has greater closing price than their
+   *     x day moving average (x is the given integer "days")
+   */
   @Override
   public List<LocalDate> findCrossovers(LocalDate startDate, LocalDate endDate, int days) {
-    return List.of();
+    List<LocalDate> returnList = new ArrayList<LocalDate>();
+    int indexStart = -1;
+    int indexEnd = -1;
+    for (StockData point : this.data) {
+      if (point.date.equals(startDate)) {
+        indexStart = data.indexOf(point);
+      }
+      if (point.date.equals(endDate)) {
+        indexEnd = data.indexOf(point);
+      }
+    }
+    if (indexStart == -1 || indexEnd == -1) {
+      throw new IllegalArgumentException("data not found on given dates");
+    }
+    if (indexStart > indexEnd) {
+      throw new IllegalArgumentException("start index exceeds end index");
+    }
+    for (int i = indexStart; i <= indexEnd; i++) {
+      if (data.get(i).closePrice > calculateXDayMovingAvg(data.get(i).date, days)) {
+        returnList.add(data.get(i).date);
+      }
+    }
+    return returnList;
   }
 }
