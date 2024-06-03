@@ -54,6 +54,10 @@ public class Stock implements Security {
       this.closePrice = cp;
       this.volume = vol;
     }
+
+    private boolean dateMatch(LocalDate date) {
+      return this.date.equals(date);
+    }
   }
 
   /**
@@ -66,34 +70,69 @@ public class Stock implements Security {
 
 
 
-//  /**
-//   * retrieves the ticker symbol of stock
-//   * @return ticker symbol
-//   */
-//  public String getTicker() {
-//    return tickerAndName.getKey();
-//  }
-//
-//  /**
-//   * retrieves the name of stock
-//   * @return full name of stock
-//   */
-//  public String getName() {
-//    return tickerAndName.getValue();
-//  }
+  /**
+   * retrieves the ticker symbol of stock
+   * @return ticker symbol
+   */
+  public String getTicker() {
+    return this.ticker;
+  }
+
+  /**
+   * retrieves the name of stock
+   * @return full name of stock
+   */
+  public String getName() {
+    return Ticker.getTicker(this.ticker);
+  }
+
+  public void addTicker(String tickerSyb, String tickerName) {
+    Ticker.addTicker(tickerSyb, tickerName);
+  }
+
+  /**
+   * getchGainOrLoss method take in
+   * @param startDate the start date of the period to be examined
+   * @param endDate   the end date of the period to be examined
+   * @return the double number of the close price from endDate minus that from start Date
+   *     loss will be negative, gain will be positive.
+   */
+  @Override
+  public double fetchGainOrLoss(LocalDate startDate, LocalDate endDate) {
+    return this.getClosePriceFromDate(endDate) - this.getClosePriceFromDate(startDate);
+  }
+
+  // take in the date that given and return the closePrice that match the date
+  // if no close price match, throw exception.
+  private double getClosePriceFromDate(LocalDate date) {
+    for (StockData stockData : data) {
+      if (stockData.dateMatch(date)) {
+        return stockData.closePrice;
+      }
+    }
+    throw new IllegalArgumentException("dateNoteFound");
+  }
+
+
 
   @Override
-  public double fetchGainOrLoss(Security security, LocalDate startDate, LocalDate endDate) {
-    return 0;
+  public double calculateXDayMovingAvg(LocalDate startDate, int days) {
+    if (days <= 0) {
+      throw new IllegalArgumentException("days must be greater than 0");
+    }
+    int calculatingDays = days;
+    double totalPrice = 0;
+    while (days > 0) {
+      totalPrice += getClosePriceFromDate(startDate);
+      // edit minusDay
+      startDate = startDate.minusDays(1);
+      days -= 1;
+    }
+    return totalPrice / calculatingDays;
   }
 
   @Override
-  public double calculateXDayMovingAvg(Security security, LocalDate startDate, int days) {
-    return 0;
-  }
-
-  @Override
-  public List<LocalDate> findCrossovers(Security security, LocalDate startDate, LocalDate endDate, int days) {
+  public List<LocalDate> findCrossovers(LocalDate startDate, LocalDate endDate, int days) {
     return List.of();
   }
 }
