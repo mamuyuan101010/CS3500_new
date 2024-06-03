@@ -3,7 +3,6 @@ import org.junit.Test;
 
 import calculator.Calculator;
 import calculator.SmartCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -15,7 +14,7 @@ public class SmartCalculatorTest {
   Calculator smartCalculator;
 
   // step1 - 14 are declared as Calculator with null,
-  // will be assign a value that input returns
+  // and is expected to be assigned a value that input returns
   Calculator step1;
   Calculator step2;
   Calculator step3;
@@ -605,6 +604,34 @@ public class SmartCalculatorTest {
     assertEquals("1", step3.getResult());
     assertEquals("2", step5.getResult());
     assertEquals("1", step3.getResult());
+
+    // plus and minus and then multiply
+    // input first operand and plus sign
+    step6 = smartCalculator.input('6').input('5').input('+');
+    assertEquals("65+", step6.getResult());
+    // input second operand
+    step7 = step6.input('2').input('4');
+    assertEquals("65+24", step7.getResult());
+    // input minus sign and another integer
+    step8 = step7.input('-').input('8').input('8').input('=');
+    assertEquals("1", step8.getResult());
+    // input multiply sign and another integer
+    step9 = step8.input('*').input('4').input('7');
+    assertEquals("1*47", step9.getResult());
+    // input = sign
+    step10 = step9.input('=');
+    assertEquals("47", step10.getResult());
+    // input another = sign
+    step11 = step10.input('=');
+    assertEquals("2209", step11.getResult());
+
+    // now check the previous steps are all unchanged.
+    assertEquals("65+", step6.getResult());
+    assertEquals("65+24", step7.getResult());
+    assertEquals("1", step8.getResult());
+    assertEquals("1*47", step9.getResult());
+    assertEquals("47", step10.getResult());
+    assertEquals("2209", step11.getResult());
   }
 
   /**

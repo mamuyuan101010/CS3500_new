@@ -3,7 +3,6 @@ import org.junit.Test;
 
 import calculator.Calculator;
 import calculator.SimpleCalculator;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

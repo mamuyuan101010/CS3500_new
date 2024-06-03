@@ -1,5 +1,4 @@
 import org.junit.Test;
-
 import calculator.StringChecker;
 
 import static org.junit.Assert.assertFalse;

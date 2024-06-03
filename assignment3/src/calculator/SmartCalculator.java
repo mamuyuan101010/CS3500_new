@@ -49,12 +49,13 @@ public class SmartCalculator extends CalculatorAbs {
 
 
   /**
-   * Input method for smartCalculator that return a SmartCalculator.
-   * after input a character c
-   *
+   * input method for SmartCalculator objects.
+   * Inputting = after +, inputting + after +, inputting + at the beginning is allowed here in
+   * SmartCalculator.
+   * Inputting = multiple times here will result in operating the calculation multiple times with
+   * previous result as current first operand and previous second operand as current second operand.
    * @param c is a single character
-   * @return a updated SmartCalculator
-   * @throws Exception if any exception occur when calling constructor
+   * @return an updated SmartCalculator after input a character c.
    */
   @Override
   public Calculator input(char c) {
@@ -62,20 +63,4 @@ public class SmartCalculator extends CalculatorAbs {
     m.input(c);
     return m.buildCalculator();
   }
-
-  @Override
-  public String getResult() {
-    return this.currentResult;
-  }
-
-  // remember to delete before submitting
-  @Override
-  public String getArray() {
-    return "" + this.calculation[0]
-            + "/" + this.calculation[1]
-            + "/" + this.calculation[2]
-            + "/" + this.calculation[3]
-            + "/" + this.calculation[4];
-  }
-
 }

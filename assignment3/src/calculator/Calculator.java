@@ -19,7 +19,7 @@ public interface Calculator {
   /**
    * takes a single character and
    * return a calculator.Calculator object as
-   * a result of processing the input
+   * a result of processing the input.
    * @param c is a single character
    * @return a calculator.Calculator object as a result of processing the input
    */
@@ -31,8 +31,4 @@ public interface Calculator {
    * @return the current "result" of the calculator as a String.
    */
   String getResult();
-
-  // remember to delete before submit!!!
-  // remember to delete before submit!!!
-  String getArray();
 }
