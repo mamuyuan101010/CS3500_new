@@ -1,2 +1,4 @@
-package spreadsheet;public class MockSpreadSheet {
+package spreadsheet;
+
+public class MockSpreadSheet {
 }

@@ -1,2 +1,4 @@
-package spreadsheet;public interface BetterSpreadSheet {
+package spreadsheet;
+
+public interface BetterSpreadSheet {
 }
