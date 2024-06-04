@@ -57,6 +57,16 @@ public class Stock implements Investment {
     }
   }
 
+  /**
+   * fetchGainOrLoss method return a boolean number of the money the stock earn,
+   * if the buying time is the startDate, and the selling time is the endDate
+   * if loss money, the return boolean will be negative.
+   * @param startDate the start date of the period to be examined
+   * @param endDate   the end date of the period to be examined
+   * @return a double amount of money that represent the money
+   * earned from the startDate to the endDate.
+   * @throws IllegalArgumentException if the given start or end date is invalid.
+   */
   @Override
   public double fetchGainOrLoss(LocalDate startDate, LocalDate endDate)
           throws IllegalArgumentException {
