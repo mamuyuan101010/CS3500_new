@@ -1,2 +1,4 @@
-package Controller;public interface Controller {
+package Controller;
+
+public interface Controller {
 }

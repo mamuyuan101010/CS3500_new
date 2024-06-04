@@ -26,12 +26,20 @@ public class bulkAssignMacro implements SpreadSheetMacro {
     this.widthStart = widthStart;
     this.value = value;
   }
+
+  /**
+   * set the range of specified cells in the spreadsheet
+   * passed to it, to the specified value.
+   * @param spreadSheetWithMacro is a taken spreadSheet object.
+   */
   @Override
-  public void execute(SpreadSheet spreadSheet) {
+  public void execute(SpreadSheetWithMacro spreadSheetWithMacro) {
     for (int i = heightStart; i <= heightEnd; i++) {
       for (int j = widthStart; j <= widthEnd; j++) {
-        spreadSheet.set(i, j, value);
+        spreadSheetWithMacro.set(i, j, value);
       }
     }
   }
+
+
 }

@@ -62,7 +62,7 @@ public class SpreadSheetController {
         quit = true;
       }
       else {
-        processCommand(userInstruction, sc,sheet);
+        processCommand(userInstruction, sc, sheet);
       }
     }
 
