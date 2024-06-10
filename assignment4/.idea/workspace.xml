@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="45a4d06d-c56c-4609-8826-09ddc7ebd7cc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment4.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Security.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/StockDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/StockDataSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/StockDataSourceAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ticker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StocksController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StocksProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StocksProgram.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/StockDataSourceAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/assignment4FromPartner.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/30DayCrossovers" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/5-DayGainOrLoss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/5-DayMovingAverage" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/DESIGN-README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/READ-ME.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/SETUP-README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/res/Timestamps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/Model/APIStockDataSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/Model/CacheManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/Model/Investment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/Model/Stock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/Model/StockDataSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/StocksController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/src/StocksProgram.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/test/CacheManagerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/test/StockDataSourceAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/test/StockTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/assignment4_new.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/res/5-DayGainOrLoss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/res/DESIGN-README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/res/READ-ME.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/res/SETUP-README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/res/Timestamps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Controller/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Controller/StocksController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/APIStockDataSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/CacheManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/Investment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/Portfolio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/Stock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/Model/StockDataSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/src/StocksProgram.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/test/CacheManagerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/test/StockDataSourceAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment4_new/test/StockTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/CalculatorWithCommandsUpdated.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/ControllerImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/IController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/MockModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/CalculatorCommandUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/DevideCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/ICalculatorCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/InputResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/MultiplyCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/PlusCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/ReadState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/controller/commands/SubtractCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/model/CalculatorImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/CalculatorWithCommandsUpdated/model/ICalculator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/ControllerImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/IController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/MockModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/CalculatorCommandUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/DevideCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/ICalculatorCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/InputResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/MultiplyCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/PlusCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/ReadState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/controller/commands/SubtractCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/model/CalculatorImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/production/Test3/model/ICalculator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/test/CalculatorWithCommandsUpdated/controller/ControllerImpl2Test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/test/CalculatorWithCommandsUpdated/controller/ControllerImplTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/test/Test3/controller/ControllerImpl2Test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/out/test/Test3/controller/ControllerImplTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/ControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/IController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/MockModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/CalculatorCommandUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/DevideCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/ICalculatorCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/InputResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/MultiplyCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/PlusCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/ReadState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/controller/commands/SubtractCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/model/CalculatorImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/src/model/ICalculator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/test/controller/ControllerImpl2Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../controller/CalculatorWithCommandsUpdated/test/controller/ControllerImplTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mamuyuan101010"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/mamuyuan101010/CS3500_new.git",
+    "accountId": "3949f9f7-06c2-4a20-9474-25efdff5f155"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2heybHsPEsq78gjIUXuZv1ejjta" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/2024summer1ood/CS3500_new/assignment4",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="45a4d06d-c56c-4609-8826-09ddc7ebd7cc" name="Changes" comment="" />
+      <created>1717968907769</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717968907769</updated>
+      <workItem from="1717968908802" duration="15000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
