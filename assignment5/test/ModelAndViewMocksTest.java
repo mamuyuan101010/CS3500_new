@@ -190,7 +190,7 @@ public class ModelAndViewMocksTest {
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to add to? "
             + "Enter ticker symbol of desired stock: "
-            + "How many shares would you like to add? "
+            + "How many whole (non-fractional) shares would you like to add? "
             + "Source of stock data? API or File: "
             + "Successfully added!", last);
   }
@@ -203,7 +203,7 @@ public class ModelAndViewMocksTest {
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to add to? "
             + "Enter ticker symbol of desired stock: "
-            + "How many shares would you like to add? "
+            + "How many whole (non-fractional) shares would you like to add? "
             + "Source of stock data? API or File: "
             + "Error: Portfolio not found: banana", last);
   }
@@ -216,7 +216,7 @@ public class ModelAndViewMocksTest {
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to add to? "
             + "Enter ticker symbol of desired stock: "
-            + "How many shares would you like to add? "
+            + "How many whole (non-fractional) shares would you like to add? "
             + "Source of stock data? API or File: "
             + "Error: Source not recognized", last);
   }

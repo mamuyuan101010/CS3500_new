@@ -11,10 +11,18 @@ public interface Portfolio {
   /**
    * addInvestment method takes in an investment and quantity desired.
    *
-   * @param investment    is the stock the user wishes to buy
+   * @param investment is the stock the user wishes to buy
    * @param quantity refers to how many shares the user would like to buy
    */
   void addInvestment(Investment investment, int quantity);
+
+  /**
+   * sellInvestment method takes in an investment and quantity desired.
+   *
+   * @param investment is the stock the user wishes to sell
+   * @param quantity refers to how many shares the user would like to sell
+   */
+  void sellInvestment(Investment investment, double quantity);
 
   /**
    * getValueOnDate takes a LocalDate object and gets the total value of a simple portfolio object

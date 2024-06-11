@@ -65,7 +65,7 @@ public class PortfolioManagerTest {
   public void queryStock() {
     //tests queried stock to make sure it's correct by comparing its data against
     //example google stock
-    Stock managerGoogle = manager.queryStock("GOOG", apiSource);
+    Investment managerGoogle = manager.queryStock("GOOG", apiSource);
     Random rand = new Random(24);
     try {
       for (int i = 0; i < 10000; i++) {

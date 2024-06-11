@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import model.IModel;
+import model.Investment;
 import model.Stock;
 import model.StockDataSource;
 import view.IView;
@@ -24,7 +25,7 @@ class HandleAddInvestmentToPortfolio extends AbstractCommands {
               getInput(v, "How many whole (non-fractional) shares would you like to add? "));
 
       StockDataSource source = getSourceInput(v);
-      Stock stock = model.queryStock(ticker, source);
+      Investment stock = model.queryStock(ticker, source);
       model.addInvestmentToPortfolio(portfolioName, stock , quantity);
       v.showCustomMessage("Successfully added!\n");
     } catch (Exception e) {

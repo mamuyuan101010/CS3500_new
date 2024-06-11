@@ -34,7 +34,7 @@ public class PortfolioManager implements IModel {
   }
 
   @Override
-  public Stock queryStock(String symbol, StockDataSource source) {
+  public Investment queryStock(String symbol, StockDataSource source) {
     return new Stock(symbol, source);
   }
 

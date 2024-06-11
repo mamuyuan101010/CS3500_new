@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="45a4d06d-c56c-4609-8826-09ddc7ebd7cc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment4.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Security.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Stock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/StockDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/StockDataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/StockDataSourceAPI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ticker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StocksController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StocksProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StocksProgram.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/StockDataSourceAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../assignment4FromPartner/.idea/misc.xml" beforeDir="false" />
@@ -128,22 +116,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mamuyuan101010"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mamuyuan101010&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/mamuyuan101010/CS3500_new.git",
-    "accountId": "3949f9f7-06c2-4a20-9474-25efdff5f155"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mamuyuan101010/CS3500_new.git&quot;,
+    &quot;accountId&quot;: &quot;3949f9f7-06c2-4a20-9474-25efdff5f155&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 5
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2heybHsPEsq78gjIUXuZv1ejjta" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -151,14 +139,33 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.StocksProgram.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/2024summer1ood/CS3500_new/assignment4",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="StocksProgram" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="StocksProgram" />
+      <module name="assignment4" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.StocksProgram" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -176,6 +183,7 @@
       <option name="presentableId" value="Default" />
       <updated>1717968907769</updated>
       <workItem from="1717968908802" duration="15000" />
+      <workItem from="1717968946568" duration="4079000" />
     </task>
     <servers />
   </component>

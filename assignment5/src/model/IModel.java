@@ -26,7 +26,7 @@ public interface IModel {
    * @param source the source the use would like to use for the stock
    * @return a stock object matching the description entered
    */
-  Stock queryStock(String symbol, StockDataSource source);
+  Investment queryStock(String symbol, StockDataSource source);
 
   /**
    * Adds a stock to one of user's portfolios.
