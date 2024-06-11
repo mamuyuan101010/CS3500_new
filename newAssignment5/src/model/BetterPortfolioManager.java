@@ -115,22 +115,22 @@ public class BetterPortfolioManager implements IModelV2 {
 
   @Override
   public void loadPortfolio(String filePath) throws IOException {
-    try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      Document doc = builder.parse(new File(filePath));
-      PortfolioV2 portfolio = new BetterPortfolio();
-
-      NodeList list = doc.getElementsByTagName("transaction");
-      for (int i = 0; i < list.getLength(); i++) {
-        Node transactionNode = list.item(i);
-      }
-
-
-    } catch (javax.xml.transform.TransformerException
-             | javax.xml.parsers.ParserConfigurationException | org.xml.sax.SAXException | java.io.IOException e) {
-      throw new IOException("Error: Could not save portfolio");
-    }
+//    try {
+//      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//      DocumentBuilder builder = factory.newDocumentBuilder();
+//      Document doc = builder.parse(new File(filePath));
+//      PortfolioV2 portfolio = new BetterPortfolio();
+//
+//      NodeList list = doc.getElementsByTagName("transaction");
+//      for (int i = 0; i < list.getLength(); i++) {
+//        Node transactionNode = list.item(i);
+//      }
+//
+//
+//    } catch (javax.xml.transform.TransformerException
+//             | javax.xml.parsers.ParserConfigurationException | org.xml.sax.SAXException | java.io.IOException e) {
+//      throw new IOException("Error: Could not save portfolio");
+//    }
   }
 
   @Override

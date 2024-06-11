@@ -55,19 +55,19 @@ public class BetterPortfolio implements PortfolioV2 {
     if (!transactions.isEmpty()) {
       if (date.isBefore(transactions.get(transactions.size() - 1).getDate())) {
         throw new IllegalArgumentException("Must conduct sales in chronological order");
+      } else {
+        double availQuant = getAvailableQuantity(date, investment.toString());
+        if (quantity > availQuant) {
+          throw new IllegalArgumentException(
+                  "Not enough shares to sell. "
+                          + "Available: " + availQuant
+                          + ", Requested: " + quantity);
+        }
+        delegate.sellInvestment(investment, quantity);
+        Transactions t = new Transactions(
+                investment.toString(), quantity, date, Transactions.Types.Sell);
+        transactions.add(t);
       }
-    } else {
-      double availQuant = getAvailableQuantity(date, investment.toString());
-      if (quantity > availQuant) {
-        throw new IllegalArgumentException(
-                "Not enough shares to sell. "
-                        + "Available: " + availQuant
-                        + ", Requested: " + quantity);
-      }
-      delegate.sellInvestment(investment, quantity);
-      Transactions t = new Transactions(
-              investment.toString(), quantity, date, Transactions.Types.Sell);
-      transactions.add(t);
     }
   }
 
@@ -89,6 +89,7 @@ public class BetterPortfolio implements PortfolioV2 {
     return quantity;
   }
 
+  // we need to check whether we have transaction on that date
   @Override
   public void reversal(LocalDate date, Investment inv, double quantity, String type)
           throws IllegalArgumentException {
@@ -97,12 +98,29 @@ public class BetterPortfolio implements PortfolioV2 {
     }
 
     if (type.equals("bought")) {
+      if (!canReverseBuy(date, inv, quantity)) {
+        throw new IllegalArgumentException("Reversal would invalidate future sales");
+      }
       sellInvestment(date, inv, quantity);
       transactions.add(new Transactions(inv.toString(), quantity, date, Transactions.Types.Sell));
     } else {
       addInvestment(date, inv, quantity);
       transactions.add(new Transactions(inv.toString(), quantity, date, Transactions.Types.Buy));
     }
+  }
+
+  // Helper method to check if reversing a buy is possible without invalidating future sales
+  private boolean canReverseBuy(LocalDate date, Investment inv, double quantity) {
+    double quantityAvailable = getAvailableQuantity(date, inv.toString()) - quantity;
+    for (Transactions t : transactions) {
+      if (t.getDate().isAfter(date) && t.getType() == Transactions.Types.Sell) {
+        if (quantityAvailable < t.getShares()) {
+          return false;
+        }
+        quantityAvailable -= t.getShares();
+      }
+    }
+    return true;
   }
 
   @Override
