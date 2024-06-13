@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +25,7 @@ import javax.xml.transform.stream.StreamResult;
  * class. Allows the user to perform more operations with their portfolio.
  */
 public class BetterPortfolio implements PortfolioV2 {
-  private final SimplePortfolio delegate;
+  private final Portfolio delegate;
   private final List<Transactions> transactions;
   private final Map<String, Investment> investments;
 
@@ -37,9 +38,47 @@ public class BetterPortfolio implements PortfolioV2 {
     investments = new HashMap<>();
   }
 
+  // a constructor that takes all values from parameter
+  // and assign directly to the instance variable,
+  // only copy method use this method.
+  private BetterPortfolio(Portfolio delegate, List<Transactions> transactions,
+                          Map<String, Investment> investments) {
+    this.delegate = Objects.requireNonNull(delegate);
+    this.transactions = Objects.requireNonNull(transactions);
+    this.investments = Objects.requireNonNull(investments);
+  }
+
   @Override
   public double getValueOnDate(LocalDate date) {
-    return delegate.getValueOnDate(date);
+    // sell back all stocks from delegate that is bought after or on this date.
+    // buy back all stocks that is sold before or on this date.
+    // then get the value of that delegate
+    Portfolio newDelegate = delegate.copy();
+    for (Transactions transaction : transactions) {
+      if (transaction.getDate().isAfter(date)) {
+        if (transaction.getType() == Transactions.Types.Buy) {
+          newDelegate.sellInvestment(investments.get(transaction.getTicker()),
+                  transaction.getShares());
+        }
+        else if (transaction.getType() == Transactions.Types.Sell) {
+          newDelegate.addInvestment(investments.get(transaction.getTicker()),
+                  transaction.getShares());
+        }
+        else {
+          throw new IllegalStateException("Unauthrozie transaction type: "
+                  + transaction.getType());
+        }
+      }
+    }
+    return newDelegate.getValueOnDate(date);
+  }
+
+  @Override
+  public PortfolioV2 copy() {
+    List<Transactions> newTransactions = new ArrayList<>(transactions);
+    Map<String, Investment> newInvestments = new HashMap<>(investments);
+    Portfolio newDelegate = delegate.copy();
+    return new BetterPortfolio(newDelegate, newTransactions, newInvestments);
   }
 
   @Override
@@ -166,14 +205,14 @@ public class BetterPortfolio implements PortfolioV2 {
     Map<String, Double> currentValues = new HashMap<>();
     for (Map.Entry<String, Double> entry : currentDistribution.entrySet()) {
       double currentValue = entry.getValue();
-      currentValues.put(entry.getKey(), currentValue);
+      currentValues.put(entry.getKey(), Double.valueOf(currentValue));
     }
 
     //the target values of each stock
     Map<String, Double> targetValues = new HashMap<>();
     for (Map.Entry<String, Integer> entry : weights.entrySet()) {
       double targetValue = (entry.getValue() * totalValue) / 100.0;
-      targetValues.put(entry.getKey(), targetValue);
+      targetValues.put(entry.getKey(), Double.valueOf(targetValue));
     }
 
     //rebalancing logic
@@ -187,12 +226,12 @@ public class BetterPortfolio implements PortfolioV2 {
         double sellQuantity = (currentValue - targetValue) / investment.getEndOfDayVal(date);
         sellInvestment(date, investment, sellQuantity);
         double newQuantity = currentComposition.get(ticker) - Math.round(sellQuantity * 100.0) / 100.0;
-        currentComposition.put(ticker, newQuantity);
+        currentComposition.put(ticker, Double.valueOf(newQuantity));
       } else if (currentValue < targetValue) {
         double buyQuantity = (targetValue - currentValue) / investment.getEndOfDayVal(date);
         addInvestment(date, investment, buyQuantity);
         double newQuantity = currentComposition.get(ticker) + Math.round(buyQuantity * 100.0) / 100.0;
-        currentComposition.put(ticker, newQuantity);
+        currentComposition.put(ticker, Double.valueOf(newQuantity));
       }
     }
   }
@@ -205,7 +244,7 @@ public class BetterPortfolio implements PortfolioV2 {
       if (t.getDate().isAfter(date)) {
         break;
       }
-      composition.putIfAbsent(t.getTicker(), 0.0);
+      composition.putIfAbsent(t.getTicker(), Double.valueOf(0.0));
       double currQuant = composition.get(t.getTicker());
       double change = 0;
       if (t.getType().equals(Transactions.Types.Buy)) {
@@ -213,7 +252,7 @@ public class BetterPortfolio implements PortfolioV2 {
       } else {
         change -= t.getShares();
       }
-      composition.put(t.getTicker(), currQuant + change);
+      composition.put(t.getTicker(), Double.valueOf(currQuant + change));
     }
     return composition;
   }
@@ -229,7 +268,7 @@ public class BetterPortfolio implements PortfolioV2 {
 
       double closingPrice = stock.getEndOfDayVal(date);
       double value = closingPrice * quantity;
-      distribution.put(ticker, value);
+      distribution.put(ticker, Double.valueOf(value));
     }
     return distribution;
   }

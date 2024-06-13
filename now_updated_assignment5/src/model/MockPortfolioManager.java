@@ -38,8 +38,7 @@ public class MockPortfolioManager implements IModel {
 
   @Override
   public void addInvestmentToPortfolio(String portfolioName, Investment stock, int quantity) {
-    log.append(String.format("Added %d shares of %s Investment into Portfolio %s\n",
-            quantity, stock.toString(), portfolioName));
+    log.append(String.format("Added %n shares of %s Investment into Portfolio %s\n", quantity, stock.toString(), portfolioName));
   }
 
   @Override

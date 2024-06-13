@@ -43,4 +43,12 @@ public final class SimplePortfolio implements Portfolio {
     }
     return totalPrice;
   }
+
+  public Portfolio copy() {
+    Portfolio newPort = new SimplePortfolio();
+    for (Map.Entry<Investment, Double> entry : stocks.entrySet()) {
+      newPort.addInvestment(entry.getKey(), entry.getValue());
+    }
+    return newPort;
+  }
 }

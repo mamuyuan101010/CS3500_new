@@ -47,4 +47,10 @@ public interface Portfolio {
    *         the user has.
    */
   double getValueOnDate(LocalDate date);
+
+  /**
+   *copy method generate a new Portfolio without link to the old one
+   * @return a new Portfolio without link to the old one
+   */
+  Portfolio copy();
 }

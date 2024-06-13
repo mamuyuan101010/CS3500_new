@@ -151,7 +151,7 @@ public class BetterPortfolioManager extends PortfolioManager implements IModelV2
 
   @Override
   public double getValueOfPortfolio(String name, LocalDate date) {
-    return executeOnPortfolioV2(name, portfolio -> portfolio.getValueOnDate(date));
+    return executeOnPortfolioV2(name, portfolio -> (Double) portfolio.getValueOnDate(date));
   }
 
   @Override
