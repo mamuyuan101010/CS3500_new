@@ -33,6 +33,7 @@ public class TextViewV2 extends TextView {
     super.showCustomMessage("D. Get Portfolio Distribution of Values (list of stocks and values)\n");
     super.showCustomMessage("S. Save a Portfolio\n");
     super.showCustomMessage("L. Load a Portfolio from an XML file\n");
+    super.showCustomMessage("CH. Generate a ChartTable for a portfolio in a period of time\n");
     super.showCustomMessage("Q. Exit\n");
     super.showCustomMessage("Choose an option by entering the corresponding number: ");
   }

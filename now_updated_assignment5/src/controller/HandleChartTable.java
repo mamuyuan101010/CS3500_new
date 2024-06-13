@@ -18,7 +18,11 @@ public class HandleChartTable extends AbstractCommandsV2{
             LocalDate startDate = LocalDate.parse(getInput(v, "startDate(in YYYY-MM-DD format):"));
             LocalDate endDate = LocalDate.parse(getInput(v, "endDate(in YYYY-MM-DD format):"));
             String portfolioName = getInput(v, "portfolioName");
-
+            String chart = model.getChart(startDate, endDate, portfolioName);
+            v.showCustomMessage(chart);
+            v.showCustomMessage("\n");
+        } catch (Exception e) {
+            v.showCustomMessage(e.getMessage());
         }
     }
 }

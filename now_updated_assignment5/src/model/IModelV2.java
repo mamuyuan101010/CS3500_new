@@ -114,4 +114,9 @@ public interface IModelV2 extends IModel{
    * @return a copy of the list of transactions in this portfolioV2 object
    */
   List<Transactions> getTransactions(String portfolioName);
+
+  /**
+   *
+   */
+  String getChart(LocalDate start, LocalDate end, String portfolioName);
 }

@@ -46,6 +46,7 @@ public class BetterInvestmentController extends InvestmentController {
     knownCommands2.put("S", HandleSaveFile::new);
     knownCommands2.put("L", HandleLoadFile::new);
     knownCommands2.put("7", HandleRebalance::new);
+    knownCommands2.put("CH", HandleChartTable::new);
 
     Map<String, Function<Scanner, StocksCommands>> knownCommands = new HashMap<>();
     knownCommands.put("1", HandleGainOrLoss::new);

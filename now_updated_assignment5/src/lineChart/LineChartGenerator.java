@@ -31,14 +31,26 @@ class LineChartGenerator {
         setAsterisks(this.dateAndValueList);
     }
 
+    // adjust the correct base amount and each asterisks worth
     private void setAsterisks(List<ValueDateCombo> valueDateCombos) {
         eachAsteriskWorth = 10;
         baseAmount = 0;
         if (getMaxValue(valueDateCombos) > 500) {
-            baseAmount = (int) getMinValue(valueDateCombos);
+            baseAmount = rounding(getMinValue(valueDateCombos));
             if (getRange(valueDateCombos) > 500) {
-                eachAsteriskWorth = (int) (getRange(valueDateCombos) / 50);
+                eachAsteriskWorth = rounding((getRange(valueDateCombos) / 50));
             }
+        }
+    }
+
+    // adjust the baes and each asterisks value. if they are lower than 100, they will round to 10,
+    // greater than 100 will just round to 100
+    int rounding(double valueToRound) {
+        if (valueToRound > 100) {
+            return ((int)valueToRound / 100) * 100;
+        }
+        else {
+            return ((int)valueToRound / 10) * 10;
         }
     }
 
@@ -47,31 +59,32 @@ class LineChartGenerator {
         List<ValueDateCombo> dateAndValueList = new ArrayList<>();
         int frequency = scale.factor;
         switch (scale.unit) {
-            case Day -> {
+            case Day:
                 for (LocalDate i = startDate; i.isBefore(endDate); i = i.plusDays(frequency)) {
                     dateAndValueList.add(new ValueDateCombo(i, portfolio.getValueOnDate(i)));
                 }
                 dateAndValueList.add(new ValueDateCombo(endDate, portfolio.getValueOnDate(endDate)));
-            }
-            case Month -> {
+            break;
+            case Month :
                 for (LocalDate i = startDate; i.isBefore(endDate); i = i.plusMonths(frequency)) {
                     dateAndValueList.add(new ValueDateCombo(i,
                             getEndofMonthValue(i.getMonthValue(), i.getYear(), portfolio)));
                 }
-                if (dateAndValueList.get(dateAndValueList.size()).getDate().getMonth() != endDate.getMonth()) {
+                if (dateAndValueList.get(dateAndValueList.size() - 1).getDate().getMonth() != endDate.getMonth()) {
                     dateAndValueList.add(new ValueDateCombo(endDate, portfolio.getValueOnDate(endDate)));
                 }
-            }
-            case Year -> {
+            break;
+            case Year:
                 for (LocalDate i = startDate; i.isBefore(endDate); i = i.plusYears(frequency)) {
                     dateAndValueList.add(new ValueDateCombo(i,
                             getEndOfYearValue(i.getYear(), portfolio)));
                 }
-                if (dateAndValueList.get(dateAndValueList.size()).getDate().getYear() != endDate.getYear()) {
+                if (dateAndValueList.get(dateAndValueList.size() - 1).getDate().getYear() != endDate.getYear()) {
                     dateAndValueList.add(new ValueDateCombo(endDate, portfolio.getValueOnDate(endDate)));
                 }
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + scale.unit);
+            break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + scale.unit);
         }
         return dateAndValueList;
     }
@@ -155,23 +168,27 @@ class LineChartGenerator {
         StringBuilder builder = new StringBuilder();
         for (ValueDateCombo valueDateCombo : dateAndValueList) {
             switch (scale.unit) {
-                case Day -> {
+                case Day:
                     builder.append(valueDateCombo.getDate());
                     builder.append(":");
                     builder.append(renderAsterisks(valueDateCombo.getValue()));
-                }
-                case Month -> {
+                    break;
+
+                case Month:
                     builder.append(valueDateCombo.getDate().getYear());
                     builder.append(" ");
                     builder.append(valueDateCombo.getDate().getMonth().toString().substring(0, 3));
                     builder.append(":");
                     builder.append(renderAsterisks(valueDateCombo.getValue()));
-                }
-                case Year -> {
+                    break;
+
+                case Year:
                     builder.append(valueDateCombo.getDate().getYear());
                     builder.append(":");
                     builder.append(renderAsterisks(valueDateCombo.getValue()));
-                }
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + scale.unit);
             }
         }
         builder.append("with base value of ").append(baseAmount);

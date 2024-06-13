@@ -1,5 +1,7 @@
 package model;
 
+import lineChart.ILineChart;
+import lineChart.LineChart;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -157,6 +159,17 @@ public class BetterPortfolioManager extends PortfolioManager implements IModelV2
   @Override
   public List<Transactions> getTransactions(String name) {
     return executeOnPortfolioV2(name, PortfolioV2::getTransactions);
+  }
+
+  @Override
+  public String getChart(LocalDate start, LocalDate end, String portfolioName) {
+    if (hasPortfolio(portfolioName)) {
+      PortfolioV2 portfolio = portfolios.get(portfolioName);
+      ILineChart chart = new LineChart(start, end, portfolio);
+      return chart.generateChart();
+    } else {
+      throw new IllegalArgumentException("Portfolio not found: " + portfolioName);
+    }
   }
 
   //abstracts duplicate logic in method bodies regarding portfolioV2s
