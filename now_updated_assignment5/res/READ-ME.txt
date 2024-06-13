@@ -1,0 +1,18 @@
+Listing which features of this program work and are complete:
+
+ -Allow a user to examine the gain or loss of a stock over a specified period.
+
+ -Allow a user to examine the x-day moving average of a stock for a specified date
+  and a specified value of x.
+
+ -Allow a user to determine which days are x-day crossovers for a specified stock
+  over a specified date range and a specified value of x.
+
+ -Allow a user to create one or more portfolios with shares of one or more stock,
+  and find the value of a certain portfolio on a specific date.
+
+ -Take in Stock data from AlphaVantage API
+ -Take in a file specified by the user for stock data / program does not require internet this way
+
+ -Locally cache previously queried stocks to reduce dependency on internet and speed up results
+  Also reduces frequency of overloading the API query limit
