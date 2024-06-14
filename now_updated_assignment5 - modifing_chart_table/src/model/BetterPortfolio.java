@@ -1,0 +1,324 @@
+package model;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+/**
+ * This class represents enhanced and new functionality for the existing SimplePortfolio
+ * class. Allows the user to perform more operations with their portfolio.
+ */
+public class BetterPortfolio implements PortfolioV2 {
+  private final Portfolio delegate;
+  private final List<Transactions> transactions;
+  private final Map<String, Investment> investments;
+
+  /**
+   * Constructs an empty Portfolio object initialized with nothing.
+   */
+  public BetterPortfolio() {
+    delegate = new SimplePortfolio();
+    transactions = new ArrayList<>();
+    investments = new HashMap<>();
+  }
+
+  // a constructor that takes all values from parameter
+  // and assign directly to the instance variable,
+  // only copy method use this method.
+  private BetterPortfolio(Portfolio delegate, List<Transactions> transactions,
+                          Map<String, Investment> investments) {
+    this.delegate = Objects.requireNonNull(delegate);
+    this.transactions = Objects.requireNonNull(transactions);
+    this.investments = Objects.requireNonNull(investments);
+  }
+
+  @Override
+  public double getValueOnDate(LocalDate date) {
+    // sell back all stocks from delegate that is bought after or on this date.
+    // buy back all stocks that is sold before or on this date.
+    // then get the value of that delegate
+    Portfolio newDelegate = delegate.copy();
+    for (Transactions transaction : transactions) {
+      if (transaction.getDate().isAfter(date)) {
+        if (transaction.getType() == Transactions.Types.Buy) {
+          newDelegate.sellInvestment(investments.get(transaction.getTicker()),
+                  transaction.getShares());
+        }
+        else if (transaction.getType() == Transactions.Types.Sell) {
+          newDelegate.addInvestment(investments.get(transaction.getTicker()),
+                  transaction.getShares());
+        }
+        else {
+          throw new IllegalStateException("Unauthrozie transaction type: "
+                  + transaction.getType());
+        }
+      }
+    }
+    return newDelegate.getValueOnDate(date);
+  }
+
+  @Override
+  public PortfolioV2 copy() {
+    List<Transactions> newTransactions = new ArrayList<>(transactions);
+    Map<String, Investment> newInvestments = new HashMap<>(investments);
+    Portfolio newDelegate = delegate.copy();
+    return new BetterPortfolio(newDelegate, newTransactions, newInvestments);
+  }
+
+  @Override
+  public void addInvestment(LocalDate date, Investment inv, double quantity)
+          throws IllegalArgumentException {
+    if (date.isAfter(LocalDate.now())) {
+      throw new IllegalArgumentException("Cannot buy an investment on a date later than today.");
+    }
+    delegate.addInvestment(inv, quantity);
+    Transactions t =
+            new Transactions(inv.toString(), quantity, date, Transactions.Types.Buy);
+    transactions.add(t);
+    investments.putIfAbsent(inv.toString(), inv);
+  }
+
+  @Override
+  public void sellInvestment(LocalDate date, Investment investment, double quantity)
+          throws IllegalArgumentException {
+    if (!transactions.isEmpty()) {
+      if (date.isBefore(transactions.get(transactions.size() - 1).getDate())) {
+        throw new IllegalArgumentException("Must conduct sales in chronological order");
+      } else {
+        double availQuant = getAvailableQuantity(date, investment.toString());
+        if (quantity > availQuant) {
+          throw new IllegalArgumentException(
+                  "Not enough shares to sell. "
+                          + "Available: " + availQuant
+                          + ", Requested: " + quantity);
+        }
+        delegate.sellInvestment(investment, quantity);
+        Transactions t = new Transactions(
+                investment.toString(), quantity, date, Transactions.Types.Sell);
+        transactions.add(t);
+      }
+    }
+  }
+
+  //helper method for logic determining if there are enough shares to sell
+  private double getAvailableQuantity(LocalDate date, String investmentName) {
+    double quantity = 0;
+    for (Transactions t : transactions) {
+      if (t.getDate().isAfter(date)) {
+        break;
+      }
+      if (t.getTicker().equals(investmentName)) {
+        if (t.getType() == Transactions.Types.Buy) {
+          quantity += t.getShares();
+        } else if (t.getType() == Transactions.Types.Sell) {
+          quantity -= t.getShares();
+        }
+      }
+    }
+    return quantity;
+  }
+
+  @Override
+  public void reversal(LocalDate date, Investment inv, double quantity, String type)
+          throws IllegalArgumentException {
+    if (!type.equals("bought") && !type.equals("sold")) {
+      throw new IllegalArgumentException("unrecognized type of original transaction");
+    }
+
+    if (type.equals("bought")) {
+      if (!canReverseBuy(date, inv, quantity)) {
+        throw new IllegalArgumentException("Reversal would invalidate future sales");
+      }
+      sellInvestment(date, inv, quantity);
+    } else {
+      addInvestment(date, inv, quantity);
+    }
+  }
+
+  // Helper method to check if reversing a buy is possible without invalidating future sales
+  private boolean canReverseBuy(LocalDate date, Investment inv, double quantity) {
+    double quantityAvailable = getAvailableQuantity(date, inv.toString()) - quantity;
+    for (Transactions t : transactions) {
+      if (t.getDate().isAfter(date) && t.getType() == Transactions.Types.Sell) {
+        if (quantityAvailable < t.getShares()) {
+          return false;
+        }
+        quantityAvailable -= t.getShares();
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public void rebalance(LocalDate date, Map<String, Integer> weights)
+          throws IllegalArgumentException {
+    if (date.isAfter(LocalDate.now())) {
+      throw new IllegalArgumentException("Cannot rebalance shares on a date later than today.");
+    }
+
+    //add up the weights provided
+    int sum = 0;
+    for (Map.Entry<String, Integer> entry : weights.entrySet()) {
+      sum += entry.getValue();
+    }
+
+    //see if weights add up to 100
+    if (sum != 100) {
+      throw new IllegalArgumentException("Total weights provided do not add up to 100");
+    }
+
+    Map<String, Double> currentComposition = getComposition(date);
+    Map<String, Double> currentDistribution = getDistributionVal(date);
+
+    //see if there are enough weights to match number of investments
+    if (weights.size() != currentComposition.size()) {
+      throw new IllegalArgumentException("Number of weights does not match the number of investments.");
+    }
+
+    //see if each investment in the portfolio has a specified or desired weight
+    for (String ticker : currentComposition.keySet()) {
+      if (!weights.containsKey(ticker)) {
+        throw new IllegalArgumentException("Weight not provided for investment: " + ticker);
+      }
+    }
+
+    //total value of portfolio
+    double totalValue = getValueOnDate(date);
+
+    //the current values of each stock
+    Map<String, Double> currentValues = new HashMap<>();
+    for (Map.Entry<String, Double> entry : currentDistribution.entrySet()) {
+      double currentValue = entry.getValue();
+      currentValues.put(entry.getKey(), Double.valueOf(currentValue));
+    }
+
+    //the target values of each stock
+    Map<String, Double> targetValues = new HashMap<>();
+    for (Map.Entry<String, Integer> entry : weights.entrySet()) {
+      double targetValue = (entry.getValue() * totalValue) / 100.0;
+      targetValues.put(entry.getKey(), Double.valueOf(targetValue));
+    }
+
+    //rebalancing logic
+    for (Map.Entry<String, Double> entry : currentValues.entrySet()) {
+      String ticker = entry.getKey();
+      double currentValue = entry.getValue();
+      double targetValue = targetValues.get(ticker);
+      Investment investment = investments.get(ticker);
+
+      if (currentValue > targetValue) {
+        double sellQuantity = (currentValue - targetValue) / investment.getEndOfDayVal(date);
+        sellInvestment(date, investment, sellQuantity);
+        double newQuantity = currentComposition.get(ticker) - Math.round(sellQuantity * 100.0) / 100.0;
+        currentComposition.put(ticker, Double.valueOf(newQuantity));
+      } else if (currentValue < targetValue) {
+        double buyQuantity = (targetValue - currentValue) / investment.getEndOfDayVal(date);
+        addInvestment(date, investment, buyQuantity);
+        double newQuantity = currentComposition.get(ticker) + Math.round(buyQuantity * 100.0) / 100.0;
+        currentComposition.put(ticker, Double.valueOf(newQuantity));
+      }
+    }
+  }
+
+  @Override
+  public Map<String, Double> getComposition(LocalDate date) {
+    Map<String, Double> composition = new HashMap<>();
+
+    for (Transactions t : transactions) {
+      if (t.getDate().isAfter(date)) {
+        break;
+      }
+      composition.putIfAbsent(t.getTicker(), Double.valueOf(0.0));
+      double currQuant = composition.get(t.getTicker());
+      double change = 0;
+      if (t.getType().equals(Transactions.Types.Buy)) {
+        change += t.getShares();
+      } else {
+        change -= t.getShares();
+      }
+      composition.put(t.getTicker(), Double.valueOf(currQuant + change));
+    }
+    return composition;
+  }
+
+  @Override
+  public Map<String, Double> getDistributionVal(LocalDate date) {
+    Map<String, Double> composition = getComposition(date);
+    Map<String, Double> distribution = new HashMap<>();
+    for (Map.Entry<String, Double> entry : composition.entrySet()) {
+      String ticker = entry.getKey();
+      double quantity = entry.getValue();
+      Investment stock = investments.get(ticker);
+
+      double closingPrice = stock.getEndOfDayVal(date);
+      double value = closingPrice * quantity;
+      distribution.put(ticker, Double.valueOf(value));
+    }
+    return distribution;
+  }
+
+  @Override
+  public void saveToFile(String filename) throws IOException {
+    try {
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document doc = builder.newDocument();
+
+      Element root = doc.createElement("Portfolio");
+      doc.appendChild(root);
+
+      for (Transactions t : transactions) {
+        Element transactionElement = doc.createElement("transaction");
+        root.appendChild(transactionElement);
+
+        Element ticker = doc.createElement("ticker");
+        ticker.appendChild(doc.createTextNode(t.getTicker()));
+        transactionElement.appendChild(ticker);
+
+        Element quantity = doc.createElement("quantity");
+        quantity.appendChild(doc.createTextNode(Double.toString(t.getShares())));
+        transactionElement.appendChild(quantity);
+
+        Element date = doc.createElement("date");
+        date.appendChild(doc.createTextNode(t.getDate().toString()));
+        transactionElement.appendChild(date);
+
+        Element type = doc.createElement("type");
+        type.appendChild(doc.createTextNode(t.getType().toString()));
+        transactionElement.appendChild(type);
+      }
+
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      DOMSource source = new DOMSource(doc);
+      StreamResult result = new StreamResult(new File(filename));
+      transformer.transform(source, result);
+    } catch (javax.xml.transform.TransformerException |
+             javax.xml.parsers.ParserConfigurationException e) {
+      throw new IOException("Error: Could not save portfolio");
+    }
+  }
+
+  @Override
+  public List<Transactions> getTransactions() {
+    return new ArrayList<>(transactions);
+  }
+
+}
