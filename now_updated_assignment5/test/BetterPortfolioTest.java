@@ -172,6 +172,15 @@ public class BetterPortfolioTest {
 
     @Test
     public void testGetComposition() {
+        // add amazon stock in
+        port.addInvestment(LocalDate.of(2024, 1, 1),
+                new Stock("AMZN", new APIStockDataSource()), 30);
+        // assert AMZN doesn't exist before Dec 30
+        assertEquals(0, port.getComposition(LocalDate.of(2022,
+                12, 20)).getOrDefault("AMZN", 0.00), 0.01);
+        // assert the AMZN is added part of composition after Dec 30
+        assertEquals(30, port.getComposition(LocalDate.of(2024,
+                1, 1)).getOrDefault("AMZN", 0.00), 0.01);
     }
 
     @Test
