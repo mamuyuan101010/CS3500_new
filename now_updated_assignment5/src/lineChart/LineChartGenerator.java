@@ -46,7 +46,7 @@ class LineChartGenerator {
 
     // adjust the baes and each asterisks value. if they are lower than 100, they will round to 10,
     // greater than 100 will just round to 100
-    int rounding(double valueToRound) {
+    private int rounding(double valueToRound) {
         if (valueToRound > 100) {
             return ((int) valueToRound / 100) * 100;
         } else {
@@ -94,6 +94,8 @@ class LineChartGenerator {
                 valueFunction.apply(end, portfolio)));
     }
 
+    // removeLastDup will check if the end date given has the same month/year
+    // as the last item in the ValueComboList, if remove the last item if duplicate
     private void removeLastDup(LocalDate lastDateInList, LocalDate end) {
         switch (scale.unit) {
             case Month:
@@ -168,7 +170,7 @@ class LineChartGenerator {
     // calculate the scale of the unit if we want to
     // keep the rows less than 30
     private int scaling(int period) {
-        return (period - 1) / 30 + 1;
+        return (period - 1) / 29 + 1;
     }
 
     // get min value of the list
