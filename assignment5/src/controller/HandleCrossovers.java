@@ -20,8 +20,8 @@ class HandleCrossovers extends AbstractCommands {
   public void execute(IModel model, IView v) throws IOException {
     try {
       String ticker = getTickerSymbol(v);
-      LocalDate start = getDate(v, "Start");
-      LocalDate end = getDate(v, "End");
+      LocalDate start = getDatesInput(v, "start examining the crossovers");
+      LocalDate end = getDatesInput(v, "end examining the crossovers");
       int days = getDaysBack(v);
 
       StockDataSource source = getSourceInput(v);

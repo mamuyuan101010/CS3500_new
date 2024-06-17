@@ -26,13 +26,8 @@ abstract class AbstractCommands implements StocksCommands {
 
   //set method for retrieving stock ticker symbol
   protected String getTickerSymbol(IView view) throws IOException {
-    return getInput(view, "Enter ticker symbol of desired stock: ");
-  }
-
-  //set method for retrieving a date
-  protected LocalDate getDate(IView view, String specific) throws IOException {
-    return LocalDate.parse(
-            getInput(view, specific + " date of the range you will examine (YYYY-MM-DD): "));
+    String input = getInput(view, "Enter ticker symbol of desired stock: ");
+    return input.toUpperCase();
   }
 
   //set method for retrieving a number of days for any applicable command
@@ -53,5 +48,19 @@ abstract class AbstractCommands implements StocksCommands {
       default:
         throw new IllegalArgumentException("Source not recognized");
     }
+  }
+
+
+  //CHANGE TO EXISTING CODE: added a helper method to make inputting the date more user-friendly
+  //and less error-prone, removed previous dateInput method
+  //gets the specified source of where the stock data has to come from
+  protected LocalDate getDatesInput(IView v, String message) throws IOException {
+    int year = Integer.parseInt(
+            getInput(v, "Year in which you would like to " + message + " (YYYY): "));
+    int month = Integer.parseInt(
+            getInput(v, "Month in which you would like to " + message + " (1-12): "));
+    int day = Integer.parseInt(
+            getInput(v, "Day on which you would like to " + message + " (1-28/31): "));
+    return LocalDate.of(year, month, day);
   }
 }

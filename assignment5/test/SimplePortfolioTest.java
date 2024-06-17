@@ -40,7 +40,7 @@ public class SimplePortfolioTest {
     LocalDate recent = LocalDate.parse("2024-05-29");
     Portfolio port = new SimplePortfolio();
     port.addInvestment(googleStock, 6);
-    assertEquals(177.4 * 6, port.getValueOnDate(recent), 0.01);
+    assertEquals(177.4 * 6, port.getEndOfDayVal(recent), 0.01);
   }
 
   @Test
@@ -48,8 +48,8 @@ public class SimplePortfolioTest {
     LocalDate recent = LocalDate.parse("2024-05-29");
     Portfolio port = new SimplePortfolio();
     port.addInvestment(googleStock, 6);
-    port.sellInvestment(googleStock, 2);
-    assertEquals(177.4 * 4, port.getValueOnDate(recent), 0.01);
+    port.sellInvestment(googleStock.toString(), 2);
+    assertEquals(177.4 * 4, port.getEndOfDayVal(recent), 0.01);
   }
 
 }

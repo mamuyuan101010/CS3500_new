@@ -25,7 +25,7 @@ public class ModelAndViewMocksTest {
   //here, a connection is established as queryStock can only be called with a
   //StockDataSource passed in
   public void testQueryAPI() throws IOException {
-    Readable in = new StringReader("1\nGOOG\n2024-06-03\n2024-06-04\nAPI\n");
+    Readable in = new StringReader("1\nGOOG\n2024\n06\n03\n2024\n06\n04\nAPI\n");
     assertEquals("Is Source an API? true! Query the Stock GOOG\n", mockStart(in));
   }
 
@@ -34,7 +34,7 @@ public class ModelAndViewMocksTest {
   //as of now
   public void testQueryFile() throws IOException {
     Readable in = new StringReader(
-            "1\nGOOG\n2024-06-03\n2024-06-04\nFile\nres/GOOG");
+            "1\nGOOG\n2024\n06\n03\n2024\n06\n04\nFile\nres/GOOG");
     assertEquals("Is Source an API? false! Query the Stock GOOG\n", mockStart(in));
   }
 
@@ -55,7 +55,7 @@ public class ModelAndViewMocksTest {
   @Test
   public void testGetVal() throws IOException {
     Readable in = new StringReader(
-            "4\nportfolio1\n5\nportfolio1\nGOOG\n7\nAPI\n6\nportfolio1\n2024-05-29\n");
+            "4\nportfolio1\n5\nportfolio1\nGOOG\n7\nAPI\n6\nportfolio1\n2024\n05\n29\n");
     String[] lines = mockStart(in).split("\n");
     String last = lines[lines.length - 1];
     assertEquals("Get Value of Portfolio portfolio1 at date 2024-05-29", last);
@@ -94,20 +94,24 @@ public class ModelAndViewMocksTest {
 
   @Test
   public void testViewFetchGain() throws IOException {
-    Readable in = new StringReader("1\nGOOG\n2024-05-21\n2024-05-29\nAPI\n");
+    Readable in = new StringReader("1\nGOOG\n2024\n05\n21\n2024\n05\n29\nAPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Enter ticker symbol of desired stock: "
-            + "Start date of the range you will examine (YYYY-MM-DD): "
-            + "End date of the range you will examine (YYYY-MM-DD): "
+            + "Year in which you would like to start finding the gain or loss (YYYY): "
+            + "Month in which you would like to start finding the gain or loss (1-12): "
+            + "Day on which you would like to start finding the gain or loss (1-28/31): "
+            + "Year in which you would like to end finding the gain or loss (YYYY): "
+            + "Month in which you would like to end finding the gain or loss (1-12): "
+            + "Day on which you would like to end finding the gain or loss (1-28/31): "
             + "Source of stock data? API or File: Gain or Loss: "
-            + "-2.1399999999999864", last);
+            + "$-2.1399999999999864", last);
   }
 
   @Test
   public void testViewInvDate() throws IOException {
-    Readable in = new StringReader("1\nGOOG\n2027-05-21\n2024-05-29\nAPI\n");
+    Readable in = new StringReader("1\nGOOG\n2027\n05\n21\n2024\n05\n29\nAPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     last = last.split("File: ")[1];
@@ -117,7 +121,7 @@ public class ModelAndViewMocksTest {
 
   @Test
   public void testViewInvStock() throws IOException {
-    Readable in = new StringReader("1\nwack\n2027-05-21\n2024-05-29\nAPI\n");
+    Readable in = new StringReader("1\nwack\n2027\n05\n21\n2024\n05\n29\nAPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     last = last.split("File: ")[1];
@@ -127,7 +131,7 @@ public class ModelAndViewMocksTest {
 
   @Test
   public void testViewInvSource() throws IOException {
-    Readable in = new StringReader("1\nwack\n2027-05-21\n2024-05-29\nBPI\n");
+    Readable in = new StringReader("1\nwack\n2027\n05\n21\n2024\n05\n29\nBPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     last = last.split("File: ")[1];
@@ -137,26 +141,32 @@ public class ModelAndViewMocksTest {
 
   @Test
   public void testViewAvg() throws IOException {
-    Readable in = new StringReader("2\nGOOG\n2024-05-21\n7\nAPI\n");
+    Readable in = new StringReader("2\nGOOG\n2024\n05\n21\n7\nAPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Enter ticker symbol of desired stock: "
-            + "Start date of the range you will examine (YYYY-MM-DD): "
+            + "Year in which you would like to start the moving average from (YYYY): "
+            + "Month in which you would like to start the moving average from (1-12): "
+            + "Day on which you would like to start the moving average from (1-28/31): "
             + "How many days would you like to go back? "
             + "Source of stock data? API or File: 7 Days Moving Average: "
-            + "175.34714285714287", last);
+            + "$175.34714285714287", last);
   }
 
   @Test
   public void testViewCrossover() throws IOException {
-    Readable in = new StringReader("3\nGOOG\n2024-05-21\n2024-05-29\n7\nAPI\n");
+    Readable in = new StringReader("3\nGOOG\n2024\n05\n21\n2024\n05\n29\n7\nAPI\n");
     String[] lines = mockView(in).split("\n");
     String last = lines[10];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Enter ticker symbol of desired stock: "
-            + "Start date of the range you will examine (YYYY-MM-DD): "
-            + "End date of the range you will examine (YYYY-MM-DD): "
+            + "Year in which you would like to start examining the crossovers (YYYY): "
+            + "Month in which you would like to start examining the crossovers (1-12): "
+            + "Day on which you would like to start examining the crossovers (1-28/31): "
+            + "Year in which you would like to end examining the crossovers (YYYY): "
+            + "Month in which you would like to end examining the crossovers (1-12): "
+            + "Day on which you would like to end examining the crossovers (1-28/31): "
             + "How many days would you like to go back? "
             + "Source of stock data? API or File: List of Crossover Dates: "
             + "[2024-05-28, 2024-05-22, 2024-05-21]", last);
@@ -223,35 +233,41 @@ public class ModelAndViewMocksTest {
 
   @Test
   public void testViewGetVal() throws IOException {
-    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\none\n2024-05-29");
+    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\none\n2024\n05\n29");
     String[] lines = mockView(in).split("\n");
     String last = lines[30];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to find the value of? "
-            + "Date at which you would like value (YYYY-MM-DD): "
-            + "one was valued at 1241.8 on that date", last);
+            + "Year in which you would like to find the value (YYYY): "
+            + "Month in which you would like to find the value (1-12): "
+            + "Day on which you would like to find the value (1-28/31): "
+            + "one was valued at $1241.8 on that date", last);
   }
 
   @Test
   public void testViewGetValNotThere() throws IOException {
-    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\ntwo\n2024-05-29");
+    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\ntwo\n2024\n05\n29");
     String[] lines = mockView(in).split("\n");
     String last = lines[30];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to find the value of? "
-            + "Date at which you would like value (YYYY-MM-DD): "
+            + "Year in which you would like to find the value (YYYY): "
+            + "Month in which you would like to find the value (1-12): "
+            + "Day on which you would like to find the value (1-28/31): "
             + "Error: Portfolio not found: two", last);
   }
 
   @Test
   public void testViewGetValNoDate() throws IOException {
-    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\ntwo\n2024-5-29");
+    Readable in = new StringReader("4\none\n5\none\nGOOG\n7\nAPI\n6\ntwo\n2024\n5\n39");
     String[] lines = mockView(in).split("\n");
     String last = lines[30];
     assertEquals("Choose an option by entering the corresponding number: "
             + "Which portfolio would you like to find the value of? "
-            + "Date at which you would like value (YYYY-MM-DD): "
-            + "Error: Text '2024-5-29' could not be parsed at index 5", last);
+            + "Year in which you would like to find the value (YYYY): "
+            + "Month in which you would like to find the value (1-12): "
+            + "Day on which you would like to find the value (1-28/31): "
+            + "Error: Invalid value for DayOfMonth (valid values 1 - 28/31): 39", last);
   }
 
   private String mockStart(Readable in) throws IOException {

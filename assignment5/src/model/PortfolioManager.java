@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This is a Portfolio Manager class that stores a user's created portfolios.
@@ -40,20 +41,28 @@ public class PortfolioManager implements IModel {
 
   @Override
   public void addInvestmentToPortfolio(String portfolioName, Investment stock, int quantity) {
-    Portfolio portfolio = portfolios.get(portfolioName);
-    if (hasPortfolio(portfolioName)) {
+    executeOnPortfolio(portfolioName, portfolio -> {
       portfolio.addInvestment(stock, quantity);
-    } else {
-      throw new IllegalArgumentException("Portfolio not found: " + portfolioName);
-    }
+      return null;
+    });
   }
 
   @Override
   public double getValueOfPortfolio(String name, LocalDate date) {
-    if (hasPortfolio(name)) {
-      return portfolios.get(name).getValueOnDate(date);
+    return executeOnPortfolio(name, portfolio -> portfolio.getEndOfDayVal(date));
+  }
+
+  //CHANGE TO EXISTING CODE: modified PortfolioManager to abstract duplicate logic in addPortfolio
+  //                         and create portfolio methods, resulting in less duplicate code
+  //                         Now able to override this protected method in the extended
+  //                         BetterPortfolioManager class to utilize PortfolioV2 objects and
+  //                         reduce duplication across logic in methods there as well
+  protected <T> T executeOnPortfolio(String portfolioName, Function<Portfolio, T> function) {
+    if (hasPortfolio(portfolioName)) {
+      Portfolio portfolio = portfolios.get(portfolioName);
+      return function.apply(portfolio);
     } else {
-      throw new IllegalArgumentException("Portfolio not found: " + name);
+      throw new IllegalArgumentException("Portfolio not found: " + portfolioName);
     }
   }
 }

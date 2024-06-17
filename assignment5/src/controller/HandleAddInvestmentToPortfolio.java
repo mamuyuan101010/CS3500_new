@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import model.IModel;
 import model.Investment;
-import model.Stock;
 import model.StockDataSource;
 import view.IView;
 

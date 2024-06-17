@@ -8,7 +8,9 @@ import java.util.List;
  * These features are supposed to be a basic set upon which other features
  * may be developed.
  */
-public interface Investment {
+
+//Extends ValueProviders now to inherit the getEndOfDayVal(LocalDate) method
+public interface Investment extends ValueProviders {
 
   /**
    * Allow a user to examine the gain or loss of an investment over a specified period.
@@ -41,16 +43,6 @@ public interface Investment {
    * @return a list of dates that represent the X-Day crossovers for the specified parameters.
    */
   List<LocalDate> findCrossovers(LocalDate startDate, LocalDate endDate, int days);
-
-  /**
-   * gets the value of an investment at end of specified day.
-   * If weekend or holiday, cycles back 1 day at a time until a closing day value can be found.
-   *
-   * @param targetDate the date on which value is to be fetched
-   * @return the value of the investment at the end of the day
-   * @throws IllegalArgumentException if no price available for any day currently or prior
-   */
-  double getEndOfDayVal(LocalDate targetDate) throws IllegalArgumentException;
 
   /**
    * Gives a meaningful name to an investment object.

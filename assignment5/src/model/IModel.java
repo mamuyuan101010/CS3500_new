@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 /**
  * This interface specifies the operations for an implementation of the main model of this program.
+ * An IModel allows a user to create and store multiple portfolios, each represented by a name
+ * of their choosing. Once created, a user can add investments, get the value, and examine data
+ * on individual stocks.
  */
 public interface IModel {
 

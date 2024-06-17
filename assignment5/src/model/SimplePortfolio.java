@@ -21,21 +21,26 @@ public final class SimplePortfolio implements Portfolio {
   }
 
   @Override
-  public void addInvestment(Investment stock, int quantity) {
+  public void addInvestment(Investment stock, double quantity) {
     if (quantity > 0) {
       stocks.put(stock, stocks.getOrDefault(stock, 0.0) + quantity);
     }
   }
 
+  //Refer to Portfolio Interface for comments justifying this added method
   @Override
-  public void sellInvestment(Investment stock, double quantity) {
-    if (quantity > 0) {
-      stocks.put(stock, stocks.getOrDefault(stock, 0.0) - quantity);
+  public void sellInvestment(String stockName, double quantity) {
+    for (Map.Entry<Investment, Double> entry : stocks.entrySet()) {
+      if (entry.getKey().toString().equals(stockName) && quantity > 0) {
+        Investment stock = entry.getKey();
+        stocks.put(stock, stocks.getOrDefault(stock, 0.0) - quantity);
+        break;
+      }
     }
   }
 
   @Override
-  public double getValueOnDate(LocalDate date) {
+  public double getEndOfDayVal(LocalDate date) {
     double totalPrice = 0.00;
     for (Map.Entry<Investment, Double> entry : stocks.entrySet()) {
       totalPrice += entry.getKey().getEndOfDayVal(date) * entry.getValue();
