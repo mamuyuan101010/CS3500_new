@@ -3,10 +3,13 @@ import java.io.InputStreamReader;
 
 import controller.BetterInvestmentController;
 //import controller.InvestmentController;
+import controller.GraphicController;
 import model.BetterPortfolioManager;
 import model.IModel;
 //import model.MockBetterPM;
 //import model.PortfolioManager;
+import view.FrameView;
+import view.IGraphicView;
 import view.IView;
 //import view.TextView;
 import controller.IController;
@@ -22,12 +25,11 @@ public class StocksProgram {
    *
    * @param args any command line arguments
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     IModel model = new BetterPortfolioManager();
-    IView view = new TextViewV2(System.out);
-    IController controller = new BetterInvestmentController(
-            new InputStreamReader(System.in), model, view);
-
+    IGraphicView view = new FrameView();
+    IController controller = new GraphicController(model, view);
+    controller.start();
     try {
       controller.start();
     } catch (IOException e) {
