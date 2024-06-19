@@ -36,10 +36,11 @@ public class GraphicsView implements GUIView {
 
   private JButton queryValueButton;
   private JTextField queryValuePortfolioNameField;
-  private JTextField queryValueDateField;
+  private JTextField queryValueYearField;
+  private JTextField queryValueMonthField;
+  private JTextField queryValueDayField;
 
   private JButton queryCompositionButton;
-  private JTextField queryCompositionPortfolioNameField;
   private JTextField queryCompositionDateField;
 
 //  private JRadioButton alphaVantageRadioButton;
@@ -63,8 +64,7 @@ public class GraphicsView implements GUIView {
 
     mainPanel = new JPanel(new GridLayout(1, 3));
 
-    createPortfolioPanel = new JPanel(new BorderLayout());
-    setupCreatePortfolioPanel();
+    createPortfolioPanel = new CreatePortfolioSaveLoadPanel();
 
     buySellStockPanel = new BuySellStocksPanel();
 
@@ -81,33 +81,7 @@ public class GraphicsView implements GUIView {
 
   }
 
-  private void setupCreatePortfolioPanel() {
-    createPortfolioPanel.setBorder(BorderFactory.createTitledBorder(""));
-    JPanel panel = new JPanel(new GridLayout(2, 1));
-    JPanel inputPanel = new JPanel(new FlowLayout());
-    inputPanel.setBorder(BorderFactory.createTitledBorder("Create Portfolio"));
-    portfolioNameField = new JTextField(20);
-    createPortfolioButton = new JButton("Create Portfolio");
-    inputPanel.add(new JLabel("Portfolio Name:"));
-    inputPanel.add(portfolioNameField);
-    inputPanel.add(createPortfolioButton);
-    panel.add(inputPanel);
 
-    // add load and save file
-    loadButton = new JButton("Load");
-    saveButton = new JButton("Save");
-    fileName = new JTextField(20);
-    JPanel loadSavePanel = new JPanel(new FlowLayout());
-    loadSavePanel.setBorder(BorderFactory.createTitledBorder("Load/Save Files"));
-    loadSavePanel.add(new JLabel("Enter File Name Here: "));
-    loadSavePanel.add(fileName);
-    JPanel loadSave = new JPanel(new FlowLayout());
-    loadSave.add(loadButton);
-    loadSave.add(saveButton);
-    loadSavePanel.add(loadSave);
-    panel.add(loadSavePanel);
-    createPortfolioPanel.add(panel, BorderLayout.CENTER);
-  }
 
   // this method is for handling buy and sell stocks
 //  private void setupBuySellStockPanel() {
@@ -169,24 +143,30 @@ public class GraphicsView implements GUIView {
     JPanel panel = new JPanel(new GridLayout(6, 2));
 
     queryValuePortfolioNameField = new JTextField(10);
-    queryValueDateField = new JTextField(10);
+    queryValueYearField = new JTextField(4);
+    queryValueMonthField = new JTextField(2);
+    queryValueDayField = new JTextField(2);
     queryValueButton = new JButton("Query Value");
 
-    queryCompositionPortfolioNameField = new JTextField(10);
+
     queryCompositionDateField = new JTextField(10);
     queryCompositionButton = new JButton("Query Composition");
-
-    panel.add(new JLabel("Portfolio Name for Value:"));
-    panel.add(queryValuePortfolioNameField);
-    panel.add(new JLabel("Date (YYYY-MM-DD):"));
-    panel.add(queryValueDateField);
-    panel.add(queryValueButton);
-
-    panel.add(new JLabel("Portfolio Name for Composition:"));
-    panel.add(queryCompositionPortfolioNameField);
-    panel.add(new JLabel("Date (YYYY-MM-DD):"));
-    panel.add(queryCompositionDateField);
-    panel.add(queryCompositionButton);
+    JPanel portfolioNameInputPanel = new JPanel(new FlowLayout());
+    portfolioNameInputPanel.add(new JLabel("Portfolio Name for Value:"));
+    portfolioNameInputPanel.add(queryValuePortfolioNameField);
+    panel.add(portfolioNameInputPanel);
+    JPanel dateInputPanel = new JPanel(new FlowLayout());
+    dateInputPanel.add(new JLabel("Date (YYYY-MM-DD):"));
+    dateInputPanel.add(queryValueYearField);
+    dateInputPanel.add(new JLabel("-"));
+    dateInputPanel.add(queryValueMonthField);
+    dateInputPanel.add(new JLabel("-"));
+    dateInputPanel.add(queryValueDayField);
+    panel.add(dateInputPanel);
+    JPanel queryButtonPanel = new JPanel(new FlowLayout());
+    queryButtonPanel.add(queryValueButton);
+    queryButtonPanel.add(queryCompositionButton);
+    panel.add(queryButtonPanel);
 
     queryPortfolioPanel.add(panel, BorderLayout.CENTER);
   }
@@ -210,77 +190,77 @@ public class GraphicsView implements GUIView {
 
   @Override
   public void addFeatures(Features features) {
-    createPortfolioButton.addActionListener(evt -> {
-      try {
-        features.createPortfolio(portfolioNameField.getText());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    buyStockButton.addActionListener(evt -> {
-      try {
-        features.addStock(
-                LocalDate.of(Integer.valueOf(yearField.getText()),
-                        Integer.valueOf(monthField.getText())
-                        ,Integer.valueOf(dayField.getText())),
-                portfolioNameField.getText(),
-                tickerField.getText(),
-                getSelectedStockDataSource(),
-                Double.parseDouble(quantityField.getText())
-        );
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    sellStockButton.addActionListener(evt -> {
-      try {
-        features.sellStock(
-                LocalDate.of(Integer.valueOf(yearField.getText()),
-                        Integer.valueOf(monthField.getText())
-                        ,Integer.valueOf(dayField.getText())),
-                portfolioNameField.getText(),
-                tickerField.getText(),
-                Double.parseDouble(quantityField.getText())
-        );
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    queryValueButton.addActionListener(evt -> {
-      try {
-        features.getValue(
-                LocalDate.parse(queryValueDateField.getText()),
-                queryValuePortfolioNameField.getText()
-        );
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    queryCompositionButton.addActionListener(evt -> {
-      try {
-        features.getComposition(
-                LocalDate.parse(queryCompositionDateField.getText()),
-                queryCompositionPortfolioNameField.getText()
-        );
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    });
+//    createPortfolioButton.addActionListener(evt -> {
+//      try {
+//        features.createPortfolio(portfolioNameField.getText());
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+//
+//    buyStockButton.addActionListener(evt -> {
+//      try {
+//        features.addStock(
+//                LocalDate.of(Integer.valueOf(yearField.getText()),
+//                        Integer.valueOf(monthField.getText())
+//                        ,Integer.valueOf(dayField.getText())),
+//                portfolioNameField.getText(),
+//                tickerField.getText(),
+//                getSelectedStockDataSource(),
+//                Double.parseDouble(quantityField.getText())
+//        );
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+//
+//    sellStockButton.addActionListener(evt -> {
+//      try {
+//        features.sellStock(
+//                LocalDate.of(Integer.valueOf(yearField.getText()),
+//                        Integer.valueOf(monthField.getText())
+//                        ,Integer.valueOf(dayField.getText())),
+//                portfolioNameField.getText(),
+//                tickerField.getText(),
+//                Double.parseDouble(quantityField.getText())
+//        );
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+//
+//    queryValueButton.addActionListener(evt -> {
+//      try {
+//        features.getValue(
+//                LocalDate.parse(queryValueDateField.getText()),
+//                queryValuePortfolioNameField.getText()
+//        );
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+//
+//    queryCompositionButton.addActionListener(evt -> {
+//      try {
+//        features.getComposition(
+//                LocalDate.parse(queryCompositionDateField.getText()),
+//                queryCompositionPortfolioNameField.getText()
+//        );
+//      } catch (IOException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
   }
 
-  private StockDataSource getSelectedStockDataSource() {
-    if (alphaVantageRadioButton.isSelected()) {
-      return new APIStockDataSource();
-    } else if (yahooFinanceRadioButton.isSelected() && !dataSourceFileField.getText().isEmpty()) {
-      return new FileStockDataSource(dataSourceFileField.getText());
-    } else {
-      return null; // Default to null or handle appropriately
-    }
-  }
+//  private StockDataSource getSelectedStockDataSource() {
+//    if (alphaVantageRadioButton.isSelected()) {
+//      return new APIStockDataSource();
+//    } else if (yahooFinanceRadioButton.isSelected() && !dataSourceFileField.getText().isEmpty()) {
+//      return new FileStockDataSource(dataSourceFileField.getText());
+//    } else {
+//      return null; // Default to null or handle appropriately
+//    }
+//  }
 
   @Override
   public void showCustomMessage(String message) {
