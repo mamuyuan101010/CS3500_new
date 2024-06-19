@@ -27,6 +27,9 @@ public class FrameView extends JFrame implements IGraphicView, ActionListener, K
   private  final JTextArea enterQuantity;
   private final List<IViewListener> myListeners;
   private final Canvas myCanvas;
+  private final JLabel dateLabel;
+  private final JButton optionSelect;
+  private final JButton enter;
 
   public FrameView() {
     super();
@@ -69,15 +72,14 @@ public class FrameView extends JFrame implements IGraphicView, ActionListener, K
     JPanel column3 = new JPanel();
     column3.setLayout(new FlowLayout());
     column3.setPreferredSize(new Dimension(300, 300));
-    JLabel dateLabel = new JLabel("Select Date:");
+    dateLabel = new JLabel("Select Date:");
     column3.add(dateLabel, BorderLayout.NORTH);
-    JButton optionSelect = new JButton("date");
-    JButton enter = new JButton("enter");
-    column3.add(enter);
+    optionSelect = new JButton("date");
+    enter = new JButton("enter");
     JPanel blankPanel = new JPanel();
     blankPanel.setLayout(new FlowLayout());
-    blankPanel.add(dateLabel);
     blankPanel.add(optionSelect);
+    blankPanel.add(enter);
     column3.add(blankPanel, BorderLayout.SOUTH);
     column3.setBorder(blackBorder);
 

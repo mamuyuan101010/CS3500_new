@@ -34,5 +34,4 @@ class HandleComposition extends AbstractCommandsV2 {
       v.showCustomMessage("Error: " + e.getMessage() + "\n");
     }
   }
-
 }

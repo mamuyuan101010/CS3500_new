@@ -1,20 +1,8 @@
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import controller.BetterInvestmentController;
-import controller.IController;
-import controller.InvestmentController;
 import controller.GUIController;
 import model.BetterPortfolioManager;
-import model.IModel;
-import model.MockBetterPM;
-import model.PortfolioManager;
 import model.IModelV2;
 import view.GUIView;
 import view.GraphicsView;
-import view.IView;
-import view.TextView;
-import view.TextViewV2;
 
 
 /**

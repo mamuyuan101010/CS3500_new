@@ -8,6 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Date;
 
 import controller.Features;
 import model.APIStockDataSource;
@@ -18,21 +19,20 @@ public class GraphicsView implements GUIView {
   private JFrame frame;
   private JPanel mainPanel;
   private JPanel createPortfolioPanel;
-  private JPanel buySellStockPanel;
+  private BuySellStocksPanel buySellStockPanel;
   private JPanel queryPortfolioPanel;
 
   private JButton createPortfolioButton;
   private JTextField portfolioNameField;
 
-  private JButton buyStockButton;
-  private JTextField buyStockTickerField;
-  private JTextField buyStockQuantityField;
-  private JTextField buyStockDateField;
-
-  private JButton sellStockButton;
-  private JTextField sellStockTickerField;
-  private JTextField sellStockQuantityField;
-  private JTextField sellStockDateField;
+//  private JButton buyStockButton;
+//  private JTextField tickerField;
+//  private JTextField quantityField;
+//  private JTextField yearField;
+//  private JTextField monthField;
+//  private JTextField dayField;
+//
+//  private JButton sellStockButton;
 
   private JButton queryValueButton;
   private JTextField queryValuePortfolioNameField;
@@ -42,10 +42,15 @@ public class GraphicsView implements GUIView {
   private JTextField queryCompositionPortfolioNameField;
   private JTextField queryCompositionDateField;
 
-  private JRadioButton alphaVantageRadioButton;
-  private JRadioButton yahooFinanceRadioButton;
-  private ButtonGroup dataSourceButtonGroup;
-  private JTextField dataSourceFileField;
+//  private JRadioButton alphaVantageRadioButton;
+//  private JRadioButton yahooFinanceRadioButton;
+//  private ButtonGroup dataSourceButtonGroup;
+//  private JTextField dataSourceFileField;
+
+  // load and save file
+  private JButton loadButton;
+  private JButton saveButton;
+  private JTextField fileName;
 
   public GraphicsView() {
     initialize();
@@ -61,8 +66,7 @@ public class GraphicsView implements GUIView {
     createPortfolioPanel = new JPanel(new BorderLayout());
     setupCreatePortfolioPanel();
 
-    buySellStockPanel = new JPanel(new BorderLayout());
-    setupBuySellStockPanel();
+    buySellStockPanel = new BuySellStocksPanel();
 
     queryPortfolioPanel = new JPanel(new BorderLayout());
     setupQueryPortfolioPanel();
@@ -78,72 +82,86 @@ public class GraphicsView implements GUIView {
   }
 
   private void setupCreatePortfolioPanel() {
-    createPortfolioPanel.setBorder(BorderFactory.createTitledBorder("Create Portfolio"));
+    createPortfolioPanel.setBorder(BorderFactory.createTitledBorder(""));
     JPanel panel = new JPanel(new GridLayout(2, 1));
     JPanel inputPanel = new JPanel(new FlowLayout());
+    inputPanel.setBorder(BorderFactory.createTitledBorder("Create Portfolio"));
     portfolioNameField = new JTextField(20);
     createPortfolioButton = new JButton("Create Portfolio");
     inputPanel.add(new JLabel("Portfolio Name:"));
     inputPanel.add(portfolioNameField);
     inputPanel.add(createPortfolioButton);
     panel.add(inputPanel);
+
+    // add load and save file
+    loadButton = new JButton("Load");
+    saveButton = new JButton("Save");
+    fileName = new JTextField(20);
+    JPanel loadSavePanel = new JPanel(new FlowLayout());
+    loadSavePanel.setBorder(BorderFactory.createTitledBorder("Load/Save Files"));
+    loadSavePanel.add(new JLabel("Enter File Name Here: "));
+    loadSavePanel.add(fileName);
+    JPanel loadSave = new JPanel(new FlowLayout());
+    loadSave.add(loadButton);
+    loadSave.add(saveButton);
+    loadSavePanel.add(loadSave);
+    panel.add(loadSavePanel);
     createPortfolioPanel.add(panel, BorderLayout.CENTER);
   }
 
-  private void setupBuySellStockPanel() {
-    buySellStockPanel.setBorder(BorderFactory.createTitledBorder("Buy/Sell Stock"));
-
-    JPanel panel = new JPanel(new GridLayout(8, 2));
-
-    buyStockTickerField = new JTextField(10);
-    buyStockQuantityField = new JTextField(10);
-    buyStockDateField = new JTextField(10);
-    buyStockButton = new JButton("Buy Stock");
-
-    sellStockTickerField = new JTextField(10);
-    sellStockQuantityField = new JTextField(10);
-    sellStockDateField = new JTextField(10);
-    sellStockButton = new JButton("Sell Stock");
-
-    panel.add(new JLabel("Buy Stock Ticker:"));
-    panel.add(buyStockTickerField);
-    panel.add(new JLabel("Quantity:"));
-    panel.add(buyStockQuantityField);
-    panel.add(new JLabel("Date (YYYY-MM-DD):"));
-    panel.add(buyStockDateField);
-    panel.add(buyStockButton);
-
-    panel.add(new JLabel("Sell Stock Ticker:"));
-    panel.add(sellStockTickerField);
-    panel.add(new JLabel("Quantity:"));
-    panel.add(sellStockQuantityField);
-    panel.add(new JLabel("Date (YYYY-MM-DD):"));
-    panel.add(sellStockDateField);
-    panel.add(sellStockButton);
-
-    alphaVantageRadioButton = new JRadioButton("Alpha Vantage");
-    yahooFinanceRadioButton = new JRadioButton("Yahoo Finance");
-
-    dataSourceButtonGroup = new ButtonGroup();
-    dataSourceButtonGroup.add(alphaVantageRadioButton);
-    dataSourceButtonGroup.add(yahooFinanceRadioButton);
-
-    panel.add(new JLabel("Choose Data Source:"));
-    JPanel radioPanel = new JPanel(new FlowLayout());
-    radioPanel.add(alphaVantageRadioButton);
-    radioPanel.add(yahooFinanceRadioButton);
-    panel.add(radioPanel);
-
-    dataSourceFileField = new JTextField(20);
-    dataSourceFileField.setVisible(false);  // Hide initially
-    panel.add(new JLabel("File Name:"));
-    panel.add(dataSourceFileField);
-
-    alphaVantageRadioButton.addItemListener(new RadioButtonListener());
-    yahooFinanceRadioButton.addItemListener(new RadioButtonListener());
-
-    buySellStockPanel.add(panel, BorderLayout.CENTER);
-  }
+  // this method is for handling buy and sell stocks
+//  private void setupBuySellStockPanel() {
+//    buySellStockPanel.setBorder(BorderFactory.createTitledBorder("Buy/Sell Stock"));
+//
+//    JPanel panel = new JPanel(new GridLayout(8, 2));
+//
+//    tickerField = new JTextField(10);
+//    quantityField = new JTextField(10);
+//    JPanel DatePanel = new JPanel(new FlowLayout());
+//    yearField = new JTextField(4);
+//    monthField = new JTextField(2);
+//    dayField = new JTextField(2);
+//    DatePanel.add(yearField);
+//    DatePanel.add(monthField);
+//    DatePanel.add(dayField);
+//    buyStockButton = new JButton("Buy Stock");
+//
+//    sellStockButton = new JButton("Sell Stock");
+//
+//    panel.add(new JLabel("Buy Stock Ticker:"));
+//    panel.add(tickerField);
+//    panel.add(new JLabel("Quantity:"));
+//    panel.add(quantityField);
+//    panel.add(new JLabel("Date (YYYY-MM-DD):"));
+//    panel.add(DatePanel);
+//    JPanel buttons = new JPanel(new FlowLayout());
+//    buttons.add(buyStockButton);
+//    buttons.add(sellStockButton);
+//    panel.add(buttons);
+//
+//    alphaVantageRadioButton = new JRadioButton("Alpha Vantage");
+//    yahooFinanceRadioButton = new JRadioButton("Yahoo Finance");
+//
+//    dataSourceButtonGroup = new ButtonGroup();
+//    dataSourceButtonGroup.add(alphaVantageRadioButton);
+//    dataSourceButtonGroup.add(yahooFinanceRadioButton);
+//
+//    panel.add(new JLabel("Choose Data Source:"));
+//    JPanel radioPanel = new JPanel(new FlowLayout());
+//    radioPanel.add(alphaVantageRadioButton);
+//    radioPanel.add(yahooFinanceRadioButton);
+//    panel.add(radioPanel);
+//
+//    dataSourceFileField = new JTextField(20);
+//    dataSourceFileField.setVisible(false);  // Hide initially
+//    panel.add(new JLabel("File Name:"));
+//    panel.add(dataSourceFileField);
+//
+//    alphaVantageRadioButton.addItemListener(new RadioButtonListener());
+//    yahooFinanceRadioButton.addItemListener(new RadioButtonListener());
+//
+//    buySellStockPanel.add(panel, BorderLayout.CENTER);
+//  }
 
   private void setupQueryPortfolioPanel() {
     queryPortfolioPanel.setBorder(BorderFactory.createTitledBorder("Query Portfolio"));
@@ -181,8 +199,11 @@ public class GraphicsView implements GUIView {
   @Override
   public void setButtonListener(ActionListener listener) {
     createPortfolioButton.addActionListener(listener);
-    buyStockButton.addActionListener(listener);
-    sellStockButton.addActionListener(listener);
+
+    // call the method in buySellStockPanel to add action listener
+    buySellStockPanel.addActionListener(listener);
+
+
     queryValueButton.addActionListener(listener);
     queryCompositionButton.addActionListener(listener);
   }
@@ -200,11 +221,13 @@ public class GraphicsView implements GUIView {
     buyStockButton.addActionListener(evt -> {
       try {
         features.addStock(
-                LocalDate.parse(buyStockDateField.getText()),
+                LocalDate.of(Integer.valueOf(yearField.getText()),
+                        Integer.valueOf(monthField.getText())
+                        ,Integer.valueOf(dayField.getText())),
                 portfolioNameField.getText(),
-                buyStockTickerField.getText(),
+                tickerField.getText(),
                 getSelectedStockDataSource(),
-                Double.parseDouble(buyStockQuantityField.getText())
+                Double.parseDouble(quantityField.getText())
         );
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -214,10 +237,12 @@ public class GraphicsView implements GUIView {
     sellStockButton.addActionListener(evt -> {
       try {
         features.sellStock(
-                LocalDate.parse(sellStockDateField.getText()),
+                LocalDate.of(Integer.valueOf(yearField.getText()),
+                        Integer.valueOf(monthField.getText())
+                        ,Integer.valueOf(dayField.getText())),
                 portfolioNameField.getText(),
-                sellStockTickerField.getText(),
-                Double.parseDouble(sellStockQuantityField.getText())
+                tickerField.getText(),
+                Double.parseDouble(quantityField.getText())
         );
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -277,16 +302,16 @@ public class GraphicsView implements GUIView {
     showCustomMessage("Goodbye!");
   }
 
-  private class RadioButtonListener implements ItemListener {
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-      if (alphaVantageRadioButton.isSelected() || yahooFinanceRadioButton.isSelected()) {
-        dataSourceFileField.setVisible(false);
-      } else {
-        dataSourceFileField.setVisible(true);
-      }
-      buySellStockPanel.revalidate();
-      buySellStockPanel.repaint();
-    }
-  }
+//  private class RadioButtonListener implements ItemListener {
+//    @Override
+//    public void itemStateChanged(ItemEvent e) {
+//      if (alphaVantageRadioButton.isSelected() || yahooFinanceRadioButton.isSelected()) {
+//        dataSourceFileField.setVisible(false);
+//      } else {
+//        dataSourceFileField.setVisible(true);
+//      }
+//      buySellStockPanel.revalidate();
+//      buySellStockPanel.repaint();
+//    }
+//  }
 }
