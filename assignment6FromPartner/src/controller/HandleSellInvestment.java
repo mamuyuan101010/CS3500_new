@@ -18,23 +18,26 @@ class HandleSellInvestment extends AbstractCommandsV2 {
     super(s);
   }
 
+  HandleSellInvestment(String pn, String ticker, LocalDate date, double quantity) {
+    this.portfolioName = pn;
+    this.ticker = ticker;
+    this.date = date;
+    this.quantity = quantity;
+  }
+
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "Which portfolio would you like to sell from? ");
-      ticker = getTickerSymbol(v);
-      date = getDatesInput(v, "sell investment");
-      quantity = Double.parseDouble(
-              getInput(v, "How many shares would you like to sell? "));
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "Which portfolio would you like to sell from? ");
+    ticker = getTickerSymbol(v);
+    date = getDatesInput(v, "sell investment");
+    quantity = Double.parseDouble(
+            getInput(v, "How many shares would you like to sell? "));
   }
 
   @Override
   public void execute(IModelV2 model, IView v) throws IOException {
     try {
-      model.sellInvestmentFromPortfolio(date, portfolioName, ticker , quantity);
+      model.sellInvestmentFromPortfolio(date, portfolioName, ticker, quantity);
       v.showCustomMessage("Successfully sold!\n");
     } catch (Exception e) {
       v.showCustomMessage("Error: " + e.getMessage() + "\n");

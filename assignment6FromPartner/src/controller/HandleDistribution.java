@@ -17,14 +17,10 @@ class HandleDistribution extends AbstractCommandsV2 {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(
-              v, "Which portfolio would you like to find the distribution of values of? ");
-      date = getDatesInput(v, "find the distribution of values");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(
+            v, "Which portfolio would you like to find the distribution of values of? ");
+    date = getDatesInput(v, "find the distribution of values");
   }
 
   @Override

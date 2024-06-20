@@ -15,14 +15,15 @@ class HandleSaveFile extends AbstractCommandsV2 {
     super(s);
   }
 
+  HandleSaveFile(String portfolioName, String path) {
+    this.portfolioName = portfolioName;
+    this.path = path;
+  }
+
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "Which portfolio would you like to save? ");
-      path = getInput(v, "Which absolute path on your computer would you like to save to? ");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "Which portfolio would you like to save? ");
+    path = getInput(v, "Which absolute path on your computer would you like to save to? ");
   }
 
   @Override

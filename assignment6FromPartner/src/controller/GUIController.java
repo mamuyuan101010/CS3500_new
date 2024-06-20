@@ -2,87 +2,76 @@ package controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Scanner;
 
+import model.IModel;
 import model.IModelV2;
 import model.StockDataSource;
 import view.GUIView;
 
-public class GUIController implements Features {
+/**
+ * This class represents the controller of a graphical user interface of
+ * this investment application.
+ */
+public class GUIController implements IGUIController, Features {
   private final IModelV2 model;
   private GUIView view;
 
+  /**
+   * Constructs a GUIController with a model to refer to.
+   *
+   * @param m the model to be referred to
+   */
   public GUIController(IModelV2 m) {
-    model = m;
+    this.model = m;
   }
 
+  @Override
   public void setView(GUIView v) {
     view = v;
     view.addFeatures(this);
   }
 
-  public void delegate(String key) {
-    //knownCommands.get(key).prompter;
-    //knownCommands.get(key).execute;
-  }
-
-
   @Override
   public void createPortfolio(String name) throws IOException {
-    StocksCommands c =  new HandleCreatePortfolio(name);
-    c.execute(model, view);
-
-    //new HandleCreatePortfolio(null).execute();
-    //delegate the specifc key
+    execute(new HandleCreatePortfolio(name));
   }
 
   @Override
-  public void addStock(LocalDate date, String portfolioName, String ticker, StockDataSource s, double quantity) throws IOException {
-    StocksCommandsV2 c =  new HandleAddDateInvestment(null);
-    c.execute(model, view);
+  public void addStock(
+          LocalDate date, String portfolioName, String ticker, StockDataSource s, int quantity)
+          throws IOException {
+    execute(new HandleAddDateInvestment(portfolioName, ticker, date, quantity, s));
   }
 
   @Override
-  public void sellStock(LocalDate date, String portfolioName, String ticker, double quantity) throws IOException {
-    StocksCommandsV2 c =  new HandleSellInvestment(null);
-    c.execute(model, view);
+  public void sellStock(
+          LocalDate date, String portfolioName, String ticker, double quantity)
+          throws IOException {
+    execute(new HandleSellInvestment(portfolioName, ticker, date, quantity));
   }
 
   @Override
   public void getValue(LocalDate date, String portfolioName) throws IOException {
-    StocksCommands c =  new HandleGetPortfolioValue(null);
-    c.execute(model, view);
+    execute(new HandleGetPortfolioValue(portfolioName, date));
   }
 
   @Override
   public void getComposition(LocalDate date, String portfolioName) throws IOException {
-//    StocksCommandsV2 c =  new HandleComposition(new Scanner("eh"));
-//    c.execute(model, view);
-    try {
-      Map<String, Double> comp = model.getComposition(date, portfolioName);
-
-      StringBuilder message = new StringBuilder();
-      message.append(portfolioName).append(" composition on ").append(date).append(":\n");
-      for (Map.Entry<String, Double> entry : comp.entrySet()) {
-        message.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-      }
-
-      view.showCustomMessage(message.toString());
-    } catch (Exception e) {
-      view.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+    execute(new HandleComposition(portfolioName, date));
   }
 
   @Override
   public void savePortfolio(String portfolioName, String fileName) throws IOException {
-    StocksCommandsV2 c =  new HandleSaveFile(null);
-    c.execute(model, view);
+    execute(new HandleSaveFile(portfolioName, fileName));
   }
 
   @Override
   public void loadPortfolio(String filename, String name) throws IOException {
-    StocksCommandsV2 c =  new HandleLoadFile(null);
+    execute(new HandleLoadFile(filename, name));
+  }
+
+  //helper method to abstract the common execution of a command class instance
+  private void execute(StocksCommands c) throws IOException {
     c.execute(model, view);
   }
 

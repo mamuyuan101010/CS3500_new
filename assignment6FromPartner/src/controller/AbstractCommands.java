@@ -11,7 +11,7 @@ import view.IView;
 
 //abstract class to represent shared operations by each command
 abstract class AbstractCommands implements StocksCommands {
-  protected final Scanner scanner;
+  private final Scanner scanner;
 
   //abstract constructor for each command
   protected AbstractCommands(Scanner scanner) {
@@ -19,14 +19,31 @@ abstract class AbstractCommands implements StocksCommands {
   }
 
   //default constructor to take no arguments
+  //this constructor is to be used for controllers that do not require a scanner or prompt
   protected AbstractCommands() {
     this.scanner = null;
   }
 
+  @Override
+  public void prompter(IView v) throws IOException {
+    try {
+      prompterHelp(v);
+    } catch (Exception e) {
+      v.showCustomMessage("Error: " + e.getMessage() + "\n");
+    }
+  }
+
+  //helper method for prompter that asks for command specific inputs
+  protected abstract void prompterHelp(IView view) throws IOException;
+
   //combines the process of view displaying text and controller getting user input
   protected String getInput(IView view, String prompt) throws IOException {
-    view.showCustomMessage(prompt);
-    return scanner.nextLine();
+    if (scanner != null) {
+      view.showCustomMessage(prompt);
+      return scanner.nextLine();
+    } else {
+      throw new UnsupportedOperationException("Scanner not available");
+    }
   }
 
   //set method for retrieving stock ticker symbol
@@ -42,19 +59,22 @@ abstract class AbstractCommands implements StocksCommands {
 
   //gets the specified source of where the stock data has to come from
   protected StockDataSource getSourceInput(IView view) throws IOException {
-    view.showCustomMessage("Source of stock data? API or File: ");
-    String sourceType = scanner.nextLine().toLowerCase();
-    switch (sourceType) {
-      case "api":
-        return new APIStockDataSource();
-      case "file":
-        view.showCustomMessage("Provide the file path: ");
-        return new FileStockDataSource(scanner.nextLine());
-      default:
-        throw new IllegalArgumentException("Source not recognized");
+    if (scanner != null) {
+      view.showCustomMessage("Source of stock data? API or File: ");
+      String sourceType = scanner.nextLine().toLowerCase();
+      switch (sourceType) {
+        case "api":
+          return new APIStockDataSource();
+        case "file":
+          view.showCustomMessage("Provide the file path: ");
+          return new FileStockDataSource(scanner.nextLine());
+        default:
+          throw new IllegalArgumentException("Source not recognized");
+      }
+    } else {
+      throw new UnsupportedOperationException("Scanner not available");
     }
   }
-
 
   //CHANGE TO EXISTING CODE: added a helper method to make inputting the date more user-friendly
   //and less error-prone, removed previous dateInput method

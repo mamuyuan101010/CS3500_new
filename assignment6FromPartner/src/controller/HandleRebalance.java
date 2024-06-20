@@ -19,13 +19,9 @@ class HandleRebalance extends AbstractCommandsV2 {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "\nWhich portfolio would you like to rebalance? ");
-      date = getDatesInput(v, "rebalance");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "\nWhich portfolio would you like to rebalance? ");
+    date = getDatesInput(v, "rebalance");
   }
 
   @Override

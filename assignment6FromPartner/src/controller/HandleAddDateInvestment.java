@@ -21,27 +21,31 @@ class HandleAddDateInvestment extends AbstractCommandsV2 {
     super(s);
   }
 
+  HandleAddDateInvestment(String pn, String ticker, LocalDate date, int quantity, StockDataSource source) {
+    this.portfolioName = pn;
+    this.ticker = ticker;
+    this.date = date;
+    this.quantity = quantity;
+    this.source = source;
+  }
+
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "Which portfolio would you like to add to? ");
-      ticker = getTickerSymbol(v);
-      date = getDatesInput(v, "add investment");
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "Which portfolio would you like to add to? ");
+    ticker = getTickerSymbol(v);
+    date = getDatesInput(v, "add investment");
 
-      quantity = Integer.parseInt(
-              getInput(v, "How many whole (non-fractional) shares would you like to add? "));
+    quantity = Integer.parseInt(
+            getInput(v, "How many whole (non-fractional) shares would you like to add? "));
 
-      source = getSourceInput(v);
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+    source = getSourceInput(v);
   }
 
   @Override
   public void execute(IModelV2 model, IView v) throws IOException {
     try {
       Investment stock = model.queryStock(ticker, source);
-      model.addInvestmentToPortfolio(date, portfolioName, stock , quantity);
+      model.addInvestmentToPortfolio(date, portfolioName, stock, quantity);
       v.showCustomMessage("Successfully added!\n");
     } catch (Exception e) {
       v.showCustomMessage("Error: " + e.getMessage() + "\n");

@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ import view.IView;
  * This class represents the controller of an interactive text-based investment's application.
  */
 public class BetterInvestmentController extends AbstractInvestmentController {
-  private final Map<String, Function<Scanner, StocksCommandsV2>> knownCommands2;
+  protected final Map<String, Function<Scanner, StocksCommandsV2>> knownCommands2;
 
   /**
    * Create a controller to work with the specified investment (model)

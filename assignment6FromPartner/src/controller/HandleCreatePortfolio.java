@@ -19,12 +19,8 @@ class HandleCreatePortfolio extends AbstractCommands {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "What name would you like to give your portfolio? ");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "What name would you like to give your portfolio? ");
   }
 
   @Override

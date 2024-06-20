@@ -18,6 +18,12 @@ abstract class AbstractCommandsV2 extends AbstractCommands implements StocksComm
     super(scanner);
   }
 
+  //default constructor to take no arguments
+  //this constructor is to be used for controllers that do not require a scanner or prompt
+  protected AbstractCommandsV2() {
+    super();
+  }
+
   //helper to abstract duplicate logic needed in two places
   protected void displayDistribution(IModelV2 model, IView v, LocalDate date, String pName)
           throws IOException {

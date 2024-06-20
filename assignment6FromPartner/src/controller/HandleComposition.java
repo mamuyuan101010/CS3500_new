@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import model.IModelV2;
+import model.StockDataSource;
 import view.IView;
 
 //command of getting the composition of a portfolio
@@ -17,15 +18,16 @@ class HandleComposition extends AbstractCommandsV2 {
     super(s);
   }
 
+  HandleComposition(String pn, LocalDate date) {
+    this.portfolioName = pn;
+    this.date = date;
+  }
+
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(
-              v, "Which portfolio would you like to find the composition of? ");
-      date = getDatesInput(v, "find the composition of this portfolio");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(
+            v, "Which portfolio would you like to find the composition of? ");
+    date = getDatesInput(v, "find the composition of this portfolio");
   }
 
   @Override

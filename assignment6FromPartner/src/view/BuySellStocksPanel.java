@@ -7,7 +7,7 @@ import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
-public class BuySellStocksPanel extends JPanel {
+class BuySellStocksPanel extends JPanel {
 
   private JButton buyStockButton;
   private JButton sellStockButton;
@@ -20,6 +20,7 @@ public class BuySellStocksPanel extends JPanel {
   private JRadioButton localFileButton;
   private ButtonGroup dataSourceButtonGroup;
   private JTextField dataSourceFileField;
+  private JTextField porfolioNameField;
 
   BuySellStocksPanel() {
     super(new FlowLayout());
@@ -37,18 +38,24 @@ public class BuySellStocksPanel extends JPanel {
     datePanel.add(monthField);
     datePanel.add(new JLabel("-"));
     datePanel.add(dayField);
+    JPanel portfolioName = new JPanel(new FlowLayout());
+    portfolioName.add(new JLabel("Portfolio Name:"));
+    porfolioNameField = new JTextField(20);
+    portfolioName.add(porfolioNameField);
+
     buyStockButton = new JButton("Buy Stock");
 
     sellStockButton = new JButton("Sell Stock");
 
-    JPanel buyStockTickerPanel = new JPanel(new FlowLayout());
-    buyStockTickerPanel.add(new JLabel("Buy Stock Ticker:"));
-    buyStockTickerPanel.add(tickerField);
-    panel.add(buyStockTickerPanel);
+    JPanel stockTickerPanel = new JPanel(new FlowLayout());
+    stockTickerPanel.add(new JLabel("Stock Ticker:"));
+    stockTickerPanel.add(tickerField);
+    panel.add(stockTickerPanel);
     JPanel quantityPanel = new JPanel(new FlowLayout());
     quantityPanel.add(new JLabel("Quantity:"));
     quantityPanel.add(quantityField);
     panel.add(datePanel);
+    panel.add(portfolioName);
     JPanel buttons = new JPanel(new FlowLayout());
     buttons.add(buyStockButton);
     buttons.add(sellStockButton);

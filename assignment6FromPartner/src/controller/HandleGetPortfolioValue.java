@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 import model.IModel;
+import model.StockDataSource;
 import view.IView;
 
 //command for getting value of portfolio
@@ -16,14 +17,15 @@ class HandleGetPortfolioValue extends AbstractCommands {
     super(s);
   }
 
+  HandleGetPortfolioValue(String pn, LocalDate date) {
+    this.portfolioName = pn;
+    this.date = date;
+  }
+
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "Which portfolio would you like to find the value of? ");
-      date = getDatesInput(v, "find the value");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "Which portfolio would you like to find the value of? ");
+    date = getDatesInput(v, "find the value");
   }
 
   @Override

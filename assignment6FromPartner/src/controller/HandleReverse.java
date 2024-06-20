@@ -25,13 +25,9 @@ class HandleReverse extends AbstractCommandsV2 {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(
-              v, "In which portfolio would you like to undo a transaction? ");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(
+            v, "In which portfolio would you like to undo a transaction? ");
   }
 
   //since we want to display the transactions list before getting more inputs,

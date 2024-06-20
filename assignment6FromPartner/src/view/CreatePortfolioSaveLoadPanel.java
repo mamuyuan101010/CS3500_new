@@ -3,9 +3,8 @@ package view;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
-public class CreatePortfolioSaveLoadPanel extends JPanel {
+class CreatePortfolioSaveLoadPanel extends JPanel {
   private JButton createPortfolioButton;
   private JTextField portfolioNameField;
   // load and save file

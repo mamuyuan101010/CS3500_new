@@ -20,24 +20,20 @@ class HandleAddInvestmentToPortfolio extends AbstractCommands {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      portfolioName = getInput(v, "Which portfolio would you like to add to? ");
-      ticker = getTickerSymbol(v);
-      quantity = Integer.parseInt(
-              getInput(v, "How many whole (non-fractional) shares would you like to add? "));
+  public void prompterHelp(IView v) throws IOException {
+    portfolioName = getInput(v, "Which portfolio would you like to add to? ");
+    ticker = getTickerSymbol(v);
+    quantity = Integer.parseInt(
+            getInput(v, "How many whole (non-fractional) shares would you like to add? "));
 
-      source = getSourceInput(v);
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+    source = getSourceInput(v);
   }
 
   @Override
   public void execute(IModel model, IView v) throws IOException {
     try {
       Investment stock = model.queryStock(ticker, source);
-      model.addInvestmentToPortfolio(portfolioName, stock , quantity);
+      model.addInvestmentToPortfolio(portfolioName, stock, quantity);
       v.showCustomMessage("Successfully added!\n");
     } catch (Exception e) {
       v.showCustomMessage("Error: " + e.getMessage() + "\n");

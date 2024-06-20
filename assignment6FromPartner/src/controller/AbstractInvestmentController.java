@@ -19,15 +19,8 @@ abstract class AbstractInvestmentController implements IController {
   protected final Readable in;
   protected final Map<String, Function<Scanner, StocksCommands>> knownCommands;
 
-  /**
-   * Create a controller to work with the specified investment (model)
-   * and view (to take and display inputs).
-   *
-   * @param in the readable input being passed in
-   * @param model the portfolio manager to work with (the model)
-   * @param view  the text view object for inputs and outputs (the view)
-   */
-  public AbstractInvestmentController(Readable in, IModel model, IView view) {
+  //constructor that takes in common fields of classes that extend this class
+  protected AbstractInvestmentController(Readable in, IModel model, IView view) {
     this.model = model;
     this.view = view;
     this.in = in;

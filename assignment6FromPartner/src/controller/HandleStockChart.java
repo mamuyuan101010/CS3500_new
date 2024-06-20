@@ -20,16 +20,12 @@ class HandleStockChart extends AbstractCommandsV2 {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      ticker = getInput(
-              v, "Which stock would you like to see the performance of? ");
-      s = getSourceInput(v);
-      start = getDatesInput(v, "start examining the performance");
-      end = getDatesInput(v, "end examining the performance\n");
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    ticker = getInput(
+            v, "Which stock would you like to see the performance of? ");
+    s = getSourceInput(v);
+    start = getDatesInput(v, "start examining the performance");
+    end = getDatesInput(v, "end examining the performance\n");
   }
 
   @Override

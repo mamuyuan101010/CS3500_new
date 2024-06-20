@@ -20,15 +20,11 @@ class HandleMovingAvg extends AbstractCommands {
   }
 
   @Override
-  public void prompter(IView v) throws IOException {
-    try {
-      ticker = getTickerSymbol(v);
-      start = getDatesInput(v, "start the moving average from");
-      days = getDaysBack(v);
-      source = getSourceInput(v);
-    } catch (Exception e) {
-      v.showCustomMessage("Error: " + e.getMessage() + "\n");
-    }
+  public void prompterHelp(IView v) throws IOException {
+    ticker = getTickerSymbol(v);
+    start = getDatesInput(v, "start the moving average from");
+    days = getDaysBack(v);
+    source = getSourceInput(v);
   }
 
   @Override
