@@ -1,7 +1,12 @@
 package view;
 
-import java.awt.*;
+import controller.Features;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 class CreatePortfolioSaveLoadPanel extends JPanel {
@@ -11,6 +16,7 @@ class CreatePortfolioSaveLoadPanel extends JPanel {
   private JButton loadButton;
   private JButton saveButton;
   private JTextField fileName;
+  List<Features> featureListeners = new ArrayList<>();
 
   CreatePortfolioSaveLoadPanel() {
     this.setLayout(new GridLayout(2, 1));
@@ -38,4 +44,5 @@ class CreatePortfolioSaveLoadPanel extends JPanel {
     this.add(loadSavePanel);
   }
 
+  void addFeatures(Features f) { this.featureListeners.add(f); }
 }

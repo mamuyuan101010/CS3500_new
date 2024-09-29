@@ -8,7 +8,7 @@ import java.util.List;
  * These features are supposed to be a basic set upon which other features
  * may be developed.
  */
-public interface Investment {
+public interface Investment extends LineChartObject {
 
   /**
    * Allow a user to examine the gain or loss of an investment over a specified period.

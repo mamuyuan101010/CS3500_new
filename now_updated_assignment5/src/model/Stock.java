@@ -24,6 +24,11 @@ public class Stock implements Investment {
     this.data = source.fetchData(ticker);
   }
 
+  @Override
+  public double getValueOnDate(LocalDate date) {
+    return getEndOfDayVal(date);
+  }
+
   /**
    * a nested class representing a StockData object.
    * Holds information of prices for a specific day

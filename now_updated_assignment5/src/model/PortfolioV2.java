@@ -10,7 +10,7 @@ import java.util.Map;
  * more complex portfolio than defined before. It builds off of previously
  * specified operations by enhancing or adding functionality.
  */
-public interface PortfolioV2 extends Portfolio {
+public interface PortfolioV2 extends Portfolio, LineChartObject {
 
   @Override
   //dates are needed, so methods extended from portfolio are not supported anymore
@@ -23,6 +23,9 @@ public interface PortfolioV2 extends Portfolio {
   default void sellInvestment(Investment inv, double quantity) {
     throw new UnsupportedOperationException("PortfolioV2s require an additional date parameter");
   }
+
+  @Override
+  double getValueOnDate(LocalDate date);
 
   /**
    * addInvestment method takes in an investment and quantity desired.

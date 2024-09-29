@@ -14,7 +14,11 @@ public interface StocksCommandsV2 extends StocksCommands {
 
   @Override
   default void execute(IModel model, IView v) {
-    throw new UnsupportedOperationException("Please Use PortfolioV2 objects for this controller.");
+    try {
+      execute((IModelV2) model, v);
+    } catch (IOException e) {
+      throw new UnsupportedOperationException("Please Use PortfolioV2 objects for this controller.");
+    }
   }
 
   /**

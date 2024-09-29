@@ -1,8 +1,11 @@
 package view;
 
+import controller.Features;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 class QueryPortfolioPanel extends JPanel {
@@ -14,7 +17,7 @@ class QueryPortfolioPanel extends JPanel {
   private JTextField queryValueDayField;
 
   private JButton queryCompositionButton;
-
+  List<Features> featureListeners = new ArrayList<>();
   QueryPortfolioPanel() {
     this.setBorder(BorderFactory.createTitledBorder("Query Portfolio"));
 
@@ -48,8 +51,6 @@ class QueryPortfolioPanel extends JPanel {
     this.add(panel, BorderLayout.CENTER);
   }
 
-  public void addActionListener(ActionListener listener) {
-    queryValueButton.addActionListener(listener);
-    queryCompositionButton.addActionListener(listener);
-  }
+
+  void addFeatures(Features f) { this.featureListeners.add(f); }
 }

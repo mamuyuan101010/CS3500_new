@@ -4,16 +4,9 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Date;
 
 import controller.Features;
-import model.APIStockDataSource;
-import model.FileStockDataSource;
-import model.StockDataSource;
 
 public class GraphicsView implements GUIView {
   private JFrame frame;
@@ -22,15 +15,6 @@ public class GraphicsView implements GUIView {
   private BuySellStocksPanel buySellStockPanel;
   private QueryPortfolioPanel queryPortfolioPanel;
 
-  private JButton createPortfolioButton;
-  private JTextField portfolioNameField;
-
-
-
-  // load and save file
-  private JButton loadButton;
-  private JButton saveButton;
-  private JTextField fileName;
 
   public GraphicsView() {
     initialize();
@@ -64,26 +48,18 @@ public class GraphicsView implements GUIView {
     frame.setVisible(true);
   }
 
-  @Override
-  public void setButtonListener(ActionListener listener) {
-    createPortfolioButton.addActionListener(listener);
-
-    // call the method in buySellStockPanel to add action listener
-    buySellStockPanel.addActionListener(listener);
-
-
-
-    queryPortfolioPanel.addActionListener(listener);
-  }
 
   @Override
   public void addFeatures(Features features) {
-
+    this.buySellStockPanel.addFeatures(features);
+    this.createPortSaveLoadfolioPanel.addFeatures(features);
+    this.queryPortfolioPanel.addFeatures(features);
   }
 
 
   @Override
   public void showCustomMessage(String message) {
+    System.out.println(message);
     JOptionPane.showMessageDialog(frame, message);
   }
 

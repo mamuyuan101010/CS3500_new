@@ -118,5 +118,7 @@ public interface IModelV2 extends IModel{
   /**
    *
    */
-  String getChart(LocalDate start, LocalDate end, String portfolioName);
+  String getChartFromPortfolio(LocalDate start, LocalDate end, String portfolioName);
+
+  String getChartFromStock(LocalDate start, LocalDate end, String stockName);
 }
